@@ -3,16 +3,16 @@
     {
       "title"    : "Helm, Kubernetes, et les systeme de fichier multi niveau",
       "category" : "",
-      "tags"     : "",
-      "url"      : "/blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/",
+      "tags"     : "Kubernetes and Docker",
+      "url"      : "/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/",
       "date"     : "18 Mar, 2020"
     } ,
   
     {
       "title"    : "Présentation de Powershell DSC",
       "category" : "",
-      "tags"     : "",
-      "url"      : "/blog/powershell/devops/2020/03/16/presentation-powershell-dsc/",
+      "tags"     : "Powershell and DevOps",
+      "url"      : "/blog/2020/03/16/presentation-powershell-dsc/",
       "date"     : "16 Mar, 2020"
     } ,
   

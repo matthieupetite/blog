@@ -6,10 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Helm, Kubernetes, et les systeme de fichier multi niveau</title>
+  <title>Présentation de Powershell DSC</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
 
-  <link rel="canonical" href="https://matthieupetite.github.io//blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/">
+  <link rel="canonical" href="https://matthieupetite.github.io//blog/2020/03/16/presentation-powershell-dsc/">
   <link rel="alternate" type="application/rss+xml" title="" href="/blog/feed.xml">
 
   <!-- Fonts -->
@@ -104,6 +104,22 @@
               
                 
               
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
             </ul>
 
           </div>
@@ -128,10 +144,10 @@
     <div class="row">
       <div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
         <span class="post__date">
-          <time datetime="2020-03-18T00:00:00+00:00">Mar 18, 2020</time>
+          <time datetime="2020-03-16T00:00:00+00:00">Mar 16, 2020</time>
         </span>
 
-        <h1 class="post-title">Helm, Kubernetes, et les systeme de fichier multi niveau</h1>
+        <h1 class="post-title">Présentation de Powershell DSC</h1>
 
         <div class="post__info">
           <div class="post__author">
@@ -139,6 +155,14 @@
             <a href="/blog/about/" class="author-name">Matthieu Petite</a>
           </div>
 
+          
+          <div class="post__tags">
+            
+              <a href="/blog/tag/Powershell" class="post__tags-tag">Powershell</a>
+            
+              <a href="/blog/tag/DevOps" class="post__tags-tag">DevOps</a>
+            
+          </div>
           
         </div>
       </div>
@@ -148,7 +172,7 @@
   
   
     <div class="post__head">
-      <div class="post-image" style="background-image: url(/blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png)"></div>
+      <div class="post-image" style="background-image: url(/blog/images//post/2019/01/presentation-powershell-dsc.png)"></div>
     </div>
   
 
@@ -161,261 +185,259 @@
     <article class="post  col col-8 col-t-10 col-m-12">
 
       <div class="post__content">
-        <p>Dans cet article nous allons traiter de la mise en place d’un système de fichier multi niveau au sein d’une image docker dans un contexte kubernetes, avec un déploiement kind.</p>
+        <p>Et voilà, je suis <strong>tombé en amour</strong>, comme le disent nos amis francophones d’outre-Atlantique… Et quand on “tombe en amour” et bien on a tout simplement envie d’en parler.</p>
 
-<h1 id="problématique">Problématique</h1>
+<p>Mon amour du jour s’appelle <strong>DSC</strong>, comme <strong>Desired State Configuration</strong>.</p>
 
-<p>Bien souvent, il convient lors du déploiement d’une application sous kubernetes de s’assurer que les fichiers de configuration applicatif soit présents sur l’image. Certe, il n’est pas préconisé d’injecter de la configuration par système de fichier (on préfère souvent les variables d’environnement) mais quand on porte une application sous k8s c’est hélas souvent une problématique auquel on est confronté. D’autant que les dit fichiers doivent évolués en fonction des envrionnements de déploiement.</p>
+<p>Je vais vous présenter dans cet article, comment DSC va vous sauver la vie et je l’espère vous donner envie de vous jeter à l’eau en montrant un exemple pratique de mise en oeuvre.</p>
 
-<p>Une approche simple consisterait à mettre en place une config map par fichier mais, le travail peut etre long et fastidieux quand on est dans le cas de plusieurs dizaine de fichiers.</p>
+<p>Cet article est le premier d’une série qui je l’espère qui vous présentera :</p>
 
-<p>Je vous présente donc ici la solution que j’ai mis en oeuvre dans de multiples projets pour me simplifier la tâche.</p>
+<ul>
+  <li>Comment réaliser votre première configuration DSC</li>
+  <li>Le fonctionnement des modules et des ressources DSC</li>
+  <li>La création de vos premiers modules custom, parce que oui, tout n’a pas encore été fait sur GitHub</li>
+  <li>Le test de vos configurations</li>
+  <li>Comment distribuer vos configurations sur votre infrastructure</li>
+  <li>Superviser la bonne application de vos configurations</li>
+</ul>
 
-<h1 id="prérequis">Prérequis</h1>
+<h1 id="desired-state-configuration-rapide-présentation">Desired State Configuration, rapide présentation</h1>
 
-<p>Voici la liste de prérequis pour le ce tutoriel:</p>
+<p>On observe depuis quelques années une accélération dans notre petit monde de l’IT.
+Il faut délivrer plus vite, mettre rapidement des applications en ligne et donc des plateformes dans les mains des utilisateurs pour rapidement avoir leurs retours.</p>
+
+<p>Cette accélération est un vrai défi pour les développeurs qui n’ont plus le temps de tester, de valider, et même de spécifier.
+<strong>L’agilité</strong>, la pratique du <strong>test</strong>, et l’automatisation ont été la réponse face à ces nouvelles contraintes.</p>
+
+<p>Si dans le domaine du développement d’application, la question est ancienne, les réponses techniques relativement matures, et l’outillage présent avec des outils de type <a href="https://azure.microsoft.com/fr-fr/services/devops/">Application Lifecycle Management</a>, dans le domaine de l’infrastructure, les réponses ont un peu plus tardé à venir.</p>
+
+<p>C’est avec l’émergence de plateformes cloud telles que <a href="https://azure.microsoft.com">Azure</a> ou <a href="https://aws.amazon.com">Amazon</a> que les choses sont devenues possibles.
+Et avec <strong>Desired State Configuration</strong>, Microsoft nous donne l’outil qui permet de répondre à ces enjeux au niveau de l’OS.</p>
+
+<p>Déployer de l’infrastructure de façon testable, automatisée, prédictible le tout en proposant enfin une solution face au cauchemar des OPS : la “dérive de configuration”, c’est la promesse de DSC face aux enjeux du <strong>Dev/OPS</strong>.</p>
+
+<p>L’objectif de <strong>DSC</strong>, c’est donc de vous permettre de décrire vos infrastructures à l’aide d’une <strong>syntaxe de script</strong> que vous pourrez appliquer sur vos serveurs de façon périodique afin de vous assurer que ce qui est effectivement déployé correspond à ce que vous avez inscrit au référentiel.</p>
+
+<p>Et comme la description d’une configuration c’est du code vous avez la possibilité de:</p>
+
+<ul>
+  <li><strong>Gérer</strong> votre infrastructure dans un référentiel de code source et ainsi faire le lien avec les applications,</li>
+  <li><strong>Tester</strong> votre infrastructure,</li>
+  <li><strong>Automatiser</strong> les déploiements des changements de configuration</li>
+  <li><strong>Auditer</strong> la bonne application des configurations</li>
+</ul>
+
+<h1 id="linux-windows-dsc-est-disponible">Linux, Windows: DSC est disponible</h1>
+
+<p>Au passage, l’utilisation de DSC n’est pas réduite à la seule plateforme Windows.
+En effet, il est possible d’utiliser cette technologie sur un large panel de <a href="https://docs.microsoft.com/fr-fr/powershell/dsc/getting-started/lnxgettingstarted">distribution Linux</a>.</p>
+
+<h1 id="fonctionnement-général">Fonctionnement général</h1>
+
+<p>Comme évoqué plus haut, une configuration DSC c’est avant tout un script powershell (extension .ps1) dans lequel on retrouve le mot clé “Configuration”.
+Ce fichier s’appuie sur des ressources que nous pouvons importer afin de manipuler l’état du serveur cible.</p>
+
+<p>Une configuration peut décrire l’état désiré d’un ensemble de serveurs. Cette approche permet de mutualiser les configurations ce qui est très utile dans le cas de déploiement de clusters ou pour “<strong>masteriser</strong>” un large volume de serveurs.</p>
+
+<p>Le fichier <code class="language-plaintext highlighter-rouge">ps1</code> de configuration n’est pas directement utilisé pas l’agent DSC déployé sur le serveur qui applique les configurations DSC. Il convient de “<strong>compiler</strong>” ces dernières afin de produire un fichier Mof par serveur.</p>
+
+<p>Le schéma de production d’une configuration DSC est donc le suivant:</p>
+
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-03.png" alt="presentation-powershell-dsc-03" /></p>
+
+<p>Une fois la configuration compilée, c’est le <strong>local configuration manager</strong> du serveur qui va pouvoir appliquer le fichier <code class="language-plaintext highlighter-rouge">MOF</code> résultat de la compilation de notre configuration.</p>
+
+<p>Tout serveur Windows depuis la version 2012 exécute l’agent LCM, et c’est là toute la force de la technologie DSC puisqu’aucun ajout n’est nécessaire pour interpréter nos configurations.
+Cette fonctionnalité est native ce qui nous affranchit de toute configuration supplémentaire.</p>
+
+<h1 id="présentation-de-la-structure-dune-configuration">Présentation de la structure d’une configuration</h1>
+
+<p>Rentrons maintenant un peu plus dans le détail de ce qu’est notre configuration DSC.
+Comme évoqué plus haut, une configuration est un simple fichier powershell.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">Configuration</span><span class="w"> </span><span class="n">MaPremiereConfiguration</span><span class="w"> </span><span class="p">{</span><span class="w">
+
+  </span><span class="n">Import-Module</span><span class="w"> </span><span class="nt">-ModuleName</span><span class="w"> </span><span class="nx">xTimeZone</span><span class="w">
+
+  </span><span class="n">Node</span><span class="w"> </span><span class="nx">MonPremierServeur</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">xTimeZone</span><span class="w"> </span><span class="s1">'FrenchTimeZone'</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">IsSingleInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Yes'</span><span class="w">
+      </span><span class="n">TimeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Romance Standard Time'</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Voyons en détail, sur cet exemple anodin, les objets qui sont manipulés.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Éléments de configuration</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Configuration</td>
+      <td>Comme vous le constatez, une configuration DSC commence toujours par le mot clé du langage Powershell <strong>Configuration</strong>. Ce mot clé est de façon sous-jacente au langage une fonction powershell que l’on pourra appeler pour produire les fichiers Mof.</td>
+    </tr>
+    <tr>
+      <td>MaPremiereConfiguration</td>
+      <td>Cet élément est simplement le nom de la configuration DSC</td>
+    </tr>
+    <tr>
+      <td>Import-Module -ModuleName xTimeZone</td>
+      <td>Cette directive powershell permet de charger les ressources DSC dont dépend notre configuration. Une ressource DSC est un module powershell qui doit être installé sur le serveur sur lequel on souhaite appliquer notre configuration. C’est dans ces modules que l’on retrouvera toute la logique d’installation et de configuration du serveur que l’on souhaite appliquer. La communauté met à disposition un <a href="https://github.com/PowerShell/DscResources">large panel de modules open source</a> qui vous permettrons de configurer vos serveurs.</td>
+    </tr>
+    <tr>
+      <td>Node MonPremierServeur</td>
+      <td>Nous déclarons ici le serveur pour lequel la configuration doit être appliquée. Il faut lire cette directive comme suit: si le serveur possède un hostname égal à “MaPremiereConfiguration” alors la configuration sera appliquée. Dans le cas inverse, elle sera simplement ignorée. Cette approche vous permet donc de créer une seule configuration pour un ensemble de serveurs et d’appliquer ou non des ressources DSC en fonction de vos besoins.</td>
+    </tr>
+    <tr>
+      <td>xTimeZone “FrenchTimeZone”</td>
+      <td>Cette ligne de configuration précise que dans notre configuration nous faisons appel à la ressource <strong>xTimeZone</strong> qui comme son nom l’indique nous permet de configurer la localisation temporelle de notre serveur afin de gérer l’heure convenablement. Si vous souhaitez voir le code de cette ressource, il vous suffit de vous reporter au contenu du module que nous avons déclaré plus haut.</td>
+    </tr>
+    <tr>
+      <td>IsSingleInstance = “Yes” TimeZone = “Romance Standard Time”</td>
+      <td>Enfin, ces deux derniers éléments constituent les paramètres nécessaires au module DSC xTimeZone</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="mode-dapplication-dune-configuration-dsc">Mode d’application d’une configuration DSC</h1>
+
+<p>La cinématique d’appel d’une configuration DSC est la suivante. Pour chaque ressource présente dans la configuration, le local configuration manager va appeler en séquence trois méthodes powershell:</p>
 
 <ol>
-  <li>disposer d’un envrionnement kubernetes, Nous utiliserons <a href="https://k3d.io/">k3d</a> ici</li>
-  <li>avoir des connaissance sur la solution de déploiement HELM</li>
-  <li>maitriser les concept kubernetes de configuration map / déploiement / …</li>
+  <li>Get-TargetResource</li>
+  <li>Test-TargetResource</li>
+  <li>Set-TargetResource</li>
 </ol>
 
-<h1 id="solution">Solution</h1>
+<p>Comme vous l’aurez compris, toutes les ressources DSC doivent implémenter ces fonctions afin qu’elles puissent être appliquées par le local configuration manager.</p>
 
-<p>Nous allons mettre en place un mécanisme de construction dynamique de configuration map que nous allons ensuite monter dans une image. les fichiers présenté dans la configuration map seront des fichiers texte dans lequel il conviendra de changer le contenu en fonction de valeur définie dans le fichier de values.yaml du chart.</p>
+<h2 id="get-targetresource">Get-TargetResource</h2>
 
-<h1 id="definition-de-lattendu">Definition de l’attendu</h1>
+<p>Cette première méthode permet de récupérer le composant que nous volons paramétrer.
+Ainsi le module xTimeZone récupère la configuration courante de la TimeZone du serveur sur lequel nous voulons appliquer notre configuration.</p>
 
-<p>Pour illustrer notre configuration map multi niveau nous allons constuire dans un container le filesystem suivant:</p>
+<h2 id="test-targetresource">Test-TargetResource</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>App
- ┣ subfolder
- ┃ ┗ file3.cfg
- ┣ file1.cfg
- ┗ file2.cfg
-</code></pre></div></div>
+<p>Cette méthode teste l’état du serveur courant vis-à-vis de la configuration attendue.
+Deux cas peuvent se présenter alors:</p>
 
-<p>Dans le file1.cfg nous allons faire en sorte d’injecter des données de configuration en provenance du fichier de configuration du chart : le fichier values.yaml</p>
+<ol>
+  <li>Si l’état courant du serveur est conforme à celui demandé dans la configuration, la fonction Test-TargetResource retourne alors la valeur <code class="language-plaintext highlighter-rouge">$true</code></li>
+  <li>Si l’état courant n’est pas dans l’état désiré, alors elle retourne la valeur <code class="language-plaintext highlighter-rouge">$false</code>.</li>
+</ol>
 
-<h1 id="etape-du-tutoriel">Etape du tutoriel</h1>
+<p>En fonction du retour de cette méthode, le Local Configuration Manager exécute ou non la fonction <code class="language-plaintext highlighter-rouge">Set-TargetResource</code>.</p>
 
-<h2 id="installation-de-k3d">Installation de k3d</h2>
+<h2 id="set-targetresource">Set-TargetResource</h2>
 
-<p>Après avoir installé l’outil k3d en suivant la <a href="https://k3d.io">procédure d’installation</a>, vérifiez la bonne installation de l’outil en lançant la commade suivante:</p>
+<p>Cette dernière méthode réalise effectivement la configuration du serveur. Dans notre cas, elle configure la TimeZone du serveur en “<strong>Romance Standard Time</strong>”.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d <span class="nt">--version</span>
-</code></pre></div></div>
+<p>En fin de cycle, le serveur est donc configuré tel que décrit dans le référentiel.</p>
 
-<p>Vous devez obtenir le résultat suivant:</p>
+<h1 id="et-maintenant-parlons-déploiement-des-configurations">Et maintenant, parlons déploiement des configurations</h1>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d version v3.2.0
-k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
-</code></pre></div></div>
+<p>Maintenant que vous maîtrisez la logique globale d’une configuration DSC, passons à la pratique.</p>
 
-<p>Créer votre premier cluster en lançant la commande</p>
+<h2 id="la-compilation">La compilation</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d cluster create mycluter
-</code></pre></div></div>
+<p>En premier lieu, il convient de créer et <strong>compiler</strong> la configuration DSC. Pour ce faire, nous allons partir de l’exemple suivant:</p>
 
-<p>qui vous donne le résultat suivant:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+  </span><span class="kr">Configuration</span><span class="w"> </span><span class="n">ConfigurationTest</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">node</span><span class="w"> </span><span class="nx">Localhost</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">File</span><span class="w"> </span><span class="nx">DossierExemple</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">Ensure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Present'</span><span class="w">
+        </span><span class="kr">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Directory'</span><span class="w">
+        </span><span class="n">DestinationPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'C:\temp\test'</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-1.png" alt="Creation cluster k3d" /></p>
+</span></code></pre></div></div>
 
-<p>vous devez pouvoir voir la liste des pods de votre tout nouveau cluster en lançant la commande suivante:</p>
+<p>Copier le contenu de ce fichier dans votre éditeur Powershell préféré et sauvegardez-le dans le dossier <code class="language-plaintext highlighter-rouge">c:\temp</code> sous le nom <code class="language-plaintext highlighter-rouge">ConfigurationTest.ps1</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">--all-namespaces</span>
-</code></pre></div></div>
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-04.png" alt="presentation-powershell-dsc-04" /></p>
 
-<p>qui vous donne ce résultat:</p>
+<p>Ensuite, il faut que vous “<strong>dotsourciez</strong>” le fichier afin de charger la configuration DSC que vous venez de créer dans votre session powershell.</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-2.png" alt="Liste des pods du cluster" /></p>
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-05.png" alt="presentation-powershell-dsc-05" /></p>
 
-<h2 id="installation-de-helm3">Installation de HELM3</h2>
+<p>Vous avez maintenant dans votre Shell la possibilité d’appeler la fonction <code class="language-plaintext highlighter-rouge">ConfigurationTest</code> pour compiler votre configuration.</p>
 
-<p>La procédure d’installation de l’outil est présent ici <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>.</p>
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-06.png" alt="presentation-powershell-dsc-06" /></p>
 
-<p>Dans mon cas je suis sur une machine ubuntu je lance donc simplement le script suivant comme indiqué dans la documentation:</p>
+<p>Et voilà, la configuration est maintenant prête à être appliquée par le local configuration manager.
+Comme vous pouvez le constater, l’action de configuration a créé un sous-dossier dans le répertoire <code class="language-plaintext highlighter-rouge">c:\temp</code> nommé ConfigurationTest et contenant le fichier Mof, résultat de la configuration.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://baltocdn.com/helm/signing.asc | <span class="nb">sudo </span>apt-key add -
-<span class="nb">sudo </span>apt-get <span class="nb">install </span>apt-transport-https <span class="nt">--yes</span>
-<span class="nb">echo</span> <span class="s2">"deb https://baltocdn.com/helm/stable/debian/ all main"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/helm-stable-debian.list
-<span class="nb">sudo </span>apt-get update
-<span class="nb">sudo </span>apt-get <span class="nb">install </span>helm
-</code></pre></div></div>
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-07.png" alt="presentation-powershell-dsc-07" /></p>
 
-<p>vous pouvez vérifiez que helm3 est correctement installé en lancant la commande suivante:</p>
+<h2 id="le-déploiement">Le déploiement</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm version
-</code></pre></div></div>
+<p>Maintenant, passons au déploiement effectif de notre configuration sur un serveur.
+Il existe deux modes d’application des configurations:</p>
 
-<p>Qui doit vous retourner l’information suivante:</p>
+<ol>
+  <li>Le mode Push</li>
+  <li>Le mode pull</li>
+</ol>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version.BuildInfo<span class="o">{</span>Version:<span class="s2">"v3.5.1"</span>, GitCommit:<span class="s2">"32c22239423b3b4ba6706d450bd044baffdcf9e6"</span>, GitTreeState:<span class="s2">"clean"</span>, GoVersion:<span class="s2">"go1.15.7"</span><span class="o">}</span>
-</code></pre></div></div>
+<h3 id="le-mode-push">Le mode Push</h3>
 
-<h2 id="creation-du-chart-à-partir-du-modèle">Creation du chart à partir du modèle</h2>
+<p>Dans le cadre du déploiement en mode <strong>Push</strong>, c’est l’administrateur du système qui localement applique la configuration sur le serveur.
+C’est l’approche la plus simple.
+À chaque modification de la configuration, l’administrateur du système doit réappliquer manuellement la configuration.</p>
 
-<p>Passons maintenant à la mise en place du chart helm à proprement dit. Créez un dossier de projet, dans lequel nous allons travailler.</p>
+<p>La commande utilisée pour réaliser cette opération est la suivante:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> ~/home/multilevel <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/home/multilevel
-</code></pre></div></div>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$spats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+  </span><span class="nx">ComputerName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;nom du serveur cible&gt;'</span><span class="w">
+  </span><span class="nx">Path</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;Chemin du dossier contenant le fichier Mof'</span><span class="w">
+  </span><span class="nx">Wait</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+  </span><span class="nx">Force</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+  </span><span class="nx">Verbose</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">Start-DscConfiguration</span><span class="w"> </span><span class="err">@</span><span class="nx">spats</span><span class="w">
+</span></code></pre></div></div>
 
-<p>et lancer la commande de création du chart Helm:</p>
+<p>L’application de la “<strong>ConfigurationTest</strong>” que nous avons créé plus haut est donc déclenchée comme suit:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm create multilevelcm
-</code></pre></div></div>
+<p><img src="//dev-portfolio-blogassets/img/post/2019/01/presentation-powershell-dsc-08.png" alt="presentation-powershell-dsc-08" /></p>
 
-<p>Cette commande crée le squelette du chart dans le dossier <code class="language-plaintext highlighter-rouge">~/home/multilevel/</code>.</p>
+<p>Comme le montre l’image ci-dessus, qui présente les traces des actions du local configuration manager, nous pouvons observer que ce dernier à d’abord appelé la méthode <strong>Test</strong> de la ressource <strong>File</strong>.</p>
 
-<p>vous obtenez la la structure de fichier suivante:</p>
+<p>Cette dernière a vérifié la présence sur le disque d’un dossier nommé <code class="language-plaintext highlighter-rouge">c:\temp\test</code>.
+Ce dernier n’existait pas, en conséquence la directive Set a été appelée afin de créer le dossier.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦multilevelcm
- ┣ 📂charts
- ┣ 📂templates
- ┃ ┣ 📂tests
- ┃ ┃ ┗ 📜test-connection.yaml
- ┃ ┣ 📜NOTES.txt
- ┃ ┣ 📜_helpers.tpl
- ┃ ┣ 📜deployment.yaml
- ┃ ┣ 📜hpa.yaml
- ┃ ┣ 📜ingress.yaml
- ┃ ┣ 📜service.yaml
- ┃ ┗ 📜serviceaccount.yaml
- ┣ 📜.helmignore
- ┣ 📜Chart.yaml
- ┗ 📜values.yaml
-</code></pre></div></div>
-
-<p>il s’agit d’un chart de base qui crée déploie un serveur nginx.</p>
-
-<p>Pour plus d’information sur l’anatomie des chart la documentation est ici <a href="https://helm.sh/docs/helm/helm_create/">https://helm.sh/docs/helm/helm_create/</a>.</p>
-
-<h2 id="création-de-la-configuration-map-dynamique">Création de la configuration map dynamique</h2>
-
-<h3 id="creation-de-la-structure-de-fichier-dans-le-chart">creation de la structure de fichier dans le chart</h3>
-
-<p>Dans le dossier de chart, créer un dossier files qui contient la structure de notre dossier. Vous devez obtenir la structure de fichier suivant:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦multilevelcm
- ┣ 📂charts
- ┣ 📂files
- ┃ ┣ 📂subfolder
- ┃ ┃ ┗ 📜file3.cfg
- ┃ ┣ 📜file1.cfg
- ┃ ┗ 📜file2.cfg
- ┣ 📂templates
- ┃ ┣ 📂tests
- ┃ ┃ ┗ 📜test-connection.yaml
- ┃ ┣ 📜NOTES.txt
- ┃ ┣ 📜_helpers.tpl
- ┃ ┣ 📜deployment.yaml
- ┃ ┣ 📜hpa.yaml
- ┃ ┣ 📜ingress.yaml
- ┃ ┣ 📜service.yaml
- ┃ ┗ 📜serviceaccount.yaml
- ┣ 📜.helmignore
- ┣ 📜Chart.yaml
- ┗ 📜values.yaml
-</code></pre></div></div>
-
-<p>Dans les fichiers <code class="language-plaintext highlighter-rouge">file2.cfg</code> et <code class="language-plaintext highlighter-rouge">file3.cfg</code> mettez le contenu que vous souhaitez. Dans le <code class="language-plaintext highlighter-rouge">file1.cfg</code>, positionnez le contenu suivant:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="o">{{</span> .Values.configuration.file1 <span class="o">}}</span>
-
-</code></pre></div></div>
-
-<p>Ceci permettra au moteur de template d’aller chercher la valeur dans le fichier de chart. Pour cela à la fin du fichier values.yaml, ajoutez le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">configuration</span><span class="pi">:</span>
-  <span class="na">file1</span><span class="pi">:</span> <span class="pi">|-</span>
-    <span class="s">contenu du fichier 1</span>
-</code></pre></div></div>
-
-<h3 id="création-de-la-configmap">création de la configmap</h3>
-
-<p>Dans le dossier du Chart, créer un dossier configmap pour loger le fichier de définition de notre objet.</p>
-
-<p>dans ce fichier, positionner le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">include "multilevelcm.fullname" .</span> <span class="pi">}}</span><span class="s">-config</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="pi">{{</span><span class="nv">- include "multilevelcm.labels" . | nindent 4</span> <span class="pi">}}</span>
-<span class="na">data</span><span class="pi">:</span>
-  <span class="pi">{{</span> <span class="nv">$root</span> <span class="pi">:</span><span class="nv">= .</span> <span class="pi">}}</span>
-  <span class="pi">{{</span><span class="nv">- range $path</span><span class="pi">,</span> <span class="nv">$bytes</span> <span class="pi">:</span><span class="nv">= $root.Files.Glob (printf "files/**") -</span><span class="pi">}}</span>
-  <span class="pi">{{</span> <span class="nv">$name</span> <span class="pi">:</span><span class="nv">= base $path</span> <span class="pi">}}</span>
-  <span class="pi">{{</span><span class="nv">- sha256sum (printf "%s" (index (regexSplit "files/" ($path) -1 ) 1))</span><span class="pi">}}{{</span> <span class="nv">print "</span><span class="pi">:</span> <span class="err">|</span><span class="nv">- "</span> <span class="pi">}}</span>
-    <span class="pi">{{</span><span class="nv">- tpl ($root.Files.Get ($path)) $ | nindent 4</span> <span class="pi">}}</span>
-  <span class="pi">{{</span><span class="nv">end</span> <span class="pi">}}</span>
-
-</code></pre></div></div>
-
-<p>l’usage de la fonction sha256sum permet de s’afranchir des caractère spéciaux éventuel dans le nom du fichier. La fonction tpl permet de considérer les fichiers comme des template helm et donc d’y injecter des données en provenance du helm chart.</p>
-
-<h2 id="montage-de-la-configuration-map-dans-le-pod">montage de la configuration map dans le pod</h2>
-
-<p>Il reste a monter la configuration map en tant que volume dans le container. Pour ce faire, éditer le fichier de déploiement pour y ajouter les éléments suivants:</p>
-
-<p>Dans la partie du container, ajouter la déclaration du module:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">containers</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> 
-      <span class="na">securityContext</span><span class="pi">:</span>
-      <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:"</span>
-      <span class="na">imagePullPolicy</span><span class="pi">:</span> 
-      <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
-        <span class="na">containerPort</span><span class="pi">:</span> <span class="m">80</span>
-        <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
-      <span class="na">livenessProbe</span><span class="pi">:</span>
-      <span class="na">httpGet</span><span class="pi">:</span>
-        <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-        <span class="na">port</span><span class="pi">:</span> <span class="s">http</span>
-      <span class="na">readinessProbe</span><span class="pi">:</span>
-      <span class="na">httpGet</span><span class="pi">:</span>
-        <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
-        <span class="na">port</span><span class="pi">:</span> <span class="s">http</span>
-      <span class="na">resources</span><span class="pi">:</span>
-      <span class="na">volumeMounts</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">config</span>
-        <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/app"</span>
-</code></pre></div></div>
-
-<p>puis à la fin du fichier ajouter la déclaration du volume:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="na">volumes</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">config</span>
-  <span class="na">configMap</span><span class="pi">:</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">include "multilevelcm.fullname" .</span> <span class="pi">}}</span><span class="s">-config</span>
-    <span class="na">items</span><span class="pi">:</span>
-    <span class="pi">{{</span><span class="nv">- range $path</span><span class="pi">,</span> <span class="nv">$bytes</span> <span class="pi">:</span><span class="nv">= .Files.Glob (printf "files/**") -</span><span class="pi">}}</span>
-    <span class="pi">{{</span> <span class="nv">$name</span> <span class="pi">:</span><span class="nv">= base $path</span> <span class="pi">}}</span>
-        <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">sha256sum (printf "%s" (index (regexSplit "files/" ($path) -1) 1))</span> <span class="pi">}}</span>
-        <span class="na">path</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">printf "%s" (index (regexSplit "files/" ($path) -1) 1)</span> <span class="pi">}}</span>
-    <span class="pi">{{</span><span class="nv">- end</span><span class="pi">}}</span>
-
-</code></pre></div></div>
-
-<h2 id="résultat">Résultat</h2>
-
-<p>Notre chart est pret, pour le déployer sur le cluster k3d. positionnez vous dans votre dossier ~/multilevel et lancer la commande suivante:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">-name</span> myrelease <span class="nt">-n</span> myrelease <span class="nt">--create-namespace</span> ./multilevelcm/
-</code></pre></div></div>
-
-<p>Avec l’outil <a href="https://k8slens.dev/">lens</a> connectez vous sur votre cluster, puis entrez dans votre pod. En navigant dans le dossier /app, vous constatez que tout vos fichiers sont la et que le contenu de votre fichier file1.cfg corresponds à ce que vous avez mis dans le fichier de values.</p>
-
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-3.png" alt="resultat" /></p>
-
-<p>le code du chart est disponible sur mon <a href="https://github.com/matthieupetite/kubernetes-multilevel-configurationmap">github</a></p>
+<p>Lors du deuxième appel de la configuration DSC, nous pouvons constater que la méthode Set a été “<strong>Skip</strong>”</p>
+
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-09.png" alt="presentation-powershell-dsc-09" /></p>
+
+<h3 id="le-mode-pull">Le mode pull</h3>
+
+<p>Si le mode Push offre un premier niveau de réponse, lors de l’usage de DSC sur une infrastructure comprenant un grand nombre de serveurs vous serez vite confronté à certaines <strong>limites</strong>:</p>
+
+<ul>
+  <li>L’application des configurations en mode Push impose une <strong>action de l’administrateur</strong> pour appliquer les nouvelles versions de configuration</li>
+  <li>Vous devez <strong>déployer à la main</strong> les modules de ressource DSC dont a besoin votre configuration sur l’ensemble des serveurs ciblés</li>
+  <li>Vous n’avez pas accès à du reporting sur le statut de l’application de vos configurations de façon centralisée.</li>
+</ul>
+
+<p>Le mode Pull est donc pour vous.
+En effet dans ce mode de configuration, le local configuration manager de vos serveurs pointe vers un serveur de configuration central nommée <strong>pull serveur</strong>.
+Sur une base de temps configurable, il interroge ce dernier pour récupérer la dernière version de configuration DSC qui lui est assignée et éventuellement télécharger les modules nécessaires avant l’application de la configuration.</p>
+
+<p><img src="/blog/images/post/2019/01/presentation-powershell-dsc-10.png" alt="presentation-powershell-dsc-10" /></p>
+
+<p>Nous verrons dans un prochain article comment mettre en oeuvre un pull serveur au sein de votre infrastructure.</p>
 
       </div>
 
@@ -423,24 +445,24 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
         <span class="share__title">Share this article:</span>
         <ul class="share__list list-reset">
           <li class="share__item">
-            <a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://matthieupetite.github.io//blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/"
+            <a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://matthieupetite.github.io//blog/2020/03/16/presentation-powershell-dsc/"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
           </li>
 
           <li class="share__item">
-            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Helm,%20Kubernetes,%20et%20les%20systeme%20de%20fichier%20multi%20niveau&url=https://matthieupetite.github.io//blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/"
+            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Pr%C3%A9sentation%20de%20Powershell%20DSC&url=https://matthieupetite.github.io//blog/2020/03/16/presentation-powershell-dsc/"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
           </li>
 
           <li class="share__item">
-            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/&title=Helm,%20Kubernetes,%20et%20les%20systeme%20de%20fichier%20multi%20niveau&summary=&source="
+            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/16/presentation-powershell-dsc/&title=Pr%C3%A9sentation%20de%20Powershell%20DSC&summary=&source="
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
           </li>
 
           <li class="share__item">
-            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/&amp;media=https://matthieupetite.github.io//blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png&amp;description=Helm,%20Kubernetes,%20et%20les%20systeme%20de%20fichier%20multi%20niveau"
+            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//2020/03/16/presentation-powershell-dsc/&amp;media=https://matthieupetite.github.io//blog/images//post/2019/01/presentation-powershell-dsc.png&amp;description=Pr%C3%A9sentation%20de%20Powershell%20DSC"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;" title="Share on Pinterest"
               rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
           </li>
@@ -455,19 +477,33 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
   <div class="post__navigation">
     
     <div class="prev">
-      <a class="post__nav__image" href="/blog/powershell/devops/2020/03/16/presentation-powershell-dsc/" style="background-image: url(/blog/images//post/2019/01/presentation-powershell-dsc.png)"></a>
+      <a class="post__nav__image" href="/blog/2018/05/29/welcome-to-jekyll/" style="background-image: url(/blog/images/10.jpg)"></a>
       <h2 class="post__nav__title">
         <i class="ion ion-md-arrow-back"></i>
-        <a href="/blog/powershell/devops/2020/03/16/presentation-powershell-dsc/">Présentation de Powershell DSC</a>
+        <a href="/blog/2018/05/29/welcome-to-jekyll/">Welcome to Jekyll!</a>
       </h2>
       <p class="prev__excerpt">
         
-          Et voilà, je suis tombé en amour, comme le disent nos amis francophones d’outre-Atlantique… Et quand on “to...
+          You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your chan...
         
       </p>
     </div>
     
 
+    
+    <div class="next">
+      <a class="post__nav__image" href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/" style="background-image: url(/blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png)">
+      </a>
+      <h2 class="post__nav__title">
+        <a href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/">Helm, Kubernetes, et les systeme de fichier multi niveau</a>
+        <i class="ion ion-md-arrow-forward"></i>
+      </h2>
+      <p class="next__excerpt">
+        
+          Dans cet article nous allons traiter de la mise en place d'un système de fichier multi niveau au sein d'une...
+        
+      </p>
+    </div>
     
   </div>
 
