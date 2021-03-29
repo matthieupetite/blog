@@ -1,50 +1,26 @@
 [
   
     {
-      "title"    : "Find a connection with the reader",
+      "title"    : "Helm, Kubernetes, et les systeme de fichier multi niveau",
       "category" : "",
-      "tags"     : "Resources",
-      "url"      : "/zolan/2018/07/24/find-a-connection-with-the-reader/",
-      "date"     : "24 Jul, 2018"
+      "tags"     : "",
+      "url"      : "/blog/kubernetes/docker/2020/03/18/helm-et-les-filesystem-multi-niveau/",
+      "date"     : "18 Mar, 2020"
     } ,
   
     {
-      "title"    : "Why a brand is often important",
+      "title"    : "Présentation de Powershell DSC",
       "category" : "",
-      "tags"     : "Style",
-      "url"      : "/zolan/2018/07/19/why-a-brand-is-often-important/",
-      "date"     : "19 Jul, 2018"
-    } ,
-  
-    {
-      "title"    : "Time to give gifts to everyone",
-      "category" : "",
-      "tags"     : "Life",
-      "url"      : "/zolan/2018/07/17/time-to-givegifts-to-everyone/",
-      "date"     : "17 Jul, 2018"
-    } ,
-  
-    {
-      "title"    : "Moving to a new place",
-      "category" : "",
-      "tags"     : "Home",
-      "url"      : "/zolan/2018/07/05/moving-to-a-new-place/",
-      "date"     : "5 Jul, 2018"
-    } ,
-  
-    {
-      "title"    : "Start the day with the right habit",
-      "category" : "",
-      "tags"     : "Style",
-      "url"      : "/zolan/2018/06/25/start-the-day-with-the-right-habit/",
-      "date"     : "25 Jun, 2018"
+      "tags"     : "",
+      "url"      : "/blog/powershell/devops/2020/03/16/presentation-powershell-dsc/",
+      "date"     : "16 Mar, 2020"
     } ,
   
     {
       "title"    : "Welcome to Jekyll!",
       "category" : "",
       "tags"     : "Jekyll",
-      "url"      : "/zolan/2018/05/29/welcome-to-jekyll/",
+      "url"      : "/blog/2018/05/29/welcome-to-jekyll/",
       "date"     : "29 May, 2018"
     } 
   

@@ -1,1 +1,1 @@
-Sitemap: /zolan/sitemap.xml
+Sitemap: https://matthieupetite.github.io//blog/sitemap.xml
