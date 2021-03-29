@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Helm, Kubernetes, et les systemes de fichier multi niveau</title>
+  <title>Helm, Kubernetes, et les systèmes de fichier multiniveau</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
 
   <link rel="canonical" href="https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/">
@@ -141,7 +141,7 @@
           <time datetime="2020-03-18T00:00:00+00:00">Mar 18, 2020</time>
         </span>
 
-        <h1 class="post-title">Helm, Kubernetes, et les systemes de fichier multi niveau</h1>
+        <h1 class="post-title">Helm, Kubernetes, et les systèmes de fichier multiniveau</h1>
 
         <div class="post__info">
           <div class="post__author">
@@ -179,33 +179,33 @@
     <article class="post  col col-8 col-t-10 col-m-12">
 
       <div class="post__content">
-        <p>Dans cet article nous allons traiter de la mise en place d’un système de fichier multi niveau au sein d’une image docker dans un contexte kubernetes, avec un déploiement kind.</p>
+        <p>Dans cet article nous allons traiter de la mise en place d’un système de fichier multiniveau au sein d’une image docker dans un contexte Kubernetes, avec un déploiement kind.</p>
 
 <h1 id="problématique">Problématique</h1>
 
-<p>Bien souvent, il convient lors du déploiement d’une application sous kubernetes de s’assurer que les fichiers de configuration applicatif soit présents sur l’image. Certe, il n’est pas préconisé d’injecter de la configuration par système de fichier (on préfère souvent les variables d’environnement) mais quand on porte une application sous k8s c’est hélas souvent une problématique auquel on est confronté. D’autant que les dit fichiers doivent évolués en fonction des envrionnements de déploiement.</p>
+<p>Bien souvent, il convient lors du déploiement d’une application sous Kubernetes de s’assurer que les fichiers de configuration applicatifs soient présents sur l’image. Certes, il n’est pas préconisé d’injecter de la configuration par système de fichier (on préfère souvent les variables d’environnement), mais quand on porte une application sous k8s c’est hélas souvent une problématique à laquelle on est confronté. D’autant que les dit fichiers doivent évolués en fonction des environnements de déploiement.</p>
 
-<p>Une approche simple consisterait à mettre en place une config map par fichier mais, le travail peut etre long et fastidieux quand on est dans le cas de plusieurs dizaine de fichiers.</p>
+<p>Une approche simple consisterait à mettre en place une config map par fichier, mais, le travail peut être long et fastidieux quand on est dans le cas de plusieurs dizaines de fichiers.</p>
 
-<p>Je vous présente donc ici la solution que j’ai mis en oeuvre dans de multiples projets pour me simplifier la tâche.</p>
+<p>Je vous présente donc ici la solution que j’ai mise en oeuvre dans de multiples projets pour me simplifier la tâche.</p>
 
 <h1 id="prérequis">Prérequis</h1>
 
 <p>Voici la liste de prérequis pour le ce tutoriel:</p>
 
 <ol>
-  <li>disposer d’un envrionnement kubernetes, Nous utiliserons <a href="https://k3d.io/">k3d</a> ici</li>
-  <li>avoir des connaissance sur la solution de déploiement HELM</li>
-  <li>maitriser les concept kubernetes de configuration map / déploiement / …</li>
+  <li>disposer d’un environnement Kubernetes, nous utiliserons <a href="https://k3d.io/">k3d</a> ici</li>
+  <li>avoir des connaissances sur la solution de déploiement HELM</li>
+  <li>maitriser les concepts Kubernetes de configuration map / déploiement / …</li>
 </ol>
 
 <h1 id="solution">Solution</h1>
 
-<p>Nous allons mettre en place un mécanisme de construction dynamique de configuration map que nous allons ensuite monter dans une image. les fichiers présenté dans la configuration map seront des fichiers texte dans lequel il conviendra de changer le contenu en fonction de valeur définie dans le fichier de values.yaml du chart.</p>
+<p>Nous allons mettre en place un mécanisme de construction dynamique de configuration map que nous allons ensuite monter dans une image. Les fichiers présentés dans la configuration map seront des fichiers texte dans lequel il conviendra de changer le contenu en fonction de valeur définie dans le fichier de values.yaml du chart.</p>
 
-<h1 id="definition-de-lattendu">Definition de l’attendu</h1>
+<h1 id="définition-de-lattendu">Définition de l’attendu</h1>
 
-<p>Pour illustrer notre configuration map multi niveau nous allons constuire dans un container le filesystem suivant:</p>
+<p>Pour illustrer notre configuration map multiniveau nous allons construire dans un container le filesystem suivant:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>App
  ┣ subfolder
@@ -216,11 +216,11 @@
 
 <p>Dans le file1.cfg nous allons faire en sorte d’injecter des données de configuration en provenance du fichier de configuration du chart : le fichier values.yaml</p>
 
-<h1 id="etape-du-tutoriel">Etape du tutoriel</h1>
+<h1 id="étape-du-tutoriel">Étape du tutoriel</h1>
 
 <h2 id="installation-de-k3d">Installation de k3d</h2>
 
-<p>Après avoir installé l’outil k3d en suivant la <a href="https://k3d.io">procédure d’installation</a>, vérifiez la bonne installation de l’outil en lançant la commade suivante:</p>
+<p>Après avoir installé l’outil k3d en suivant la <a href="https://k3d.io">procédure d’installation</a>, vérifiez la bonne installation de l’outil en lançant la commande suivante:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d <span class="nt">--version</span>
 </code></pre></div></div>
@@ -238,7 +238,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 <p>qui vous donne le résultat suivant:</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-1.png" alt="Creation cluster k3d" /></p>
+<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-1.png" alt="Création cluster k3d" /></p>
 
 <p>vous devez pouvoir voir la liste des pods de votre tout nouveau cluster en lançant la commande suivante:</p>
 
@@ -251,9 +251,9 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 <h2 id="installation-de-helm3">Installation de HELM3</h2>
 
-<p>La procédure d’installation de l’outil est présent ici <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>.</p>
+<p>La procédure d’installation de l’outil est présente ici <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>.</p>
 
-<p>Dans mon cas je suis sur une machine ubuntu je lance donc simplement le script suivant comme indiqué dans la documentation:</p>
+<p>Dans mon cas je suis sur une machine Ubuntu je lance donc simplement le script suivant comme indiqué dans la documentation:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://baltocdn.com/helm/signing.asc | <span class="nb">sudo </span>apt-key add -
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>apt-transport-https <span class="nt">--yes</span>
@@ -262,7 +262,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>helm
 </code></pre></div></div>
 
-<p>vous pouvez vérifiez que helm3 est correctement installé en lancant la commande suivante:</p>
+<p>vous pouvez vérifier que helm3 est correctement installé en lançant la commande suivante:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm version
 </code></pre></div></div>
@@ -272,7 +272,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version.BuildInfo<span class="o">{</span>Version:<span class="s2">"v3.5.1"</span>, GitCommit:<span class="s2">"32c22239423b3b4ba6706d450bd044baffdcf9e6"</span>, GitTreeState:<span class="s2">"clean"</span>, GoVersion:<span class="s2">"go1.15.7"</span><span class="o">}</span>
 </code></pre></div></div>
 
-<h2 id="creation-du-chart-à-partir-du-modèle">Creation du chart à partir du modèle</h2>
+<h2 id="création-du-chart-à-partir-du-modèle">Création du chart à partir du modèle</h2>
 
 <p>Passons maintenant à la mise en place du chart helm à proprement dit. Créez un dossier de projet, dans lequel nous allons travailler.</p>
 
@@ -286,7 +286,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 <p>Cette commande crée le squelette du chart dans le dossier <code class="language-plaintext highlighter-rouge">~/home/multilevel/</code>.</p>
 
-<p>vous obtenez la la structure de fichier suivante:</p>
+<p>vous obtenez la structure de fichier suivante:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦multilevelcm
  ┣ 📂charts
@@ -311,7 +311,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 <h2 id="création-de-la-configuration-map-dynamique">Création de la configuration map dynamique</h2>
 
-<h3 id="creation-de-la-structure-de-fichier-dans-le-chart">creation de la structure de fichier dans le chart</h3>
+<h3 id="création-de-la-structure-de-fichier-dans-le-chart">création de la structure de fichier dans le chart</h3>
 
 <p>Dans le dossier de chart, créer un dossier files qui contient la structure de notre dossier. Vous devez obtenir la structure de fichier suivant:</p>
 
@@ -375,7 +375,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 </code></pre></div></div>
 
-<p>l’usage de la fonction sha256sum permet de s’afranchir des caractère spéciaux éventuel dans le nom du fichier. La fonction tpl permet de considérer les fichiers comme des template helm et donc d’y injecter des données en provenance du helm chart.</p>
+<p>l’usage de la fonction sha256sum permet de s’affranchir des caractères spéciaux éventuels dans le nom du fichier. La fonction tpl permet de considérer les fichiers comme des templates helm et donc d’y injecter des données en provenance du helm chart.</p>
 
 <h2 id="montage-de-la-configuration-map-dans-le-pod">montage de la configuration map dans le pod</h2>
 
@@ -447,18 +447,18 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
           </li>
 
           <li class="share__item">
-            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Helm,%20Kubernetes,%20et%20les%20systemes%20de%20fichier%20multi%20niveau&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/"
+            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Helm,%20Kubernetes,%20et%20les%20syst%C3%A8mes%20de%20fichier%20multiniveau&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
           </li>
 
           <li class="share__item">
-            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/&title=Helm,%20Kubernetes,%20et%20les%20systemes%20de%20fichier%20multi%20niveau&summary=&source="
+            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/&title=Helm,%20Kubernetes,%20et%20les%20syst%C3%A8mes%20de%20fichier%20multiniveau&summary=&source="
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
           </li>
 
           <li class="share__item">
-            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//2020/03/18/helm-et-les-filesystem-multi-niveau/&amp;media=https://matthieupetite.github.io//blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png&amp;description=Helm,%20Kubernetes,%20et%20les%20systemes%20de%20fichier%20multi%20niveau"
+            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//2020/03/18/helm-et-les-filesystem-multi-niveau/&amp;media=https://matthieupetite.github.io//blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png&amp;description=Helm,%20Kubernetes,%20et%20les%20syst%C3%A8mes%20de%20fichier%20multiniveau"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;" title="Share on Pinterest"
               rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
           </li>
