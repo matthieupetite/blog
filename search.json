@@ -1,7 +1,7 @@
 [
   
     {
-      "title"    : "Installation de Kafka avec l&#39;opérateur Strimzi sur Kubernetes",
+      "title"    : "Installation de Kafka avec l opérateur Strimzi sur Kubernetes",
       "category" : "",
       "tags"     : "Kubernetes, Kafka, Strimzi, and Helm",
       "url"      : "/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/",
