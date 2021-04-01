@@ -6,15 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Matthieu Petite</title>
+  <title>Deploiment de la suite prometheus grafana sous Kubernetes</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
-  <meta prefix="go: http://ogp.me/ns#" property='og:title' content=''/>
-  <meta prefix="go: http://ogp.me/ns#" property='og:image' content='https://matthieupetite.github.io/blog/images/'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='Deploiment de la suite prometheus grafana sous Kubernetes'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:image' content='https://matthieupetite.github.io/blog/images//post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
-  <meta prefix="go: http://ogp.me/ns#" property='og:description' content=''/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:description' content='Superviser le cloud est un enjeu majeur lorsque l on décide d y déployer une application métier, Prometheus, Grafana s imposent comme des outils essentiels pour répondre aux enjeux de monitoring. Voici comment les déployer dans un environnement Kubernetes.'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
-  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="https://matthieupetite.github.io//blog/tag/kubernetes/">
-  <link rel="canonical" href="https://matthieupetite.github.io//blog/tag/kubernetes/">
+  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/">
+  <link rel="canonical" href="https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/">
   <link rel="alternate" type="application/rss+xml" title="" href="/blog/feed.xml">
 
   <!-- Fonts -->
@@ -162,167 +162,511 @@
 
   <!-- begin content -->
   <main class="content" aria-label="Content">
-    <div class="arhive-head">
-  <div class="container">
-    <h1 class="archive-title">Tag: <span>kubernetes</span></h1>
+    <div class="container">
+  <div class="post-title-box">
+    <div class="row">
+      <div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
+        <span class="post__date">
+          <time datetime="2021-03-31T00:00:00+00:00">Mar 31, 2021</time>
+        </span>
+
+        <h1 class="post-title">Deploiment de la suite prometheus grafana sous Kubernetes</h1>
+
+        <div class="post__info">
+          <div class="post__author">
+            <span>By</span>
+            <a href="/blog/about/" class="author-name">Matthieu Petite</a>
+          </div>
+
+          
+          <div class="post__tags">
+            
+              <a href="/blog/tag/kubernetes" class="post__tags-tag">kubernetes</a>
+            
+              <a href="/blog/tag/prometheus" class="post__tags-tag">prometheus</a>
+            
+              <a href="/blog/tag/grafana" class="post__tags-tag">grafana</a>
+            
+              <a href="/blog/tag/k3d" class="post__tags-tag">k3d</a>
+            
+              <a href="/blog/tag/helm" class="post__tags-tag">helm</a>
+            
+          </div>
+          
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-
 
   
-<!-- begin article -->
-<div class="article">
-  <div class="container">
-
-    <div class="article__wrapper">
-
-        
-          <a href="/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/" class="article__image" style="background-image: url(/blog/images//post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png)">
-          </a>
-        
-
-        <div class="article__content ">
-          <div class="article-tags">
-          
-            <div class="article-tags__box">
-              
-                <a href="/blog/tag/kubernetes" class="article__tag">kubernetes</a>
-              
-                <a href="/blog/tag/prometheus" class="article__tag">prometheus</a>
-              
-                <a href="/blog/tag/grafana" class="article__tag">grafana</a>
-              
-                <a href="/blog/tag/k3d" class="article__tag">k3d</a>
-              
-                <a href="/blog/tag/helm" class="article__tag">helm</a>
-              
-            </div>
-          
-          </div>
-      
-          <h2 class="article__title">
-            <a href="/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/">Deploiment de la suite prometheus grafana sous Kubernetes</a>
-          </h2>
-      
-          <p class="article__excerpt">Superviser le cloud est un enjeu majeur lorsque l’on décide d’y déployer une application métier. En effet, quel intérêt de bénéficier d’une disponibilité de 5*9 au niveau de l’infras...</p>
-          
-          <div class="article__footer">
-            <div class="article__meta">
-              <span class="article__date"><time datetime="2021-03-31T00:00:00+00:00">March 31, 2021</time></span>
-            </div>
-
-            <a href="/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/" class="read-more">Lire la suite<i class="ion ion-ios-arrow-forward"></i></a>
-          </div>
-
-        </div>
-
-      </div>
-      
-  </div>
-</div>
-<!-- end article -->
-
   
-<!-- begin article -->
-<div class="article">
-  <div class="container">
-
-    <div class="article__wrapper">
-
-        
-          <a href="/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/" class="article__image" style="background-image: url(/blog/images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png)">
-          </a>
-        
-
-        <div class="article__content ">
-          <div class="article-tags">
-          
-            <div class="article-tags__box">
-              
-                <a href="/blog/tag/kubernetes" class="article__tag">kubernetes</a>
-              
-                <a href="/blog/tag/kafka" class="article__tag">kafka</a>
-              
-                <a href="/blog/tag/strimzi" class="article__tag">strimzi</a>
-              
-                <a href="/blog/tag/helm" class="article__tag">helm</a>
-              
-            </div>
-          
-          </div>
-      
-          <h2 class="article__title">
-            <a href="/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">Installation de Kafka avec l opérateur Strimzi sur Kubernetes</a>
-          </h2>
-      
-          <p class="article__excerpt">Dans cet article nous allons détailler l’installation de l’application Kafka a l’aide de l’opérateur Strimzi. En effet, avec l’arrivée de plus en plus régulière d’application Cloud N...</p>
-          
-          <div class="article__footer">
-            <div class="article__meta">
-              <span class="article__date"><time datetime="2020-03-30T00:00:00+00:00">March 30, 2020</time></span>
-            </div>
-
-            <a href="/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/" class="read-more">Lire la suite<i class="ion ion-ios-arrow-forward"></i></a>
-          </div>
-
-        </div>
-
-      </div>
-      
-  </div>
-</div>
-<!-- end article -->
-
+    <div class="post__head">
+      <div class="post-image" style="background-image: url(/blog/images//post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png)"></div>
+    </div>
   
-<!-- begin article -->
-<div class="article">
+
+  </div>
+
+
   <div class="container">
+  <div class="row">
+    <!-- begin post -->
+    <article class="post  col col-8 col-t-10 col-m-12">
 
-    <div class="article__wrapper">
+      <div class="post__content">
+        <p>Superviser le cloud est un enjeu majeur lorsque l’on décide d’y déployer une application métier. En effet, quel intérêt de bénéficier d’une disponibilité de 5*9 au niveau de l’infrastructure si la couche applicative n’est pas surveillée et n’offre pas le même niveau de continuité de service. À l’heure où les architectures IT sont évolutives, où les principes Dev/Ops de CI/CD se généralise, la DSI a besoin d’outils de supervision agiles et performants.  <a href="https://go2.grafana.com/prometheus-grafana.html">Prometheus</a>, <a href="https://go2.grafana.com/prometheus-grafana.html">Grafana</a> s imposent comme des outils essentiels pour répondre à ces enjeux pour fournir des services de monitoring et d’alerting. Voici comment les déployer dans un environnement Kubernetes.</p>
 
-        
-          <a href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/" class="article__image" style="background-image: url(/blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png)">
-          </a>
-        
+<h2 id="prometheus--grafana--architecture">Prometheus / Grafana : Architecture</h2>
 
-        <div class="article__content ">
-          <div class="article-tags">
-          
-            <div class="article-tags__box">
-              
-                <a href="/blog/tag/kubernetes" class="article__tag">kubernetes</a>
-              
-                <a href="/blog/tag/docker" class="article__tag">docker</a>
-              
-            </div>
-          
-          </div>
-      
-          <h2 class="article__title">
-            <a href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/">Helm, Kubernetes, et les systèmes de fichier multiniveau</a>
-          </h2>
-      
-          <p class="article__excerpt">Dans cet article nous allons traiter de la mise en place d’un système de fichier multiniveau au sein d’une image docker dans un contexte Kubernetes, avec un déploiement kind.
+<p>On parle souvent de Prométheus et Grafana, mais en réalité il s’agit d’une suite d’outillage plus complète comme le montre le diagramme d’architecture ci-dessous:</p>
 
-Problé...</p>
-          
-          <div class="article__footer">
-            <div class="article__meta">
-              <span class="article__date"><time datetime="2020-03-18T00:00:00+00:00">March 18, 2020</time></span>
-            </div>
+<p><img src="/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-1.png" alt="Prometheus Grafana architecture" /></p>
 
-            <a href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/" class="read-more">Lire la suite<i class="ion ion-ios-arrow-forward"></i></a>
-          </div>
+<p>Les éléments constitutifs de la plateforme sont donc:</p>
 
-        </div>
+<ol>
+  <li>Le prometheus serveur: qui collecte la donnée de supervision et les stocke</li>
+  <li>La partie grafana qui assure la partie visualisation des données</li>
+  <li>La partie PushGateway dont le rôle est d’assurer la collecte de données de supervision qui serait collectée en mode push (en effet le mode de supervision de prometheus est le pull par défaut)</li>
+  <li>la partie Alert manager qui permet de diffuser les événements pour les équipes de supervision.</li>
+  <li>Les nodes exporter, qui constitue la partie collecte des données en mode pull.</li>
+</ol>
+
+<p>On peut noter que pour le déploiement de cette chaine de supervision dans une réel environnement de production il convient souvent d’ajouter les composants suivants:</p>
+
+<ol>
+  <li><a href="https://geekflare.com/fr/monitor-website-with-blackbox-prometheus-grafana/">Blackbox</a>: pour la supervision des performances de site web</li>
+  <li><a href="https://thanos.io/">Thanos</a>: pour la gestion avancée du stockage à long terme</li>
+</ol>
+
+<h2 id="objectifs-du-tutoriel">Objectifs du tutoriel</h2>
+
+<p>Dans ce tutoriel nous allons installer la suite prometheus grafana sur un cluster Kubernetes afin de monitorer les performances de celui-ci. Nous allons pour réaliser ces travaux produire un Chart Helm qui nous donnera la possibilité d’ajouter nos propres tableaux de bord Grafana.</p>
+
+<h2 id="prérequis">Prérequis</h2>
+
+<p>Vous devez avoir accès à un cluster Kubernetes sur votre poste de développement. Dans le cadre de cet article nous allons utiliser K3d, mais vous pouvez de même utiliser <a href="https://kind.sigs.k8s.io/">Kind</a> ou <a href="https://kubernetes.io/fr/docs/setup/learning-environment/minikube/">Minikube</a>.</p>
+
+<p>Vous devez aussi avoir les connaissances de base autour de la création de <a href="https://helm.sh">Chart Helm</a>.</p>
+
+<h2 id="création-du-cluster-k3d">Création du cluster k3d</h2>
+
+<p>Après avoir installé l’outil k3d en suivant la <a href="https://k3d.io">procédure d’installation</a>, vérifiez la bonne installation de l’outil en lançant la commande suivante:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>Vous devez obtenir le résultat suivant:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d version v3.2.0
+k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Créer votre premier cluster en lançant la commande</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d cluster create mycluster <span class="nt">-p</span> <span class="s2">"80:80@loadbalancer"</span> <span class="nt">--agents</span> 2
+</code></pre></div></div>
+
+<p>Noter le paramètre <code class="language-plaintext highlighter-rouge">-p "80:80@loadbalancer"</code>  qui permettra d’exposer votre ingress controller</p>
+
+<h2 id="création-du-chart-à-partir-dun-modèle-et-clean-du-code">Création du chart à partir d’un modèle et clean du code</h2>
+
+<p>Dans un terminal, lancer la commande suivante:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm3 create prometheus
+</code></pre></div></div>
+
+<p>Vous devez obtenir l’arborescence suivante, qui correspond à un chart de base:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦prometheus
+ ┣ 📂charts
+ ┣ 📂templates
+ ┃ ┣ 📂tests
+ ┃ ┃ ┗ 📜test-connection.yaml
+ ┃ ┣ 📜NOTES.txt
+ ┃ ┣ 📜_helpers.tpl
+ ┃ ┣ 📜deployment.yaml
+ ┃ ┣ 📜hpa.yaml
+ ┃ ┣ 📜ingress.yaml
+ ┃ ┣ 📜service.yaml
+ ┃ ┗ 📜serviceaccount.yaml
+ ┣ 📜.helmignore
+ ┣ 📜Chart.yaml
+ ┗ 📜values.yaml
+</code></pre></div></div>
+
+<p>Supprimer les fichiers inutiles, car nous n’avons pas besoin de déployment, hpa, ingress, service ou encore service account ou encore des tests. Par contre nous avons besoin de configmaps et d’un dossier dashboard à la racine du chart. Après l’étape de nettoyage, notre chart correspond à ceci:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦prometheus
+ ┣ 📂charts
+ ┣ 📂dashboards
+ ┣ 📂templates
+ ┃ ┗ 📂configmap
+ ┣ 📜.helmignore
+ ┣ 📜Chart.yaml
+ ┗ 📜values.yaml
+</code></pre></div></div>
+
+<h2 id="spécialisation-du-chart">Spécialisation du chart</h2>
+
+<h3 id="modification-du-fichier-chartyaml">Modification du fichier Chart.yaml</h3>
+
+<p>Notre chart va s’appuyer sur celui fournit par la communauté : <a href="https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack">kube-prometheus-stack</a> qui de façon sous-jacente installe plusieurs opérateurs Kubernetes.</p>
+
+<p>Afin de configurer cette dépendance, il convient donc de modifier le fichier <code class="language-plaintext highlighter-rouge">chart.yaml</code> comme suit:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v2</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">prometheus</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s">A Helm chart for Kubernetes</span>
+
+<span class="c1"># A chart can be either an 'application' or a 'library' chart.</span>
+<span class="c1">#</span>
+<span class="c1"># Application charts are a collection of templates that can be packaged into versioned archives</span>
+<span class="c1"># to be deployed.</span>
+<span class="c1">#</span>
+<span class="c1"># Library charts provide useful utilities or functions for the chart developer. They're included as</span>
+<span class="c1"># a dependency of application charts to inject those utilities and functions into the rendering</span>
+<span class="c1"># pipeline. Library charts do not define any templates and therefore cannot be deployed.</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">application</span>
+
+<span class="c1"># This is the chart version. This version number should be incremented each time you make changes</span>
+<span class="c1"># to the chart and its templates, including the app version.</span>
+<span class="c1"># Versions are expected to follow Semantic Versioning (https://semver.org/)</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s">0.1.0</span>
+
+<span class="c1"># This is the version number of the application being deployed. This version number should be</span>
+<span class="c1"># incremented each time you make changes to the application. Versions are not expected to</span>
+<span class="c1"># follow Semantic Versioning. They should reflect the version the application is using.</span>
+<span class="c1"># It is recommended to use it with quotes.</span>
+<span class="na">appVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.16.0"</span>
+
+<span class="na">dependencies</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-prometheus-stack</span>
+    <span class="na">version</span><span class="pi">:</span> <span class="s">14.4.0</span>
+    <span class="na">repository</span><span class="pi">:</span> <span class="s">https://prometheus-community.github.io/helm-charts</span>
+    <span class="na">import-values</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">child</span><span class="pi">:</span> <span class="s">grafana</span>
+        <span class="na">parent</span><span class="pi">:</span> <span class="s">grafana</span>
+</code></pre></div></div>
+
+<h3 id="modication-du-fichier-valuesyaml">Modication du fichier values.yaml</h3>
+
+<p>Le fichier de values doit être modifié comme suit:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kube-prometheus-stack</span><span class="pi">:</span>
+    <span class="c1">## Provide a name in place of kube-prometheus-stack for `app:` labels</span>
+    <span class="c1">##</span>
+    <span class="na">nameOverride</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="c1">## Override the deployment namespace</span>
+    <span class="c1">##</span>
+    <span class="na">namespaceOverride</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="c1">## Provide a k8s version to auto dashboard import script example: kubeTargetVersionOverride: 1.16.6</span>
+    <span class="c1">##</span>
+    <span class="na">kubeTargetVersionOverride</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="c1">## Provide a name to substitute for the full names of resources</span>
+    <span class="c1">##</span>
+    <span class="na">fullnameOverride</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="c1">## Component scraping the kube controller manager</span>
+    <span class="na">kubeControllerManager</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">false</span>
+
+    <span class="c1">## Component scraping etcd</span>
+    <span class="na">kubeEtcd</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">false</span>
+
+    <span class="c1">## Component scraping kube proxy</span>
+    <span class="na">kubeProxy</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">false</span>
+
+    <span class="c1">## Component scraping kube scheduler</span>
+    <span class="na">kubeScheduler</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">false</span>
+
+    <span class="c1">## Configuration for alertmanager</span>
+    <span class="c1">## ref: https://prometheus.io/docs/alerting/alertmanager/</span>
+    <span class="c1">##</span>
+    <span class="na">alertmanager</span><span class="pi">:</span>
+      <span class="na">alertmanagerSpec</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/prometheus/alertmanager</span>
+          <span class="na">tag</span><span class="pi">:</span> <span class="s">latest</span>
+          <span class="na">sha</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>  
+    
+    <span class="na">ingress</span><span class="pi">:</span>
+    <span class="c1">## If true, Grafana Ingress will be created</span>
+    <span class="c1">##</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+
+    <span class="c1">## Annotations for Grafana Ingress</span>
+    <span class="c1">##</span>
+      <span class="na">annotations</span><span class="pi">:</span> 
+      <span class="s">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="c1"># kubernetes.io/tls-acme: "true"</span>
+
+    <span class="c1">## Labels to be added to the Ingress</span>
+    <span class="c1">##</span>
+      <span class="na">labels</span><span class="pi">:</span> <span class="pi">{}</span>
+
+    <span class="c1">## Hostnames.</span>
+    <span class="c1">## Must be provided if Ingress is enable.</span>
+    <span class="c1">##</span>
+    <span class="c1"># hosts:</span>
+    <span class="c1">#   - grafana.domain.com</span>
+      <span class="na">hosts</span><span class="pi">:</span> 
+      <span class="pi">-</span> <span class="s">dev-platform</span>
+
+    <span class="c1">## Path for grafana ingress</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/grafana/</span>  
+    
+    <span class="c1">## Manages Prometheus and Alertmanager components</span>
+    <span class="c1">##</span>
+    <span class="na">prometheusOperator</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">admissionWebhooks</span><span class="pi">:</span>
+        <span class="na">failurePolicy</span><span class="pi">:</span> <span class="s">Fail</span>
+        <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="na">patch</span><span class="pi">:</span>
+          <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">image</span><span class="pi">:</span>
+            <span class="na">repository</span><span class="pi">:</span> <span class="s">jettech/kube-webhook-certgen</span>
+            <span class="na">tag</span><span class="pi">:</span> <span class="s">v1.5.1</span>
+            <span class="na">sha</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+            <span class="na">pullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+          <span class="na">resources</span><span class="pi">:</span> <span class="pi">{}</span>
+      <span class="c1">## Prometheus-operator image</span>
+      <span class="c1">##</span>
+      <span class="na">image</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/prometheus-operator/prometheus-operator</span>
+        <span class="na">tag</span><span class="pi">:</span> <span class="s">v0.46.0</span>
+        <span class="na">sha</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+        <span class="na">pullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+
+      <span class="na">prometheusConfigReloaderImage</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/prometheus-operator/prometheus-config-reloader</span>
+        <span class="na">tag</span><span class="pi">:</span> <span class="s">v0.46.0</span>
+        <span class="na">sha</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="na">prometheus</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="c1">## Configuration for Prometheus service</span>
+      <span class="c1">##</span>
+      <span class="na">service</span><span class="pi">:</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+      <span class="na">prometheusSpec</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/prometheus/prometheus</span>
+          <span class="na">tag</span><span class="pi">:</span> <span class="s">v2.24.0</span>
+          <span class="na">sha</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+        <span class="c1">## External URL at which Prometheus will be reachable.</span>
+        <span class="c1">##</span>
+        <span class="na">externalUrl</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://kind-dev/prometheus"</span>
+        <span class="c1">## Prefix used to register routes, overriding externalUrl route.</span>
+        <span class="c1">## Useful for proxies that rewrite URLs.</span>
+        <span class="c1">##</span>
+        <span class="na">routePrefix</span><span class="pi">:</span> <span class="s">/prometheus</span>
+    <span class="na">grafana</span><span class="pi">:</span>
+      <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
+      <span class="s">grafana.ini</span><span class="pi">:</span>
+        <span class="na">server</span><span class="pi">:</span>
+          <span class="na">domain</span><span class="pi">:</span> <span class="s">cluster-dev.local</span>
+          <span class="na">root_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%(protocol)s://%(domain)s:%(http_port)s/grafana"</span>
+          <span class="na">serve_from_sub_path</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">image</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">grafana/grafana</span>
+
+      <span class="na">downloadDashboardsImage</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">curlimages/curl</span>
+
+      <span class="na">initChownData</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">repository</span><span class="pi">:</span> <span class="s">busybox</span>
+
+      <span class="na">sidecar</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">repository</span><span class="pi">:</span> <span class="s">kiwigrid/k8s-sidecar</span>
+      <span class="na">ingress</span><span class="pi">:</span>
+        <span class="c1">## If true, Grafana Ingress will be created</span>
+        <span class="c1">##</span>
+        <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+
+        <span class="c1">## Annotations for Grafana Ingress</span>
+        <span class="c1">##</span>
+        <span class="c1">#annotations: {</span>
+        <span class="c1">#  kubernetes.io/ingress.class: nginx,:qa:pod</span>
+        <span class="c1">#  kubernetes.io/tls-acme: "false"</span>
+        <span class="c1">#}</span>
+
+        <span class="c1">## Labels to be added to the Ingress</span>
+        <span class="c1">##</span>
+        <span class="na">labels</span><span class="pi">:</span> <span class="pi">{}</span>
+
+        <span class="c1">## Hostnames.</span>
+        <span class="c1">## Must be provided if Ingress is enable.</span>
+        <span class="c1">##</span>
+        <span class="c1"># hosts:</span>
+        <span class="c1">#   - grafana.domain.com</span>
+        <span class="na">hosts</span><span class="pi">:</span> 
+          <span class="pi">-</span> <span class="s">grafana.cluster-dev.local</span>
+
+        <span class="c1">## Path for grafana ingress</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/grafana</span>
+
+        <span class="c1">## TLS configuration for grafana Ingress</span>
+        <span class="c1">## Secret must be manually created in the namespace</span>
+        <span class="c1">##</span>
+        <span class="na">tls</span><span class="pi">:</span> <span class="pi">[]</span>
+        <span class="c1"># - secretName: grafana-general-tls</span>
+        <span class="c1">#   hosts:</span>
+        <span class="c1">#   - grafana.example.com</span>
+
+    <span class="na">kube-state-metrics</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/coreos/kube-state-metrics</span>
+
+    <span class="na">prometheus-node-exporter</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">quay.io/prometheus/node-exporter</span>
+</code></pre></div></div>
+
+<p>Notez la valeur <code class="language-plaintext highlighter-rouge">grafana.cluster-dev.local</code> que nous avons positionnée de façon a créer des ingress pour accéder à grafana.</p>
+
+<h3 id="modification-du-fichier-de-configuration-map-afin-dajouter-les-dashboard-grafana-custom">Modification du fichier de configuration map afin d’ajouter les dashboard grafana custom</h3>
+
+<p>Dans le dossier <code class="language-plaintext highlighter-rouge">/template/configmap/</code> de votre chart, veuillez ajouter un fichier yaml pour créer une configmap de configuration des dashboard custom. Le contenu de ce dernier doit être comme suit:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="pi">{{</span><span class="nv">- $files</span> <span class="pi">:</span><span class="nv">= .Files.Glob "dashboards/*.json"</span> <span class="pi">}}</span>
+<span class="pi">{{</span><span class="nv">- if $files</span> <span class="pi">}}</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMapList</span>
+<span class="na">items</span><span class="pi">:</span>
+<span class="pi">{{</span><span class="nv">- range $path</span><span class="pi">,</span> <span class="nv">$fileContents</span> <span class="pi">:</span><span class="nv">= $files</span> <span class="pi">}}</span>
+<span class="pi">{{</span><span class="nv">- $dashboardName</span> <span class="pi">:</span><span class="nv">= regexReplaceAll "(^.*/)(.*)\\.json$" $path "$</span><span class="pi">{</span><span class="nv">2</span><span class="pi">}</span><span class="s2">"</span><span class="nv"> </span><span class="s">}}</span>
+<span class="s">-</span><span class="nv"> </span><span class="s">apiVersion:</span><span class="nv"> </span><span class="s">v1</span>
+  <span class="s">kind:</span><span class="nv"> </span><span class="s">ConfigMap</span>
+  <span class="s">metadata:</span>
+    <span class="s">name:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">printf</span><span class="nv"> </span><span class="s">"</span><span class="err">%</span><span class="nv">s-%s" (include "prometheus.fullname" $) $dashboardName | trunc 63 | trimSuffix "-"</span> <span class="pi">}}</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$.Release.Namespace</span> <span class="pi">}}</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">{{</span><span class="nv">- if $.Values.grafana.sidecar.dashboards.label</span> <span class="pi">}}</span>
+      <span class="pi">{{</span> <span class="nv">$.Values.grafana.sidecar.dashboards.label</span> <span class="pi">}}:</span> <span class="s2">"</span><span class="s">1"</span>
+      <span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">template "prometheus.name" $</span> <span class="pi">}}</span><span class="s">-grafana</span>
+<span class="pi">{{</span> <span class="nv">include "prometheus.labels" $ | indent 6</span> <span class="pi">}}</span>
+  <span class="na">data</span><span class="pi">:</span>
+    <span class="pi">{{</span> <span class="nv">$dashboardName</span> <span class="pi">}}</span><span class="s">.json</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$.Files.Get $path | toJson</span> <span class="pi">}}</span>
+<span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
+<span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
+
+</code></pre></div></div>
+
+<p>Comme vous pouvez le constater, cette configuration map est créée en parcourant la liste des fichiers json contenus dans le chart lui-même. C’est pour cela que nous avons mis en place un dossier dashboards dans notre chart qui contiendra les fichiers json de définition des tableaux de bord custom. Vous pouvez trouver une liste d’exemple à l’adresse suivante: <a href="https://grafana.com/grafana/dashboards">https://grafana.com/grafana/dashboards</a></p>
+
+<h2 id="déploiement-de-notre-chart">Déploiement de notre chart</h2>
+
+<h3 id="installation-de-notre-chart">installation de notre chart</h3>
+
+<p>Pour installer votre chart lancer la commande suivante:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">-n</span> prometheus prometheus ./prometheus/ <span class="nt">--create-namespace</span>
+</code></pre></div></div>
+
+<p>Lancez votre outil de gestion de Kubernetes préféré pour constater la liste des pods qui ont été créés (ici nous utilisons k9s):</p>
+
+<p><img src="/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-2.png" alt="liste de pods prometheus et grafana" /></p>
+
+<h2 id="configuration-de-votre-dns">configuration de votre DNS</h2>
+
+<p>Afin d’accédé à votre portail grafana il faut que vous modifier votre fichier <code class="language-plaintext highlighter-rouge">/etc/hosts</code> afin d’y ajouter une entrée pour le host suivant <code class="language-plaintext highlighter-rouge">grafana.cluster-dev.local</code>. En effet, le service grafana est diffusé par défaut au travers d’un <a href="https://kubernetes.github.io/ingress-nginx/">ingress controller</a> et d’un ingress. Il faut donc que votre domaine soit connu sur votre machine hôte.</p>
+
+<p>Ajoutez donc l’entrée suivante dans votre fichier /etc/hosts</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 grafana.cluster-dev.local
+</code></pre></div></div>
+
+<p>Il vous suffit ensuite de vous connecter sur l’URL suivante <a href="http://grafana.cluster-dev.local/grafana">http://grafana.cluster-dev.local/grafana</a> pour avoir accès à la mire de connexion grafana.</p>
+
+<p><img src="/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-3.png" alt="portail grafana" /></p>
+
+<p>Entrez le login suivant <code class="language-plaintext highlighter-rouge">admin</code> et le mot de passe <code class="language-plaintext highlighter-rouge">password</code> pour vous connecter à grafana. Vous aurez ensuite dans la partie manage accès à la liste de vos tableaux de bord.</p>
+
+<p><img src="/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-4.png" alt="dashboard grafana" /></p>
 
       </div>
-      
-  </div>
-</div>
-<!-- end article -->
 
+      <div class="post__share">
+        <span class="share__title">Share this article:</span>
+        <ul class="share__list list-reset">
+          <li class="share__item">
+            <a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/"
+              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+              title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+          </li>
+
+          <li class="share__item">
+            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Deploiment%20de%20la%20suite%20prometheus%20grafana%20sous%20Kubernetes&url=https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/"
+              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+              title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+          </li>
+
+          <li class="share__item">
+            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/&title=Deploiment%20de%20la%20suite%20prometheus%20grafana%20sous%20Kubernetes&summary=&source="
+              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+          </li>
+
+          <li class="share__item">
+            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//2021/03/31/deploiement-prometheus-grafana-kubernetes/&amp;media=https://matthieupetite.github.io//blog/images//post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png&amp;description=Deploiment%20de%20la%20suite%20prometheus%20grafana%20sous%20Kubernetes"
+              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;" title="Share on Pinterest"
+              rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+          </li>
+        </ul>
+      </div>
+    </article>
+    <!-- end post -->
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="post__navigation">
+    
+    <div class="prev">
+      <a class="post__nav__image" href="/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/" style="background-image: url(/blog/images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png)"></a>
+      <h2 class="post__nav__title">
+        <i class="ion ion-md-arrow-back"></i>
+        <a href="/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">Installation de Kafka avec l opérateur Strimzi sur Kubernetes</a>
+      </h2>
+      <p class="prev__excerpt">
+        
+          Dans cet article nous allons détailler l’installation de l’application Kafka a l’aide de l’opérateur Strimz...
+        
+      </p>
+    </div>
+    
+
+    
+  </div>
+
+   <!-- begin comments -->
+<div class="comments">
+  <div id="disqus_thread"></div>
+  <script>
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = '//matthieupetite.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+</div>
+<!-- end comments --> 
+  </div>
 
   </main>
   <!-- end content -->

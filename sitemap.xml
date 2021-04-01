@@ -17,6 +17,10 @@
 <lastmod>2020-03-30T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://matthieupetite.github.io//blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/</loc>
+<lastmod>2021-03-31T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://matthieupetite.github.io//blog/about/</loc>
 </url>
 <url>
@@ -48,5 +52,14 @@
 </url>
 <url>
 <loc>https://matthieupetite.github.io//blog/tag/helm/</loc>
+</url>
+<url>
+<loc>https://matthieupetite.github.io//blog/tag/prometheus/</loc>
+</url>
+<url>
+<loc>https://matthieupetite.github.io//blog/tag/grafana/</loc>
+</url>
+<url>
+<loc>https://matthieupetite.github.io//blog/tag/k3d/</loc>
 </url>
 </urlset>

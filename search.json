@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Deploiment de la suite prometheus grafana sous Kubernetes",
+      "category" : "",
+      "tags"     : "kubernetes, prometheus, grafana, k3d, and helm",
+      "url"      : "/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/",
+      "date"     : "31 Mar, 2021"
+    } ,
+  
+    {
       "title"    : "Installation de Kafka avec l opérateur Strimzi sur Kubernetes",
       "category" : "",
       "tags"     : "kubernetes, kafka, strimzi, and helm",
