@@ -30,14 +30,6 @@
       "tags"     : "powershell and devOps",
       "url"      : "/blog/2020/03/16/presentation-powershell-dsc/",
       "date"     : "16 Mar, 2020"
-    } ,
-  
-    {
-      "title"    : "Welcome to Jekyll!",
-      "category" : "",
-      "tags"     : "jekyll",
-      "url"      : "/blog/2018/05/29/welcome-to-jekyll/",
-      "date"     : "29 May, 2018"
     } 
   
 ]
