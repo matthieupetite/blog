@@ -1,7 +1,7 @@
 [
   
     {
-      "title"    : "Deploiment de la suite prometheus grafana sous Kubernetes",
+      "title"    : "Deploiement de la suite prometheus grafana sous Kubernetes",
       "category" : "",
       "tags"     : "kubernetes, prometheus, grafana, k3d, and helm",
       "url"      : "/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/",
