@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "créer un site avec Jekyll et GitHub",
+      "category" : "",
+      "tags"     : "devops, cicd, website, github, and github action",
+      "url"      : "/blog/2021/04/06/creer-un-site-avec-jekyll-et-github/",
+      "date"     : "6 Apr, 2021"
+    } ,
+  
+    {
       "title"    : "Deploiement de la suite prometheus grafana sous Kubernetes",
       "category" : "",
       "tags"     : "kubernetes, prometheus, grafana, k3d, and helm",
