@@ -429,7 +429,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
     <span class="c1">## Annotations for Grafana Ingress</span>
     <span class="c1">##</span>
       <span class="na">annotations</span><span class="pi">:</span> 
-      <span class="s">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s">nginx</span>
       <span class="c1"># kubernetes.io/tls-acme: "true"</span>
 
     <span class="c1">## Labels to be added to the Ingress</span>
@@ -495,7 +495,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
         <span class="na">routePrefix</span><span class="pi">:</span> <span class="s">/prometheus</span>
     <span class="na">grafana</span><span class="pi">:</span>
       <span class="na">adminPassword</span><span class="pi">:</span> <span class="s2">"</span><span class="s">password"</span>
-      <span class="s">grafana.ini</span><span class="pi">:</span>
+      <span class="na">grafana.ini</span><span class="pi">:</span>
         <span class="na">server</span><span class="pi">:</span>
           <span class="na">domain</span><span class="pi">:</span> <span class="s">cluster-dev.local</span>
           <span class="na">root_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%(protocol)s://%(domain)s:%(http_port)s/grafana"</span>
@@ -578,12 +578,12 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
     <span class="na">namespace</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$.Release.Namespace</span> <span class="pi">}}</span>
     <span class="na">labels</span><span class="pi">:</span>
       <span class="pi">{{</span><span class="nv">- if $.Values.grafana.sidecar.dashboards.label</span> <span class="pi">}}</span>
-      <span class="pi">{{</span> <span class="nv">$.Values.grafana.sidecar.dashboards.label</span> <span class="pi">}}:</span> <span class="s2">"</span><span class="s">1"</span>
+      <span class="pi">{{</span> <span class="nv">$.Values.grafana.sidecar.dashboards.label</span> <span class="pi">}}</span><span class="err">:</span> <span class="s2">"</span><span class="s">1"</span>
       <span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
       <span class="na">app</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">template "prometheus.name" $</span> <span class="pi">}}</span><span class="s">-grafana</span>
 <span class="pi">{{</span> <span class="nv">include "prometheus.labels" $ | indent 6</span> <span class="pi">}}</span>
   <span class="na">data</span><span class="pi">:</span>
-    <span class="pi">{{</span> <span class="nv">$dashboardName</span> <span class="pi">}}</span><span class="s">.json</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$.Files.Get $path | toJson</span> <span class="pi">}}</span>
+    <span class="pi">{{</span> <span class="nv">$dashboardName</span> <span class="pi">}}</span><span class="na">.json</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$.Files.Get $path | toJson</span> <span class="pi">}}</span>
 <span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
 <span class="pi">{{</span><span class="nv">- end</span> <span class="pi">}}</span>
 

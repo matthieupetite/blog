@@ -6,15 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Installation de Kafka avec l opérateur Strimzi sur Kubernetes</title>
+  <title>Technical Leader Azure Dev/Ops</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
-  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='Installation de Kafka avec l opérateur Strimzi sur Kubernetes'/>
-  <meta prefix="go: http://ogp.me/ns#" property='og:image' content='https://matthieupetite.github.io/blog/images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='Technical Leader Azure Dev/Ops'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:image' content='https://matthieupetite.github.io/blog/images/orangepracticeleader.png'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
   <meta prefix="go: http://ogp.me/ns#" property='og:description' content=''/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
-  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="https://matthieupetite.github.io//blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">
-  <link rel="canonical" href="https://matthieupetite.github.io//blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">
+  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="https://matthieupetite.github.io//blog/experiences/orange-azurepracticeleader">
+  <link rel="canonical" href="https://matthieupetite.github.io//blog/experiences/orange-azurepracticeleader">
   <link rel="icon" href="https://matthieupetite.github.io/blog/favicon.ico" />
   <link rel="alternate" type="application/rss+xml" title="" href="/blog/feed.xml">
 
@@ -188,409 +188,76 @@
   <!-- begin content -->
   <main class="content" aria-label="Content">
     <div class="container">
-  <div class="post-title-box">
-    <div class="row">
-      <div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
-        <span class="post__date">
-          <time datetime="2020-03-30T00:00:00+00:00">Mar 30, 2020</time>
-        </span>
-
-        <h1 class="post-title">Installation de Kafka avec l opérateur Strimzi sur Kubernetes</h1>
-
-        <div class="post__info">
-          <div class="post__author">
-            <span>By</span>
-            <a href="/blog/about/" class="author-name">Matthieu Petite</a>
-          </div>
-
-          
-          <div class="post__tags">
-            
-              <a href="/blog/tag/kubernetes" class="post__tags-tag">kubernetes</a>
-            
-              <a href="/blog/tag/kafka" class="post__tags-tag">kafka</a>
-            
-              <a href="/blog/tag/strimzi" class="post__tags-tag">strimzi</a>
-            
-              <a href="/blog/tag/helm" class="post__tags-tag">helm</a>
-            
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-
-  
-  
-    <div class="post__head">
-      <div class="post-image" style="background-image: url(/blog/images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png)"></div>
-    </div>
-  
-
-  </div>
-
-
-  <div class="container">
-  <div class="row">
-    <!-- begin post -->
-    <article class="post  col col-8 col-t-10 col-m-12">
-
-      <div class="post__content">
-        <p>Dans cet article nous allons détailler l’installation de l’application Kafka a l’aide de l’<a href="https://strimzi.io/">opérateur Strimzi</a>. En effet, avec l’arrivée de plus en plus régulière d’application Cloud Native, les experts Dev/Ops sont de plus en plus amenés à déployer Kafka afin d’assurer la communication entre les différentes API. Le faire dans un contexte Kubernetes est de plus en plus régulier. Nous allons donc déployer, à l’aide de l’outil <a href="https://helm.sh/">Helm3</a>, un cluster Kafka au sein d’un cluster Kubernetes <a href="https://k3d.io/">K3d</a>.</p>
-
-<h2 id="quest-ce-que-strimzi">Qu’est-ce que Strimzi</h2>
-
-<p>Strimzi fournit le moyen d’exécuter un cluster Apache Kafka sur Kubernetes dans diverses configurations de déploiement. Pour le développement, il est facile de configurer un cluster dans K3d par exemple en quelques minutes. Pour la production, vous pouvez personnaliser le cluster en fonction de vos besoins, en utilisant des fonctionnalités telles que le rack awarness pour répartir les brokers Kafka entre différentes zones de disponibilité, et les fonctionnalités de “Taints and Tolerations” pour exécuter Kafka sur des nœuds dédiés de votre cluster Kubernetes. Vous pouvez exposer Kafka en dehors de Kubernetes à l’aide de NodePort, Load Balancer, Ingress et/ou des routes OpenShift, selon de vos besoins, et ceux-ci sont facilement sécurisés à l’aide de TLS.</p>
-
-<p>La gestion native de Kafka ne se limite pas au broker. Vous pouvez également gérer les topics Kafka, les utilisateurs, Kafka MirrorMaker et Kafka Connect à l’aide de ressources personnalisées. Cela signifie que vous pouvez utiliser vos processus et outils Kubernetes familiers pour gérer des applications Kafka complètes.</p>
-
-<p>Utiliser Strimzi c’est aussi bénéficier d’un ensemble de Chart qui vous permette, via Helm de manager vos ressources Kafka.</p>
-
-<h2 id="objectif-du-tutoriel">Objectif du tutoriel</h2>
-
-<p>Dans le cadre de cet article nous allons déployer un cluster Kafka, Kafka bridge et un topic nommé <code class="highlighter-rouge">TopicTest</code> dans un cluster Kubernetes au sein d’un namespace que nous allons nommer <code class="highlighter-rouge">Kafka</code>. L’ensemble de ces éléments sera créé à l’aide du déploiement d’un chart Helm qui de façon sous-jacente utilisera l’opérateur strimzi après l’avoir déployé.</p>
-
-<h2 id="prérequis">Prérequis</h2>
-
-<p>Vous devez avoir accès à un cluster Kubernetes sur votre poste de développement. Dans le cadre de cet article nous allons utiliser K3d, mais vous pouvez de même utiliser <a href="https://kind.sigs.k8s.io/">Kind</a> ou <a href="https://kubernetes.io/fr/docs/setup/learning-environment/minikube/">Minikube</a>.</p>
-
-<p>Vous devez aussi avoir les connaissances de base autour de la création de Chart Helm.</p>
-
-<h2 id="ajout-de-la-registry-de-chart-helm-strimzi">Ajout de la registry de chart helm strimzi</h2>
-
-<p>Dans un terminal lancer la commande suivante:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm repo add strimzi https://strimzi.io/charts/
-</code></pre></div></div>
-
-<p>Vous pouvez vérifier que la registry a bien été ajoutée en lançant la commande suivante:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm repo list
-</code></pre></div></div>
-
-<p>qui doit vous donner le résultat suivant:</p>
-
-<p><img src="/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-1.png" alt="Helm repo list" /></p>
-
-<h2 id="création-du-squelette-de-notre-chart">Création du squelette de notre Chart</h2>
-
-<p>Dans un terminal lancer la commande suivante afin de créer le squelette de notre chart:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm3 create kafka
-</code></pre></div></div>
-
-<p>Vous devez obtenir l’arborescence suivante, qui correspond à un chart de base:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦kafka
- ┣ 📂charts
- ┣ 📂templates
- ┃ ┣ 📂tests
- ┃ ┃ ┗ 📜test-connection.yaml
- ┃ ┣ 📜NOTES.txt
- ┃ ┣ 📜_helpers.tpl
- ┃ ┣ 📜deployment.yaml
- ┃ ┣ 📜hpa.yaml
- ┃ ┣ 📜ingress.yaml
- ┃ ┣ 📜service.yaml
- ┃ ┗ 📜serviceaccount.yaml
- ┣ 📜.helmignore
- ┣ 📜Chart.yaml
- ┗ 📜values.yaml
-</code></pre></div></div>
-
-<p>Supprimer les fichiers inutiles, car nous n’avons pas besoin de déployment, hpa, ingress, service ou encore service account. Après l’étape de nettoyage, notre chart correspond à ceci:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦kafka
- ┣ 📂charts
- ┣ 📂templates
- ┃ ┣ 📂tests
- ┃ ┗ 📜_helpers.tpl
- ┣ 📜.helmignore
- ┣ 📜Chart.yaml
- ┗ 📜values.yaml
-</code></pre></div></div>
-
-<h2 id="ajout-de-la-dépendance-au-chart-de-lopérateur-strimzi">Ajout de la dépendance au chart de l’opérateur Strimzi</h2>
-
-<p>Comme dit plus haut, le déploiement de l’opérateur Strimzi (en réalité des opérateurs) peut se faire à l’aide d’un chart Helm. Nous allons donc utiliser le mécanisme de dépendance de chart pour forcer l’installation de l’opérateur avant le déploiement de notre chart.</p>
-
-<p>Dans le fichier Chart.yaml, ajouter le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dependencies</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">strimzi-kafka-operator</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0.21.1"</span>
-  <span class="na">repository</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://strimzi.io/charts/"</span>
-</code></pre></div></div>
-
-<h2 id="déclaration-du-kafka-cluster-du-topic-et-du-kafka-bridge">Déclaration du Kafka cluster, du topic et du Kafka bridge</h2>
-
-<h3 id="édition-de-votre-fichier-valuesyaml">Édition de votre fichier values.yaml</h3>
-
-<p>Remplacer le contenu de votre fichier Values.yaml par le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">serviceAccount</span><span class="pi">:</span>
-  <span class="na">create</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">annotations</span><span class="pi">:</span> <span class="pi">{}</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kafka-cluster-serviceaccount"</span>
-
-<span class="na">kafka</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Kafka-cluster'</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">config</span><span class="pi">:</span>
-    <span class="na">offsets</span><span class="pi">:</span>
-      <span class="na">topic</span><span class="pi">:</span>
-        <span class="na">replication</span><span class="pi">:</span>
-          <span class="na">factor</span><span class="pi">:</span> <span class="m">3</span>
-    <span class="na">transaction</span><span class="pi">:</span>
-      <span class="na">state</span><span class="pi">:</span>
-        <span class="na">log</span><span class="pi">:</span>
-          <span class="na">replication</span><span class="pi">:</span>
-            <span class="na">factor</span><span class="pi">:</span> <span class="m">3</span>
-          <span class="na">min</span><span class="pi">:</span>
-            <span class="na">isr</span><span class="pi">:</span> <span class="m">2</span>
-  <span class="na">storage</span><span class="pi">:</span>
-    <span class="na">volume</span><span class="pi">:</span>
-      <span class="na">size</span><span class="pi">:</span> <span class="s">1Mi</span>
-
-<span class="na">zookeeper</span><span class="pi">:</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">storage</span><span class="pi">:</span>
-    <span class="na">size</span><span class="pi">:</span> <span class="s">1Mi</span>
-
-<span class="na">topic</span><span class="pi">:</span>
-  <span class="na">partitions</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
-  <span class="na">retention</span><span class="pi">:</span>
-    <span class="na">ms</span><span class="pi">:</span> <span class="m">7200000</span>
-  <span class="na">segment</span><span class="pi">:</span>
-    <span class="na">bytes</span><span class="pi">:</span> <span class="m">1073741824</span>
-  <span class="na">topics</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">topictest'</span>
-
-<span class="na">kafkaMonitoring</span><span class="pi">:</span>
-  <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
-
-<span class="na">prometheus-kafka-exporter</span><span class="pi">:</span>
-  <span class="na">image</span><span class="pi">:</span>
-    <span class="na">repository</span><span class="pi">:</span> <span class="s2">"</span><span class="s">danielqsj/Kafka-exporter"</span>
-</code></pre></div></div>
-
-<h3 id="création-du-kafka-cluster">Création du Kafka cluster</h3>
-
-<p>Créé un fichier kafkacluster.yaml dans le dossier template de votre chart avec le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">kafka.strimzi.io/v1beta1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Kafka</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.name</span> <span class="pi">}}</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">kafka</span><span class="pi">:</span>
-    <span class="na">version</span><span class="pi">:</span> <span class="s">2.6.0</span>
-    <span class="na">replicas</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.replicas</span> <span class="pi">}}</span>
-    <span class="na">listeners</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">plain</span>
-        <span class="na">port</span><span class="pi">:</span> <span class="m">9092</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">internal</span>
-        <span class="na">tls</span><span class="pi">:</span> <span class="no">false</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">tls</span>
-        <span class="na">port</span><span class="pi">:</span> <span class="m">9093</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">internal</span>
-        <span class="na">tls</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">config</span><span class="pi">:</span>
-      <span class="na">offsets.topic.replication.factor</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.config.offsets.topic.replication.factor</span> <span class="pi">}}</span>
-      <span class="na">transaction.state.log.replication.factor</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.config.transaction.state.log.replication.factor</span> <span class="pi">}}</span>
-      <span class="na">transaction.state.log.min.isr</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.config.transaction.state.log.min.isr</span> <span class="pi">}}</span>
-      <span class="na">log.message.format.version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2.6"</span>
-      <span class="na">inter.broker.protocol.version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2.6"</span>
-    <span class="na">storage</span><span class="pi">:</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">jbod</span>
-      <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="m">0</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">persistent-claim</span>
-        <span class="na">size</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.kafka.storage.volume.size</span> <span class="pi">}}</span>
-        <span class="na">deleteClaim</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">zookeeper</span><span class="pi">:</span>
-    <span class="na">replicas</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.zookeeper.replicas</span> <span class="pi">}}</span>
-    <span class="na">storage</span><span class="pi">:</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">persistent-claim</span>
-      <span class="na">size</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.Values.zookeeper.storage.size</span> <span class="pi">}}</span>
-      <span class="na">deleteClaim</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">entityOperator</span><span class="pi">:</span>
-    <span class="na">topicOperator</span><span class="pi">:</span> <span class="pi">{}</span>
-    <span class="na">userOperator</span><span class="pi">:</span> <span class="pi">{}</span>
-
-</code></pre></div></div>
-
-<h3 id="création-du-topic">Création du topic</h3>
-
-<p>Créer un fichier kafkatopic.yaml dans le dossier template de votre chart avec le contenu suivan</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="pi">{{</span><span class="nv">- $root</span> <span class="pi">:</span><span class="nv">= . -</span><span class="pi">}}</span>
-<span class="pi">{{</span><span class="nv">- range $.Values.topic.topics</span> <span class="pi">}}</span>
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">kafka.strimzi.io/v1beta1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">KafkaTopic</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">.name | lower | quote</span> <span class="pi">}}</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">strimzi.io/cluster</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$root.Values.kafka.name</span> <span class="pi">}}</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">partitions</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$root.Values.topic.partitions</span> <span class="pi">}}</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="pi">{{</span> <span class="nv">$root.Values.topic.replicas</span> <span class="pi">}}</span>
-  <span class="na">config</span><span class="pi">:</span>
-    <span class="na">retention.ms</span><span class="pi">:</span>  <span class="pi">{{</span> <span class="nv">$root.Values.topic.retention.ms</span> <span class="pi">}}</span>
-    <span class="na">segment.bytes</span><span class="pi">:</span>  <span class="pi">{{</span> <span class="nv">$root.Values.topic.segment.bytes</span> <span class="pi">}}</span>
-<span class="pi">{{</span><span class="nv">- end</span><span class="pi">}}</span>
-
-</code></pre></div></div>
-
-<p>Ce fichier va looper sur la variable du topic.topics du fichier de value pour demander la création de notre topic.</p>
-
-<h3 id="création-du-kafka-bridge">Création du Kafka bridge</h3>
-
-<p>Dans le dossier template de votre chart créé un fichier kafkabridge.yaml et positionner le contenu suivant:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">kafka.strimzi.io/v1alpha1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">KafkaBridge</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span>  <span class="pi">{{</span> <span class="nv">.Values.kafka.name</span> <span class="pi">}}</span><span class="s">-bridge</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
-  <span class="na">bootstrapServers</span><span class="pi">:</span>  <span class="pi">{{</span> <span class="nv">.Values.kafka.name</span> <span class="pi">}}</span><span class="s">-kafka-bootstrap:9092</span>
-  <span class="na">http</span><span class="pi">:</span>
-    <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
-
-</code></pre></div></div>
-
-<h3 id="mise-à-jour-des-dépendances-de-chart">Mise à jour des dépendances de chart</h3>
-
-<p>Avant de déployer votre chart il convient de mettre à jour les dependances de ce dernier. Pour cela lancer la commande suivante dans un terminal:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm dependency update ./Kafka/
-</code></pre></div></div>
-
-<p>Vous devez obtenir le résultat suivant:</p>
-
-<p><img src="/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-2.png" alt="helm repository update" /></p>
-
-<p>Cette commande a pour effet de télécharger le chart le dossier /charts de votre Chart.</p>
-
-<h2 id="installation-de-votre-chart-et-résultat">installation de votre chart et résultat</h2>
-
-<p>Pour installer votre chart lancer la commande suivante:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">-n</span> Kafka Kafka ./Kafka/ <span class="nt">--create-namespace</span>
-</code></pre></div></div>
-
-<p>Après quelques minutes vous constaterez dans votre cluster que l’ensemble des Pods Kafka sont là:</p>
+	<div class="experience-title-box">
+		<div class="row">
+			<div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
+				<h1 class="experience-title">Technical Leader Azure Dev/Ops</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
+				<h1 class="experience-compagny">Orange Cloud For Business</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
+				
+				<div class="article-tags__box">
+				  
+					<a href="#" class="article__tag">azure</a>
+				  
+					<a href="#" class="article__tag">aws</a>
+				  
+					<a href="#" class="article__tag">dev/ops</a>
+				  
+					<a href="#" class="article__tag">leader</a>
+				  
+				</div>
+			  
+			</div>
+		</div>
+	</div>
+	
+	<div class="experience__head">
+		<div class="experience-image" style="background-image: url(/blog/images/experiences/orangepracticeleader.png)"></div>
+	</div>
+	
+</div>
+
+
+<div class="container">
+	<div class="row">
+		<!-- begin page -->
+		<article class="experience col col-8 col-t-10 col-m-12">
+			<div class="experience__content">
+				<p>Pour le compte du groupe Thales, en mission pour Orange Cloud For Business en tant que Technical Leader Azure Dev/Ops, je suis en charge du déploiement de la practice azure au sein du groupe Orange.</p>
+
+<p>La practice à pour vocation :</p>
 
 <ol>
-  <li>l’opérateur strimzi</li>
-  <li>le cluster zookeeper dédié à l’infrastructure kakfa</li>
-  <li>le cluster Kafka lui-même</li>
-  <li>le pod pour le bridge Kafka</li>
+  <li>De définir les pratiques de déploiement et d’exploitation sur l’hyperscaler azure</li>
+  <li>De certifier le groupe Orange dans sa pratique hyperscaler (Audit MSP et Azure Advanced Specialization)</li>
+  <li>D’accompagner les équipes OCB dans le build des projets clients pour apporter de l’expertise techniques</li>
+  <li>D’etre un point de contact technique en appuie des avants ventes du groupe Orange Cloud For Business</li>
 </ol>
 
-<p><img src="/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-3.png" alt="resultat installation kafka" /></p>
+<p>La pratique azure intervient en appuie de l’ensemble des pays du groupe Orange avec un footprint de 118 pays.</p>
 
-<p>et que les customs ressources de l’opérateur strimzi sont présentes:</p>
+<p>Environnements techniques et méthodologiques:</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-4.png" alt="custom ressource strimzi" /></p>
+<ul>
+  <li>Azure Dev/Ops, IaaS, PaaS,</li>
+  <li>Linux, Bash, Docker, Windows, Kubernetes</li>
+  <li>Powershell, ARM Templating, Terraform,</li>
+  <li>CI/CD, Jenkin, Artifactory, GitLab</li>
+  <li>14 personnes dans l’équipe</li>
+</ul>
 
-<p>Pour avoir accès au code source de cet exemple, c’est par ici <a href="https://github.com/matthieupetite/helm-samples">https://github.com/matthieupetite/helm-samples</a></p>
-
-      </div>
-
-      <div class="post__share">
-        <span class="share__title">Share this article:</span>
-        <ul class="share__list list-reset">
-          <li class="share__item">
-            <a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://matthieupetite.github.io//blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/"
-              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
-              title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
-          </li>
-
-          <li class="share__item">
-            <a class="share__twitter" href="https://twitter.com/intent/tweet?text=Installation%20de%20Kafka%20avec%20l%20op%C3%A9rateur%20Strimzi%20sur%20Kubernetes&url=https://matthieupetite.github.io//blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/"
-              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
-              title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
-          </li>
-
-          <li class="share__item">
-            <a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/&title=Installation%20de%20Kafka%20avec%20l%20op%C3%A9rateur%20Strimzi%20sur%20Kubernetes&summary=&source="
-              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
-          </li>
-
-          <li class="share__item">
-            <a class="share__pinterest" href="http://pinterest.com/pin/create/button/?url=https://matthieupetite.github.io//2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/&amp;media=https://matthieupetite.github.io//blog/images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png&amp;description=Installation%20de%20Kafka%20avec%20l%20op%C3%A9rateur%20Strimzi%20sur%20Kubernetes"
-              onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;" title="Share on Pinterest"
-              rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
-          </li>
-        </ul>
-      </div>
-    </article>
-    <!-- end post -->
-    </div>
-  </div>
-
-  <div class="container">
-  <div class="post__navigation">
-    
-    <div class="prev">
-      <a class="post__nav__image" href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/" style="background-image: url(/blog/images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png)"></a>
-      <h2 class="post__nav__title">
-        <i class="ion ion-md-arrow-back"></i>
-        <a href="/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/">Helm, Kubernetes, et les systèmes de fichier multiniveau</a>
-      </h2>
-      <p class="prev__excerpt">
-        
-          Dans cet article nous allons traiter de la mise en place d’un système de fichier multiniveau au sein d’une ...
-        
-      </p>
-    </div>
-    
-
-    
-    <div class="next">
-      <a class="post__nav__image" href="/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/" style="background-image: url(/blog/images//post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png)">
-      </a>
-      <h2 class="post__nav__title">
-        <a href="/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/">Deploiement de la suite prometheus grafana sous Kubernetes</a>
-        <i class="ion ion-md-arrow-forward"></i>
-      </h2>
-      <p class="next__excerpt">
-        
-          Superviser le cloud est un enjeu majeur lorsque l'on décide d'y déployer une application métier. En effet, ...
-        
-      </p>
-    </div>
-    
-  </div>
-
-   <!-- begin comments -->
-<div class="comments">
-  <div id="disqus_thread"></div>
-  <script>
-    (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://matthieu-petite-blog.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-  </noscript>
+			</div>
+		</article>
+		<!-- end page -->
+	</div>
 </div>
-<!-- end comments --> 
-  </div>
-
   </main>
   <!-- end content -->
 
