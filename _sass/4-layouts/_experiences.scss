@@ -1,5 +1,50 @@
+.experiences-title-box {
+  padding: 80px 0;
+  border-top: 1px solid $light-gray;
+
+  .experiences-title {
+    margin-bottom: 10px;
+    width: 500px;
+    max-width: 100%;
+    font-size: 57px;
+    line-height: 70px;
+  }
+
+  .experiences__date {
+    font-weight: 700;
+  }
+
+  @media only screen and (max-width: $mobile) {
+    padding: 40px 0;
+
+    .experiences-title {
+      margin: 10px 0;
+      font-size: 47px;
+      line-height: 53px;
+    }
+  }
+}
+
+.experiences__head {
+  
+  .experiences-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: $light-gray;
+    &:after {
+      content: "";
+      display: table;
+      width: 100%;
+      min-height: 300px;
+      padding-top: 50%;
+    }
+  }
+}
+
 .experiences {
   margin-bottom: 40px;
+  margin-top: 40px;
 
   .experiences__wrapper {
     display: flex;
@@ -26,9 +71,8 @@
   }
 
   .experiences__content {
-    width: 60%;
+    width: 100%;
     padding: 50px;
-    margin-left: -10%;
     z-index: 1;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.98);
@@ -114,8 +158,10 @@
     }
   }
 
-  .experience__share {
+  .experiences__share {
     display: flex;
+    justify-content:center;
+    margin-top:20px;
 
     .share__title {
       margin-right: 10px;
