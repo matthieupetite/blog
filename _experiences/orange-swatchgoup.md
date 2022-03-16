@@ -1,9 +1,10 @@
 ---
 title: Ingenieur Cloud
 tags: [iptv, reseau, déploiement, numericable, adsl, supervision]
-image: swatchgroup-1.png
+image: /images/experiences/swatchgroup-1.png
 compagny: Orange Application For Buiness - Swatchgroup
 summary: Nouvelle experience comme Ingenieur Cloud
+type: experience
 start: Decembre 2007
 end: Juin 2007
 order: 8

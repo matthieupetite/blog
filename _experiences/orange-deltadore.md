@@ -1,9 +1,10 @@
 ---
 title: Ingenieur Cloud
 tags: [iptv, reseau, déploiement, numericable, adsl, supervision]
-image: deltadore.png
+image: /images/experiences/deltadore.png
 compagny: Orange Application For Business - Deltadore
 summary: Nouvelle experience comme Ingenieur Cloud
+type: experience
 start: Decembre 2015
 end: Juin 2015
 order: 6

@@ -2,6 +2,7 @@
 layout: post
 comments: true
 title: Helm, Kubernetes, et les systèmes de fichier multiniveau
+type: post
 tags: [kubernetes, docker]
 image: /post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png
 ---

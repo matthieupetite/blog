@@ -6,7 +6,7 @@
     <div class="experiences__wrapper">
 
         {% if experience.image %}
-          <a href="{{experience.url | prepend: site.baseurl}}" class="experiences__image" style="background-image: url({{site.baseurl}}/images/experiences/{{experience.image}})">
+          <a href="{{experience.url | prepend: site.baseurl}}" class="experiences__image" style="background-image: url({{site.baseurl}}/{{experience.image}})">
           </a>
         {% else %}
           {% assign without-image = 'experiences-without-image' %}

@@ -1,9 +1,10 @@
 ---
 title: Ingénieur Support IPTV
 tags: [iptv, reseau, déploiement, numericable, adsl, supervision]
-image: kudelsky-1.png
+image: /images/experiences/kudelsky-1.png
 compagny: Groupe Kudelski – Filiale Quative
 summary: Nouvelle experience comme Ingénieur Support IPTV
+type: experience
 start: Decembre 2007
 end: Juin 2007
 order: 2

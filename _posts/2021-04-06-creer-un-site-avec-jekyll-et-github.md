@@ -2,6 +2,7 @@
 layout: post
 comments: true
 title: créer un site avec Jekyll et GitHub
+type: post
 tags: [devops, cicd, website, github, github action]
 image: /post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github.png
 summary: "Gérer votre documentation de repository sur Github est souvent un enjeu pour vous et pour la communauté. Jekyll et les Github Pages sont là pour ça."

@@ -1,9 +1,10 @@
 ---
 title: Architecte Solution Dev/Ops
 tags: [azure, aws, kubernetes, dev/ops, leader]
-image: skyview-1.png
+image: /images/experiences/skyview-1.png
 compagny: Groupe Thales
 summary: Nouvelle experience comme Architecte Solution Dev/Ops
+type: experience
 start: Jun 2020
 end: Avril 2021
 order: 9

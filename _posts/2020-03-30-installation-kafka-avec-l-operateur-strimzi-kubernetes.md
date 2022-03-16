@@ -2,6 +2,7 @@
 layout: post
 comments: true
 title: Installation de Kafka avec l opérateur Strimzi sur Kubernetes
+type: post
 tags: [kubernetes, kafka, strimzi, helm]
 image: /post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png
 ---

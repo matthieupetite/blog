@@ -10,14 +10,13 @@
   <meta prefix="go: http://ogp.me/ns#" property='og:description' content='{{ page.summary }}'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
   <meta prefix="go: http://ogp.me/ns#" property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
-  {% if page.type == "page" %}
-    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/pages/{{ page.image }}">
-  {% elsif page.type == "certification"%}
-    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/certifications/{{ page.image }}">
-  {% elsif page.type == "experience"%}
-    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/experiences/{{ page.image }}">
-  {% elsif page.type == "post"%}
-    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/pages/{{ page.image }}">
+  <meta prefix="go: http://ogp.me/ns#" property="og:pagetype" content="{{ page.type }}">
+  {% if page.url == "https://matthieupetite.github.io/blog/" %}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/01.jpg">
+  {% elsif page.url == "https://matthieupetite.github.io/resume/" %}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/matthieu-petite-2.jpg">
+  {% else if page.image != "" %}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/{{ page.image }}">
   {% endif %}
 
   <meta name="author" content="Matthieu PETITE">
