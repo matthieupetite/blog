@@ -4,7 +4,7 @@ comments: true
 title: Et si on parlait outil finops
 type: post
 tags: [devops, cicd, finops, terraform, infracost]
-image: /post/2022/03/2022-03-16-et-si-on-parlait-outil-finops.png
+image: /images/post/2022/03/2022-03-16-et-si-on-parlait-outil-finops.png
 summary: "L'approche finops dans le cloud est indispensable pour être efficiente, mais elle doit être outillée. Infracost est là pour vous."
 ---
 

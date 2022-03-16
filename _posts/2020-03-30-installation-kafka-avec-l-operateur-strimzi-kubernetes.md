@@ -4,7 +4,7 @@ comments: true
 title: Installation de Kafka avec l opérateur Strimzi sur Kubernetes
 type: post
 tags: [kubernetes, kafka, strimzi, helm]
-image: /post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png
+image: /images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png
 ---
 
 Dans cet article nous allons détailler l'installation de l'application Kafka a l'aide de l'[opérateur Strimzi](https://strimzi.io/). En effet, avec l'arrivée de plus en plus régulière d'application Cloud Native, les experts Dev/Ops sont de plus en plus amenés à déployer Kafka afin d'assurer la communication entre les différentes API. Le faire dans un contexte Kubernetes est de plus en plus régulier. Nous allons donc déployer, à l'aide de l'outil [Helm3](https://helm.sh/), un cluster Kafka au sein d'un cluster Kubernetes [K3d](https://k3d.io/).

@@ -4,7 +4,7 @@ comments: true
 title: Helm, Kubernetes, et les systèmes de fichier multiniveau
 type: post
 tags: [kubernetes, docker]
-image: /post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png
+image: /images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png
 ---
 
 Dans cet article nous allons traiter de la mise en place d'un système de fichier multiniveau au sein d'une image docker dans un contexte Kubernetes, avec un déploiement kind.
