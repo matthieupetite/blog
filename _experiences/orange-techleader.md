@@ -11,7 +11,7 @@ logo: orange-logo.jpg
 ---
 
 
-Au sein de la Practice Azure d'Orange Business Service, je suis en charge de définir les orientations technologiques et méthodologiques autour de l'hypersacaler Microsoft Azure afin de proposer à nos clients la meilleure expérience dans leur voyage dans le cloud. Mes activités sont multiples:
+Au sein de la Practice Azure d'Orange Business Service, je suis en charge de définir les orientations technologiques et méthodologiques autour de l'hypersacaler Microsoft Azure afin de proposer à nos clients la meilleure expérience dans leur voyage dans le cloud. Mes activités sont multiples et variées:
 
 1. Définition des best practices Azure au sein du groupe Orange Business Service et de ses filiales
 2. Implémentation du Cloud Adoption Framework au sein des différentes équipes et dans l'offre de valeur
