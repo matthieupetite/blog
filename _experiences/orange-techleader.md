@@ -1,4 +1,3 @@
-
 ---
 title: Technical Leader Azure Dev/Ops
 tags: [azure, aws, dev/ops, leader]
