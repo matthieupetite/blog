@@ -4,7 +4,7 @@ tags: [azure, aws, dev/ops, leader]
 image: orangepracticeleader.png
 compagny: Orange Cloud For Business
 start: Avril 2021
-end: Décembre 2022
+end: Décembre 2021
 order: 10
 logo: thales-logo.jpg
 ---
