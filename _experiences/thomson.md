@@ -3,6 +3,7 @@ title: Ingenieur IPTV
 tags: [settopbox, iptv, reseau, expatriation,web,embarque]
 image: thomson-1.png
 compagny: Groupe Thomson
+summary: Nouvelle experience comme Ingenieur IPTV
 start: Sept 2004
 end: Juin 2007
 order: 1

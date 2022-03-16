@@ -3,6 +3,7 @@ title: Architecte Solution Dev/Ops
 tags: [.Net, IaaS,PaaS, Azure, Azure Dev Ops, C#]
 image: vscode-cover.png
 compagny: Orange Application For Business
+summary: Nouvelle experience comme Architecte Solution Dev/Ops
 start: Jan 2016
 end: Juin 2020
 order: 7

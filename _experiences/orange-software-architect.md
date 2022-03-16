@@ -3,6 +3,7 @@ title: Software Architect .Net
 tags: [.Net, Asp.Net, Windows Server, Sql Server, TFS]
 image: orange-software-architect.png
 compagny: Orange Application For Business
+summary: Nouvelle experience comme Software Architect .Net
 start: Janvier 2011
 end: Juin 2015
 order: 4

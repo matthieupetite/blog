@@ -3,6 +3,7 @@ title: Ingenieur Développement
 tags: [iptv, reseau, déploiement, numericable, adsl, supervision]
 image: monecam.png
 compagny: Orange Application For Business - Monecam
+summary: Nouvelle experience comme Ingenieur Développement
 start: Decembre 2007
 end: Juin 2007
 order: 3
