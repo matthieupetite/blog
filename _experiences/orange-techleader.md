@@ -1,7 +1,7 @@
 ---
 title: Technical Leader Azure Dev/Ops
 tags: [azure, aws, dev/ops, leader]
-image: orangepracticeleader.png
+image: orangetechleader.png
 compagny: Orange Cloud For Business
 start: Janvier 2022
 end: Poste Actuel
