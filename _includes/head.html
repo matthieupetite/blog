@@ -6,12 +6,20 @@
   <title>{% if page.title %}{{ page.title }}{% else %}{{ site.data.settings.title }}{% endif %}</title>
   <meta name='description' content='{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.data.settings.description }}{% endif %}'>
   <meta prefix="go: http://ogp.me/ns#" property='og:title' content='{{ page.title }}'/>
-  <meta prefix="go: http://ogp.me/ns#" property='og:image' content='https://matthieupetite.github.io/blog/images/{{ page.image }}'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
   <meta prefix="go: http://ogp.me/ns#" property='og:description' content='{{ page.summary }}'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
   <meta prefix="go: http://ogp.me/ns#" property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
-  <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/{{ page.image }}">
+  {% if page.type == "page" %}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/pages/{{ page.image }}">
+  {% elsif page.type == "certification"%}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/certifications/{{ page.image }}">
+  {% elsif page.type == "experience"%}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/experiences/{{ page.image }}">
+  {% elsif page.type == "post"%}
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/pages/{{ page.image }}">
+  {% endif %}
+
   <meta name="author" content="Matthieu PETITE">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="icon" href="https://matthieupetite.github.io/blog/favicon.ico" />
