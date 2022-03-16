@@ -114,6 +114,31 @@
     }
   }
 
+  .experience__share {
+    display: flex;
+
+    .share__title {
+      margin-right: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .share__list {
+      .share__item {
+        display: inline-block;
+        margin: 0 10px;
+
+        a {
+          font-size: 18px;
+          color: $gray;
+          &:hover {
+            color: $dark;
+          }
+        }
+      }
+    }
+  }
   .experiences-without-image {
     width: 100%;
     margin-left: auto;
