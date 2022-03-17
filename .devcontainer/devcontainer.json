@@ -1,26 +1,30 @@
 {
-	"name": "JekyllContainer",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": {
-			"JEKYLL_VERSION": "3.8",
-			"WORKSPACE": "/wspace/jekyll",
-		}
-	},
+	"name": "Ruby 2",
+	"dockerFile": "Dockerfile",
+
 	// Set *default* container specific settings.json values on container create.
-	"settings": {},
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
 	"workspaceFolder": "/wspace/jekyll",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/wspace/jekyll,type=bind,consistency=delegated",
+
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		
+		"rebornix.Ruby"
 	],
-	// Add the IDs of extensions you want installed when the container is created in the array below.
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		4000,
 		8400
 	],
-	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	//"remoteUser": "jekyll" 
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "bundle install",
+
+	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode"
+
 }
