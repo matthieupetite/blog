@@ -1,7 +1,7 @@
 ---
 title: Technical Leader Azure Dev/Ops
 tags: [azure, aws, dev/ops, leader]
-image: yorangepracticeleader.png
+image: orangepracticeleader.png
 compagny: Orange Cloud For Business
 summary: Nouvelle experience comme Technical Leader Azure Dev/Ops
 type: experience
@@ -28,6 +28,6 @@ Environnements techniques et méthodologiques:
 
 - Azure Dev/Ops, IaaS, PaaS,
 - Linux, Bash, Docker, Windows, Kubernetes
-- Powershell, ARM Templating, Terraform, 
+- Powershell, ARM Templating, Terraform,
 - CI/CD, Jenkin, Artifactory, GitLab
 - 14 personnes dans l’équipe
