@@ -1,7 +1,7 @@
 ---
 title: Ingenieur Avant Vente
 tags: [bid management, process, contact client, architecture, vente, contract, chiffrage]
-image: /blog/images/experiences/avantvente.png
+image: /images/experiences/avantvente.png
 compagny: Orange Application For Business
 summary: Nouvelle experience comme Ingenieur Avant Vente
 type: experience

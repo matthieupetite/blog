@@ -1,7 +1,7 @@
 ---
 title: Technical Leader Azure Dev/Ops
 tags: [azure, aws, dev/ops, leader]
-image: orangepracticeleader.png
+image: /images/experiences/orangepracticeleader.png
 compagny: Orange Cloud For Business
 summary: Nouvelle experience comme Technical Leader Azure Dev/Ops
 type: experience
