@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Infracost, Support des Azure Sql Managed Instance",
+      "category" : "",
+      "tags"     : "devops, cicd, finops, terraform, infracost, and azure",
+      "url"      : "/blog/2022/03/23/infracost-support-sql-managed-instance/",
+      "date"     : "23 Mar, 2022"
+    } ,
+  
+    {
       "title"    : "Et si on parlait outil finops",
       "category" : "",
       "tags"     : "devops, cicd, finops, terraform, and infracost",
