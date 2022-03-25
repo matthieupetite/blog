@@ -9,6 +9,7 @@ start: Decembre 2015
 end: Juin 2015
 order: 6
 logo: orange-logo.jpg
+lang: fr
 ---
 
 Pour le compte d'Orange Application For Business en tant que consultant Dev/Ops je suis en charge du déploiement de la solution de vidéo surveillance du groupe Delta Dore. Construite sur une solution Java, et hébergée sur une plateforme Linux, les applicatifs doivent être déployés sur le Cloud Microsoft Azure.

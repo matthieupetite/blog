@@ -9,6 +9,7 @@ start: Avril 2021
 end: Décembre 2021
 order: 10
 logo: thales-logo.jpg
+lang: fr
 ---
 
 

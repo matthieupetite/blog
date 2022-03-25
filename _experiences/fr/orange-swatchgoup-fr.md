@@ -9,6 +9,7 @@ start: Decembre 2007
 end: Juin 2007
 order: 8
 logo: swatch.png
+lang: fr
 ---
 
 Dans le cadre d'un développement de produit pour le monde de l'horlogerie, je suis en charge de construire la solution d'application lifecycle management qui couvrent d'une part le déploiement applicatif (Solution à base de microservice), le déploiement de l'infrastructure Kubernetes (~30 clusters worldwide) et enfin de l'infrastructure de supervision fonctionnelle (Cluster ELK) et technique (Déploiement Prométhéus / Elk / Grafana / Thanos).

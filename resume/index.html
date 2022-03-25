@@ -7,7 +7,7 @@ layout: default
 	<div class="row">
 		<div class="col col-12">
 			{% if site.experiences.size > 0 %}
-				<h4 class="lates-title">Experiences</h4>
+			<h4 class="lates-title">{{ site.data.strings.experiences }}</h4>
 			{% endif %}
 		</div>
 	</div>
@@ -15,12 +15,13 @@ layout: default
 
 <div class="container">
 	<div class="row">
-	{% assign sortedExperiences = site.experiences | sort: 'order' | reverse %}
-	{% if site.experiences.size > 0 %}
-		{% for experience in sortedExperiences  %}
-            {% include experience-content.html %}
+		{% assign sortedExperiences = site.experiences | where_exp:"item", "item.lang contains site.active_lang" |sort:
+		'order' | reverse %}
+		{% if site.experiences.size > 0 %}
+		{% for experience in sortedExperiences %}
+		{% include experience-content.html %}
 		{% endfor %}
-	{% endif %}
+		{% endif %}
 	</div>
 </div>
 {% include pagination.html %}

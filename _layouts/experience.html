@@ -17,12 +17,12 @@ layout: default
 			<div class="col col-10 push-2 col-11 push-t-1 col-m-12 push-m-0">
 				{% if page.tags.size >= 1 %}
 				<div class="article-tags__box">
-				  {% for tag in page.tags %}
+					{% for tag in page.tags %}
 					<a href="#" class="article__tag">{{ tag }}</a>
-				  {% endfor %}
+					{% endfor %}
 				</div>
-			  {% else %}
-			  {% endif %}
+				{% else %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -31,38 +31,42 @@ layout: default
 		<div class="experiences-image" style="background-image: url({{site.baseurl}}/{{page.image}})"></div>
 	</div>
 	{% endif %}
-	
+
 </div>
 <div class="container">
 	<div class="row">
 
-			<!-- begin page -->
-			<article class="experiences col col-12 col-t-10 col-m-12">
-					<div class="experiences__content">
-						{{ content }}
-					</div>
-					<div class="experiences__share col col-12 col-t-10 col-m-12"">
-						<span class="share__title">Share this experience:</span>
-						<ul class="share__list list-reset">
-						<li class="share__item">
-							<a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ site.baseurl }}{{ page.url }}"
+		<!-- begin page -->
+		<article class="experiences col col-12 col-t-10 col-m-12">
+			<div class="experiences__content">
+				{{ content }}
+			</div>
+			<div class="experiences__share col col-12 col-t-10 col-m-12">
+				<span class=" share__title">{{ site.data.strings.shareexperience }}:</span>
+				<ul class="share__list list-reset">
+					<li class="share__item">
+						<a class="share__facebook"
+							href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ site.baseurl }}{{ page.url }}"
 							onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
 							title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
-						</li>
+					</li>
 
-						<li class="share__item">
-							<a class="share__twitter" href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ site.baseurl }}{{ page.url }}"
+					<li class="share__item">
+						<a class="share__twitter"
+							href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ site.baseurl }}{{ page.url }}"
 							onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
 							title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
-						</li>
+					</li>
 
-						<li class="share__item">
-							<a class="share__linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ site.baseurl }}{{ page.url }}&title={{ page.title | uri_escape }}&summary={{ page.description | uri_escape }}&source={{ site.title | uri_escape }}"
-							onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
-						</li>
-						</ul>
-					</div>
-			</article>
-			<!-- end page -->
+					<li class="share__item">
+						<a class="share__linkedin"
+							href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ site.baseurl }}{{ page.url }}&title={{ page.title | uri_escape }}&summary={{ page.description | uri_escape }}&source={{ site.title | uri_escape }}"
+							onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+							title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+					</li>
+				</ul>
+			</div>
+		</article>
+		<!-- end page -->
 	</div>
 </div>

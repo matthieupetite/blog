@@ -9,6 +9,7 @@ start: Janvier 2011
 end: Juin 2015
 order: 4
 logo: orange-logo.jpg
+lang: fr
 ---
 Au sein des équipes de développement logiciel de la division Application Digitale d'Orange Applications For Business, je suis en charge de la réalisation des projets Microsoft pour le compte de nos clients.
 

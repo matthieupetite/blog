@@ -1,4 +1,7 @@
 ---
 layout: competence
-title: compétences et formations
+title:
+  en: Skills and background
+  fr: compétences et formations
+
 ---

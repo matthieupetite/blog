@@ -9,6 +9,7 @@ start: Jan 2016
 end: Juin 2020
 order: 7
 logo: orange-logo.jpg
+lang: fr
 ---
 Dans les équipes de production d'Orange Applications For Business, ma première mission est de diffuser la méthodologie Dev / Ops au sein des équipes logicielles d'Orange Business Application et de conseiller nos clients sur la mise en œuvre de cette démarche au sein de leurs propres équipes.
 
