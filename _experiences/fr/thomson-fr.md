@@ -9,6 +9,7 @@ start: Sept 2004
 end: Juin 2007
 order: 1
 logo: thomson-logo.jpg
+lang: fr
 ---
 Thomson Télécom et plus particulière la division S&S est largement impliquée dans le domaines des Set Top Box et la télévision sur ADSL. Au sein de cette équipe je participe au développement et au déploiement client d’une plateforme de télévision sur ADSL nommée PeakFrame et plus particulièrement au développement du portail embarqué dans les STB en technologie WEB.
 

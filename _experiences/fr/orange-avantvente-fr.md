@@ -9,6 +9,7 @@ start: Janv 2011
 end: Decembre 2015
 order: 5
 logo: orange-logo.jpg
+lang: fr
 ---
 
 Afin de valider ma double compétence en Management, j'ai fait le choix de m'orienter vers une activité d'avant-vente en intégrant l'équipe des business développée d'OAB.

@@ -9,6 +9,7 @@ start: Jun 2020
 end: Avril 2021
 order: 9
 logo: thales-logo.jpg
+lang: fr
 ---
 
 En tant que Team Leader et Architecte de la Squad Industrialisation et rehosting, je suis en charge de définir le mode de déploiement de la baseline du produit Skyview dans une infrastructure Kubernetes.

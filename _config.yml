@@ -2,6 +2,15 @@ baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "https://matthieupetite.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 
 
+# language settings
+lang: fr 
+languages: ["en", "fr"] 
+default_lang: "fr"
+exclude_from_localization: ["assets/css", "assets/img"]
+parallel_localization: true
+
+
+
 # Build settings
 markdown: kramdown
 permalink: pretty
@@ -9,6 +18,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll/tagging
+  - jekyll-polyglot
 
 paginate: 5
 paginate_path: "/page/:num"
@@ -21,7 +31,7 @@ defaults:
     values:
       permalink: /:basename:output_ext
   - scope:
-      path: ""
+      path: '_experiences'
       type: "experiences"
     values:
       layout: "experience"
@@ -42,8 +52,9 @@ sass:
 collections:
   experiences:
     output: true
-    permalink: /:collection/:name
+    permalink: /:collection/:path
   certifications:
     output: false
   competences:
     output: false
+

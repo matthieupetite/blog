@@ -9,6 +9,7 @@ start: Decembre 2007
 end: Juin 2007
 order: 3
 logo: orange-logo.jpg
+lang: fr
 ---
 
 #### ORANGE APPLICATION FOR BUSINESS - Monecam

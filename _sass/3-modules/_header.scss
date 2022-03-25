@@ -151,4 +151,17 @@
       display: inline-block;
     }
   }
+
+  .nav__icon-flag {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+  }
+  
+  .en {
+      background-image: url("/blog/images/united-states-small.png");
+  }
+  .fr {
+      background-image: url("/blog/images/france-small.png");
+  }
 }

@@ -1,0 +1,10 @@
+{% for lang in site.languages %}
+{% if lang != site.active_lang %}
+{% if lang == site.default_lang %}
+<i class="nav__icon nav__icon-flag ion fr" aria-label="Lang fr" onclick="window.location = '/blog/{{ page.url }}'"></i>
+{% else %}
+<i class="nav__icon nav__icon-flag ion {{ lang }}" aria-label="Lang fr"
+    onclick="window.location = '/blog/{{ lang }}/{{ page.url }}'"></i>
+{% endif %}
+{% endif %}
+{% endfor %}
