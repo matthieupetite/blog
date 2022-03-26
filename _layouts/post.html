@@ -50,15 +50,14 @@ layout: default
         {{ content }}
       </div>
       {% assign currenturl = page.url | replace:'index.html','' | absolute_url %}
-      {% if site.active_lang = "en" %}
+      {% if site.active_lang == "en" %}
       {% assign currenturl = currenturl | replace: 'blog', 'blog/en' %}
       {% endif %}
       <div class="post__share">
         <span class="share__title">{{ site.data.strings.share }}</span>
         <ul class="share__list list-reset">
           <li class="share__item">
-            <a class="share__facebook"
-              href="https://www.facebook.com/sharer/sharer.php?u={{ currenturl }}"
+            <a class="share__facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ currenturl }}"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
           </li>
