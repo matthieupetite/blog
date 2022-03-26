@@ -3,6 +3,7 @@ layout: post
 comments: true
 title: Infracost, Support des Azure Sql Managed Instance
 type: post
+lang: fr
 tags: [devops, cicd, finops, terraform, infracost, azure]
 image: /images/post/2022/03/2022-03-23-infracost-azure-sql-managed.png
 summary: "Infracost supporte désormais le composant Azure Sql Managed Instance"

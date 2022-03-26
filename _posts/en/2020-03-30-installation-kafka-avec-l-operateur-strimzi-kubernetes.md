@@ -1,59 +1,59 @@
 ---
 layout: post
 comments: true
-title: Installation de Kafka avec l opérateur Strimzi sur Kubernetes
+title: Installing Kafka with the Strimzi operator on Kubernetes
 type: post
 tags: [kubernetes, kafka, strimzi, helm]
+lang: en
 image: /images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png
 ---
+In this article we will detail the installation of the Kafka application using the [Strimzi operator](https://strimzi.io/). Indeed, with the increasingly regular arrival of Cloud Native applications, Dev/Ops experts are increasingly called upon to deploy Kafka in order to ensure communication between the different APIs. Doing so in a Kubernetes context is becoming more and more regular. We will therefore deploy, using the tool [Helm3](https://helm.sh/), a Kafka cluster within a Kubernetes cluster [K3d](https://k3d.io/) .
 
-Dans cet article nous allons détailler l'installation de l'application Kafka a l'aide de l'[opérateur Strimzi](https://strimzi.io/). En effet, avec l'arrivée de plus en plus régulière d'application Cloud Native, les experts Dev/Ops sont de plus en plus amenés à déployer Kafka afin d'assurer la communication entre les différentes API. Le faire dans un contexte Kubernetes est de plus en plus régulier. Nous allons donc déployer, à l'aide de l'outil [Helm3](https://helm.sh/), un cluster Kafka au sein d'un cluster Kubernetes [K3d](https://k3d.io/).
+## What is Strimzi
 
-## Qu'est-ce que Strimzi
+Strimzi provides the means to run an Apache Kafka cluster on Kubernetes in various deployment configurations. For development, it is easy to configure a cluster in K3d for example in a few minutes. For production, you can customize the cluster to suit your needs, using features such as rack awareness to distribute Kafka brokers across different Availability Zones, and "Taints and Tolerations" features to run Kafka on nodes dedicated to your Kubernetes cluster. You can expose Kafka outside of Kubernetes using NodePort, Load Balancer, Ingress, and/or OpenShift routes, depending on your needs, and these are easily secured using TLS.
 
-Strimzi fournit le moyen d'exécuter un cluster Apache Kafka sur Kubernetes dans diverses configurations de déploiement. Pour le développement, il est facile de configurer un cluster dans K3d par exemple en quelques minutes. Pour la production, vous pouvez personnaliser le cluster en fonction de vos besoins, en utilisant des fonctionnalités telles que le rack awarness pour répartir les brokers Kafka entre différentes zones de disponibilité, et les fonctionnalités de "Taints and Tolerations" pour exécuter Kafka sur des nœuds dédiés de votre cluster Kubernetes. Vous pouvez exposer Kafka en dehors de Kubernetes à l'aide de NodePort, Load Balancer, Ingress et/ou des routes OpenShift, selon de vos besoins, et ceux-ci sont facilement sécurisés à l'aide de TLS.
+Kafka's native management is not limited to the broker. You can also manage Kafka topics, users, Kafka MirrorMaker, and Kafka Connect using custom resources. This means you can use your familiar Kubernetes processes and tools to manage full Kafka applications.
 
-La gestion native de Kafka ne se limite pas au broker. Vous pouvez également gérer les topics Kafka, les utilisateurs, Kafka MirrorMaker et Kafka Connect à l'aide de ressources personnalisées. Cela signifie que vous pouvez utiliser vos processus et outils Kubernetes familiers pour gérer des applications Kafka complètes.
+Using Strimzi also means benefiting from a set of Charts that allow you, via Helm, to manage your Kafka resources.
 
-Utiliser Strimzi c'est aussi bénéficier d'un ensemble de Chart qui vous permette, via Helm de manager vos ressources Kafka.
+## Objective of the tutorial
 
-## Objectif du tutoriel
+In this article we will deploy a Kafka cluster, Kafka bridge and a topic named `TopicTest` in a Kubernetes cluster within a namespace that we will name `Kafka`. All of these elements will be created using the deployment of a Helm chart which will use the strimzi operator after having deployed it.
 
-Dans le cadre de cet article nous allons déployer un cluster Kafka, Kafka bridge et un topic nommé `TopicTest` dans un cluster Kubernetes au sein d'un namespace que nous allons nommer `Kafka`. L'ensemble de ces éléments sera créé à l'aide du déploiement d'un chart Helm qui de façon sous-jacente utilisera l'opérateur strimzi après l'avoir déployé.
+## Prerequisites
 
-## Prérequis
+You must have access to a Kubernetes cluster on your development computer. For this article we will use K3d, but you can also use [Kind](https://kind.sigs.k8s.io/) or [Minikube](https://kubernetes.io/fr/docs /setup/learning-environment/minikube/).
 
-Vous devez avoir accès à un cluster Kubernetes sur votre poste de développement. Dans le cadre de cet article nous allons utiliser K3d, mais vous pouvez de même utiliser [Kind](https://kind.sigs.k8s.io/) ou [Minikube](https://kubernetes.io/fr/docs/setup/learning-environment/minikube/).
+You must also have the basic knowledge around the creation of Chart Helm.
 
-Vous devez aussi avoir les connaissances de base autour de la création de Chart Helm.
+## Added chart helm strimzi registry
 
-## Ajout de la registry de chart helm strimzi
-
-Dans un terminal lancer la commande suivante:
+In a terminal run the following command:
 
 ```bash
 helm repo add strimzi https://strimzi.io/charts/
 ```
 
-Vous pouvez vérifier que la registry a bien été ajoutée en lançant la commande suivante:
+You can verify that the registry has been added by running the following command:
 
 ```bash
 helm repo list
 ```
 
-qui doit vous donner le résultat suivant:
+which should give you the following result:
 
 ![Helm repo list](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-1.png)
 
-## Création du squelette de notre Chart
+## Creation of the skeleton of our Chart
 
-Dans un terminal lancer la commande suivante afin de créer le squelette de notre chart:
+In a terminal run the following command to create the skeleton of our chart:
 
 ```bash
 helm3 create kafka
 ```
 
-Vous devez obtenir l'arborescence suivante, qui correspond à un chart de base:
+You should obtain the following tree structure, which corresponds to a basic chart:
 
 ```bash
 📦kafka
@@ -73,7 +73,7 @@ Vous devez obtenir l'arborescence suivante, qui correspond à un chart de base:
  ┗ 📜values.yaml
 ```
 
-Supprimer les fichiers inutiles, car nous n'avons pas besoin de déployment, hpa, ingress, service ou encore service account. Après l'étape de nettoyage, notre chart correspond à ceci:
+Delete unnecessary files, because we don't need deployment, hpa, ingress, service or even service account. After the cleaning step, our chart looks like this:
 
 ```bash
 📦kafka
@@ -86,11 +86,11 @@ Supprimer les fichiers inutiles, car nous n'avons pas besoin de déployment, hpa
  ┗ 📜values.yaml
 ```
 
-## Ajout de la dépendance au chart de l'opérateur Strimzi
+## Added Strimzi operator chart dependency
 
-Comme dit plus haut, le déploiement de l'opérateur Strimzi (en réalité des opérateurs) peut se faire à l'aide d'un chart Helm. Nous allons donc utiliser le mécanisme de dépendance de chart pour forcer l'installation de l'opérateur avant le déploiement de notre chart.
+As said above, the deployment of the Strimzi operator (actually operators) can be done using a Helm chart. We will therefore use the chart dependency mechanism to force the installation of the operator before the deployment of our chart.
 
-Dans le fichier Chart.yaml, ajouter le contenu suivant:
+In the Chart.yaml file, add the following content:
 
 ```yaml
 dependencies:
@@ -99,11 +99,11 @@ dependencies:
   repository: "https://strimzi.io/charts/"
 ```
 
-## Déclaration du Kafka cluster, du topic et du Kafka bridge
+## Kafka cluster, topic and Kafka bridge declaration
 
-### Édition de votre fichier values.yaml
+### Editing your values.yaml file
 
-Remplacer le contenu de votre fichier Values.yaml par le contenu suivant:
+Replace the content of your Values.yaml file with the following content:
 
 ```yaml
 serviceAccount:
@@ -153,9 +153,9 @@ prometheus-kafka-exporter:
     repository: "danielqsj/Kafka-exporter"
 ```
 
-### Création du Kafka cluster
+### Creation of the Kafka cluster
 
-Créé un fichier kafkacluster.yaml dans le dossier template de votre chart avec le contenu suivant:
+Created a kafkacluster.yaml file in your chart's template folder with the following content:
 
 ```yaml
 {% raw %}
@@ -202,9 +202,9 @@ spec:
 {% endraw %}
 ```
 
-### Création du topic
+### Topic creation
 
-Créer un fichier kafkatopic.yaml dans le dossier template de votre chart avec le contenu suivan
+Create a kafkatopic.yaml file in your chart's template folder with the following content
 
 ```yaml
 {% raw %}
@@ -227,11 +227,11 @@ spec:
 {% endraw %}
 ```
 
-Ce fichier va looper sur la variable du topic.topics du fichier de value pour demander la création de notre topic.
+This file will loop on the topic.topics variable of the value file to request the creation of our topic.
 
-### Création du Kafka bridge
+### Creation of the Kafka bridge
 
-Dans le dossier template de votre chart créé un fichier kafkabridge.yaml et positionner le contenu suivant:
+In the template folder of your chart, create a kafkabridge.yaml file and position the following content:
 
 ```yaml
 {% raw %}
@@ -256,31 +256,31 @@ Avant de déployer votre chart il convient de mettre à jour les dependances de 
 helm dependency update ./Kafka/
 ```
 
-Vous devez obtenir le résultat suivant:
+You should get the following result:
 
 ![helm repository update](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-2.png)
 
-Cette commande a pour effet de télécharger le chart le dossier /charts de votre Chart.
+This command has the effect of downloading the chart in the /charts folder of your Chart.
 
-## installation de votre chart et résultat
+## installation of your chart and result
 
-Pour installer votre chart lancer la commande suivante:
+To install your chart run the following command:
 
 ```bash
 helm install -n Kafka Kafka ./Kafka/ --create-namespace
 ```
 
-Après quelques minutes vous constaterez dans votre cluster que l'ensemble des Pods Kafka sont là:
+After a few minutes you will see in your cluster that all the Kafka Pods are there:
 
-1. l'opérateur strimzi
-2. le cluster zookeeper dédié à l'infrastructure kakfa
-3. le cluster Kafka lui-même
-4. le pod pour le bridge Kafka
+1. the strimzi operator
+2. the zookeeper cluster dedicated to the kakfa infrastructure
+3. the Kafka cluster itself
+4. Kafka bridge pod
 
-![resultat installation kafka](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-3.png)
+![kafka installation result](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-3.png)
 
-et que les customs ressources de l'opérateur strimzi sont présentes:
+and that the strimzi operator's custom resources are present:
 
-![custom ressource strimzi](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-4.png)
+![custom strimzi resource](/blog/images/post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes-4.png)
 
-Pour avoir accès au code source de cet exemple, c'est par ici [https://github.com/matthieupetite/helm-samples](https://github.com/matthieupetite/helm-samples)
+To access the source code of this example, it's here [https://github.com/matthieupetite/helm-samples](https://github.com/matthieupetite/helm-samples)

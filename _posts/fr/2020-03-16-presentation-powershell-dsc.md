@@ -4,6 +4,7 @@ comments: true
 title: Présentation de Powershell DSC
 type: post
 tags: [powershell, devOps]
+lang: fr
 image: /images/post/2019/01/presentation-powershell-dsc.png
 ---
 

@@ -31,6 +31,10 @@ defaults:
     values:
       permalink: /:basename:output_ext
   - scope:
+      path: '_post'
+    values:
+      permalink: /:basename:output_ext
+  - scope:
       path: '_experiences'
       type: "experiences"
     values:

@@ -1,37 +1,37 @@
 ---
 layout: post
 comments: true
-title: Helm, Kubernetes, et les systèmes de fichier multiniveau
+title: Helm, Kubernetes, and multi-level file systems
 type: post
 tags: [kubernetes, docker]
+lang: en
 image: /images//post/2020/03/2020-03-18-helm-filesystem-multin-niveau.png
 ---
+In this article we will discuss setting up a multi-tier file system within a docker image in a Kubernetes context, with a kind deployment.
 
-Dans cet article nous allons traiter de la mise en place d'un système de fichier multiniveau au sein d'une image docker dans un contexte Kubernetes, avec un déploiement kind.
+# Problem
 
-# Problématique
+Very often, when deploying an application under Kubernetes, it is advisable to ensure that the application configuration files are present on the image. Admittedly, it is not recommended to inject configuration by file system (we often prefer environment variables), but when we port an application under k8s it is unfortunately often a problem we are confronted with. Especially since the said files must evolve according to the deployment environments.
 
-Bien souvent, il convient lors du déploiement d'une application sous Kubernetes de s'assurer que les fichiers de configuration applicatifs soient présents sur l'image. Certes, il n'est pas préconisé d'injecter de la configuration par système de fichier (on préfère souvent les variables d'environnement), mais quand on porte une application sous k8s c'est hélas souvent une problématique à laquelle on est confronté. D'autant que les dit fichiers doivent évolués en fonction des environnements de déploiement.
+A simple approach would be to set up one config map per file, but the work can be long and tedious when you are in the case of several dozen files.
 
-Une approche simple consisterait à mettre en place une config map par fichier, mais, le travail peut être long et fastidieux quand on est dans le cas de plusieurs dizaines de fichiers.
+I therefore present here the solution that I have implemented in multiple projects to simplify my task.
 
-Je vous présente donc ici la solution que j'ai mise en oeuvre dans de multiples projets pour me simplifier la tâche.
+# Prerequisites
 
-# Prérequis
+Here is the list of prerequisites for this tutorial:
 
-Voici la liste de prérequis pour le ce tutoriel:
+1. have a Kubernetes environment, we will use [k3d](https://k3d.io/) here
+2. have knowledge of the HELM deployment solution
+3. master the Kubernetes concepts of configuration map / deployment / ...
 
-1. disposer d'un environnement Kubernetes, nous utiliserons [k3d](https://k3d.io/) ici
-2. avoir des connaissances sur la solution de déploiement HELM
-3. maitriser les concepts Kubernetes de configuration map / déploiement / ...
+# Workaround
 
-# Solution
+We're going to set up a mechanism for dynamically building a configuration map which we'll then mount into an image. The files presented in the map configuration will be text files in which it will be necessary to change the content according to the value defined in the values.yaml file of the chart.
 
-Nous allons mettre en place un mécanisme de construction dynamique de configuration map que nous allons ensuite monter dans une image. Les fichiers présentés dans la configuration map seront des fichiers texte dans lequel il conviendra de changer le contenu en fonction de valeur définie dans le fichier de values.yaml du chart.
+# Definition of the expected
 
-# Définition de l'attendu
-
-Pour illustrer notre configuration map multiniveau nous allons construire dans un container le filesystem suivant:
+To illustrate our multilevel map configuration we will build the following filesystem in a container:
 
 ```bash
 App
@@ -41,50 +41,50 @@ App
  ┗ file2.cfg
 ```
 
-Dans le file1.cfg nous allons faire en sorte d'injecter des données de configuration en provenance du fichier de configuration du chart : le fichier values.yaml
+In the file1.cfg we will make sure to inject configuration data from the chart configuration file: the values.yaml file
 
-# Étape du tutoriel
+# Tutorial step
 
-## Installation de k3d
+## Installing k3d
 
-Après avoir installé l'outil k3d en suivant la [procédure d'installation](https://k3d.io), vérifiez la bonne installation de l'outil en lançant la commande suivante:
+After installing the k3d tool by following the [installation procedure](https://k3d.io), check the correct installation of the tool by running the following command:
 
 ```bash
 k3d --version
 ```
 
-Vous devez obtenir le résultat suivant:
+You should get the following result:
 
 ```bash
 k3d version v3.2.0
 k3s version v1.18.9-k3s1 (default)
 ```
 
-Créer votre premier cluster en lançant la commande
+Create your first cluster by running the command
 
 ```bash
-k3d cluster create mycluter
+k3d cluster create mycluster
 ```
 
-qui vous donne le résultat suivant:
+which gives you the following result:
 
-![Création cluster k3d](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-1.png)
+![Creating k3d cluster](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-1.png)
 
-vous devez pouvoir voir la liste des pods de votre tout nouveau cluster en lançant la commande suivante:
+you should be able to see the list of pods in your brand new cluster by running the following command:
 
 ```bash
 kubectl get pods --all-namespaces
 ```
 
-qui vous donne ce résultat:
+which gives you this result:
 
-![Liste des pods du cluster](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-2.png)
+![List of cluster pods](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-2.png)
 
-## Installation de HELM3
+## HELM3 installation
 
-La procédure d'installation de l'outil est présente ici [https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/).
+The tool installation procedure is present here [https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/).
 
-Dans mon cas je suis sur une machine Ubuntu je lance donc simplement le script suivant comme indiqué dans la documentation:
+In my case I am on an Ubuntu machine so I simply run the following script as indicated in the documentation:
 
 ```bash
 curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
@@ -94,21 +94,21 @@ sudo apt-get update
 sudo apt-get install helm
 ```
 
-vous pouvez vérifier que helm3 est correctement installé en lançant la commande suivante:
+you can verify that helm3 is correctly installed by running the following command:
 
 ```bash
 helm version
 ```
 
-Qui doit vous retourner l'information suivante:
+Which should return the following information to you:
 
 ```bash
 version.BuildInfo{Version:"v3.5.1", GitCommit:"32c22239423b3b4ba6706d450bd044baffdcf9e6", GitTreeState:"clean", GoVersion:"go1.15.7"}
 ```
 
-## Création du chart à partir du modèle
+## Creating the chart from the template
 
-Passons maintenant à la mise en place du chart helm à proprement dit. Créez un dossier de projet, dans lequel nous allons travailler.
+Now let's move on to setting up the helm chart itself. Create a project folder, in which we will work.
 
 ```bash
 mkdir ~/home/multilevel && cd ~/home/multilevel
@@ -120,9 +120,9 @@ et lancer la commande de création du chart Helm:
 helm create multilevelcm
 ```
 
-Cette commande crée le squelette du chart dans le dossier `~/home/multilevel/`.
+This command creates the chart skeleton in the `~/home/multilevel/` folder.
 
-vous obtenez la structure de fichier suivante:
+you get the following file structure:
 
 ```bash
 📦multilevelcm
@@ -142,15 +142,15 @@ vous obtenez la structure de fichier suivante:
  ┗ 📜values.yaml
 ```
 
-il s'agit d'un chart de base qui crée déploie un serveur nginx.
+This is a basic chart that creates and deploys an nginx server.
 
-Pour plus d'information sur l'anatomie des chart la documentation est ici [https://helm.sh/docs/helm/helm_create/](https://helm.sh/docs/helm/helm_create/).
+For more information on chart anatomy the documentation is here [https://helm.sh/docs/helm/helm_create/](https://helm.sh/docs/helm/helm_create/).
 
-## Création de la configuration map dynamique
+## Creation of the dynamic map configuration
 
-### création de la structure de fichier dans le chart
+### creating the file structure in the chart
 
-Dans le dossier de chart, créer un dossier files qui contient la structure de notre dossier. Vous devez obtenir la structure de fichier suivant:
+In the chart folder, create a files folder that contains our folder structure. You should get the following file structure:
 
 ```bash
 📦multilevelcm
@@ -175,7 +175,7 @@ Dans le dossier de chart, créer un dossier files qui contient la structure de n
  ┗ 📜values.yaml
 ```
 
-Dans les fichiers `file2.cfg` et `file3.cfg` mettez le contenu que vous souhaitez. Dans le `file1.cfg`, positionnez le contenu suivant:
+In the files `file2.cfg` and `file3.cfg` put the content you want. In the `file1.cfg`, position the following content:
 
 ```bash
 {% raw %}
@@ -183,7 +183,7 @@ Dans les fichiers `file2.cfg` et `file3.cfg` mettez le contenu que vous souhaite
 {% endraw %}
 ```
 
-Ceci permettra au moteur de template d'aller chercher la valeur dans le fichier de chart. Pour cela à la fin du fichier values.yaml, ajoutez le contenu suivant:
+This will allow the template engine to fetch the value from the chart file. For this at the end of the values.yaml file, add the following content:
 
 ```yaml
 configuration:
@@ -191,11 +191,11 @@ configuration:
     contenu du fichier 1
 ```
 
-### création de la configmap
+### creating the configmap
 
-Dans le dossier du Chart, créer un dossier configmap pour loger le fichier de définition de notre objet.
+In the Chart folder, create a configmap folder to house the definition file of our object.
 
-dans ce fichier, positionner le contenu suivant:
+in this file, position the following content:
 
 ```yaml
 {% raw %}
@@ -216,13 +216,13 @@ data:
 {% endraw %}
 ```
 
-l'usage de la fonction sha256sum permet de s'affranchir des caractères spéciaux éventuels dans le nom du fichier. La fonction tpl permet de considérer les fichiers comme des templates helm et donc d'y injecter des données en provenance du helm chart.
+the use of the sha256sum function makes it possible to avoid any special characters in the file name. The tpl function allows files to be considered as helm templates and therefore to inject data from the helm chart.
 
-## montage de la configuration map dans le pod
+## mounting the map configuration in the pod
 
-Il reste a monter la configuration map en tant que volume dans le container. Pour ce faire, éditer le fichier de déploiement pour y ajouter les éléments suivants:
+It remains to mount the configuration map as a volume in the container. To do this, edit the deployment file to add the following:
 
-Dans la partie du container, ajouter la déclaration du module:
+In the container part, add the module declaration:
 
 ```yaml
 containers:
@@ -250,7 +250,7 @@ containers:
         mountPath: "/app"
 ```
 
-puis à la fin du fichier ajouter la déclaration du volume:
+then at the end of the file add the volume declaration:
 
 ```yaml
 {% raw %}
@@ -267,16 +267,16 @@ volumes:
 {% endraw %}
 ```
 
-## Résultat
+## Results
 
-Notre chart est pret, pour le déployer sur le cluster k3d. positionnez vous dans votre dossier ~/multilevel et lancer la commande suivante:
+Our chart is ready, to deploy it on the k3d cluster. position yourself in your ~/multilevel folder and run the following command:
 
 ```bash
 helm install -name myrelease -n myrelease --create-namespace ./multilevelcm/
 ```
 
-Avec l'outil [lens](https://k8slens.dev/) connectez vous sur votre cluster, puis entrez dans votre pod. En navigant dans le dossier /app, vous constatez que tout vos fichiers sont la et que le contenu de votre fichier file1.cfg corresponds à ce que vous avez mis dans le fichier de values.
+With the tool [lens](https://k8slens.dev/) connect to your cluster, then enter your pod. By browsing in the /app folder, you find that all your files are there and that the content of your file1.cfg corresponds to what you put in the values ​​file.
 
-![resultat](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-3.png)
+![result](/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-3.png)
 
-le code du chart est disponible sur mon [github](https://github.com/matthieupetite/kubernetes-multilevel-configurationmap)
+the chart code is available on my [github](https://github.com/matthieupetite/kubernetes-multilevel-configurationmap)

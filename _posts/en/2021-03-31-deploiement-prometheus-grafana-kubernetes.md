@@ -1,76 +1,77 @@
 ---
 layout: post
 comments: true
-title: Deploiement de la suite prometheus grafana sous Kubernetes
+title: Deployment of the prometheus grafana suite under Kubernetes
 type: post
 tags: [kubernetes, prometheus, grafana, k3d, helm]
 image: /images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png
-summary: "Superviser le cloud est un enjeu majeur lorsque l on décide d y déployer une application métier, Prometheus, Grafana s imposent comme des outils essentiels pour répondre aux enjeux de monitoring. Voici comment les déployer dans un environnement Kubernetes."
+lang: en
+summary: "Supervising the cloud is a major issue when deciding to deploy a business application there, Prometheus, Grafana stand out as essential tools to meet monitoring challenges. Here's how to deploy them in a Kubernetes environment."
 ---
 
-Superviser le cloud est un enjeu majeur lorsque l'on décide d'y déployer une application métier. En effet, quel intérêt de bénéficier d'une disponibilité de 5*9 au niveau de l'infrastructure si la couche applicative n'est pas surveillée et n'offre pas le même niveau de continuité de service. À l'heure où les architectures IT sont évolutives, où les principes Dev/Ops de CI/CD se généralise, la DSI a besoin d'outils de supervision agiles et performants.  [Prometheus](https://go2.grafana.com/prometheus-grafana.html), [Grafana](https://go2.grafana.com/prometheus-grafana.html) s imposent comme des outils essentiels pour répondre à ces enjeux pour fournir des services de monitoring et d'alerting. Voici comment les déployer dans un environnement Kubernetes.
+Supervising the cloud is a major issue when deciding to deploy a business application there. Indeed, what is the point of benefiting from 5*9 availability at the infrastructure level if the application layer is not monitored and does not offer the same level of continuity of service. At a time when IT architectures are evolving, when the Dev/Ops principles of CI/CD are becoming widespread, the IT department needs agile and efficient supervision tools. [Prometheus](https://go2.grafana.com/prometheus-grafana.html), [Grafana](https://go2.grafana.com/prometheus-grafana.html) stand out as essential tools to respond to these issues to provide monitoring and alerting services. Here's how to deploy them in a Kubernetes environment.
 
 ## Prometheus / Grafana : Architecture
 
-On parle souvent de Prométheus et Grafana, mais en réalité il s'agit d'une suite d'outillage plus complète comme le montre le diagramme d'architecture ci-dessous:
+We often talk about Prometheus and Grafana, but in reality it is a more complete tooling suite as shown in the architecture diagram below:
 
-![Prometheus Grafana architecture](/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-1.png)
+![Prometheus Grafana architecture](/blog/images/post/2021/03/2021-03-31-deployment-prometheus-grafana-kubernetes-1.png)
 
-Les éléments constitutifs de la plateforme sont donc:
+The components of the platform are therefore:
 
-1. Le prometheus serveur: qui collecte la donnée de supervision et les stocke
-2. La partie grafana qui assure la partie visualisation des données
-3. La partie PushGateway dont le rôle est d'assurer la collecte de données de supervision qui serait collectée en mode push (en effet le mode de supervision de prometheus est le pull par défaut)
-4. la partie Alert manager qui permet de diffuser les événements pour les équipes de supervision.
-5. Les nodes exporter, qui constitue la partie collecte des données en mode pull.
+1. The server prometheus: which collects monitoring data and stores it
+2. The grafana part which provides the data visualization part
+3. The PushGateway part whose role is to ensure the collection of supervision data which would be collected in push mode (in fact, prometheus supervision mode is the default pull)
+4. the Alert manager part which is used to broadcast events for the supervision teams.
+5. The export nodes, which constitute the data collection part in pull mode.
 
-On peut noter que pour le déploiement de cette chaine de supervision dans une réel environnement de production il convient souvent d'ajouter les composants suivants:
+It can be noted that for the deployment of this supervision chain in a real production environment it is often necessary to add the following components:
 
-1. [Blackbox](https://geekflare.com/fr/monitor-website-with-blackbox-prometheus-grafana/): pour la supervision des performances de site web
-2. [Thanos](https://thanos.io/): pour la gestion avancée du stockage à long terme
+1. [Blackbox](https://geekflare.com/fr/monitor-website-with-blackbox-prometheus-grafana/): for monitoring website performance
+2. [Thanos](https://thanos.io/): for advanced long-term storage management
 
-## Objectifs du tutoriel
+## Tutorial Objectives
 
-Dans ce tutoriel nous allons installer la suite prometheus grafana sur un cluster Kubernetes afin de monitorer les performances de celui-ci. Nous allons pour réaliser ces travaux produire un Chart Helm qui nous donnera la possibilité d'ajouter nos propres tableaux de bord Grafana.
+In this tutorial we will install the prometheus grafana suite on a Kubernetes cluster in order to monitor its performance. We are going to carry out this work to produce a Chart Helm which will give us the possibility of adding our own Grafana dashboards.
 
-## Prérequis
+## Prerequisites
 
-Vous devez avoir accès à un cluster Kubernetes sur votre poste de développement. Dans le cadre de cet article nous allons utiliser K3d, mais vous pouvez de même utiliser [Kind](https://kind.sigs.k8s.io/) ou [Minikube](https://kubernetes.io/fr/docs/setup/learning-environment/minikube/).
+You must have access to a Kubernetes cluster on your development computer. For this article we will use K3d, but you can also use [Kind](https://kind.sigs.k8s.io/) or [Minikube](https://kubernetes.io/fr/docs /setup/learning-environment/minikube/).
 
-Vous devez aussi avoir les connaissances de base autour de la création de [Chart Helm](https://helm.sh).
+You also need to have the basic knowledge around creating [Chart Helm](https://helm.sh).
 
-## Création du cluster k3d
+## k3d cluster creation
 
-Après avoir installé l'outil k3d en suivant la [procédure d'installation](https://k3d.io), vérifiez la bonne installation de l'outil en lançant la commande suivante:
+After installing the k3d tool by following the [installation procedure](https://k3d.io), check the correct installation of the tool by running the following command:
 
 ```bash
 k3d --version
 ```
 
-Vous devez obtenir le résultat suivant:
+You should get the following result:
 
 ```bash
 k3d version v3.2.0
 k3s version v1.18.9-k3s1 (default)
 ```
 
-Créer votre premier cluster en lançant la commande
+Create your first cluster by running the command
 
 ```bash
 k3d cluster create mycluster -p "80:80@loadbalancer" --agents 2
 ```
 
-Noter le paramètre `-p "80:80@loadbalancer"`  qui permettra d'exposer votre ingress controller
+Note the `-p "80:80@loadbalancer"` parameter which will expose your ingress controller
 
-## Création du chart à partir d'un modèle et clean du code
+## Creation of the chart from a model and cleaning of the code
 
-Dans un terminal, lancer la commande suivante:
+In a terminal, run the following command:
 
 ```bash
 helm3 create prometheus
 ```
 
-Vous devez obtenir l'arborescence suivante, qui correspond à un chart de base:
+You should obtain the following tree structure, which corresponds to a basic chart:
 
 ```bash
 📦prometheus
@@ -90,7 +91,7 @@ Vous devez obtenir l'arborescence suivante, qui correspond à un chart de base:
  ┗ 📜values.yaml
 ```
 
-Supprimer les fichiers inutiles, car nous n'avons pas besoin de déployment, hpa, ingress, service ou encore service account ou encore des tests. Par contre nous avons besoin de configmaps et d'un dossier dashboard à la racine du chart. Après l'étape de nettoyage, notre chart correspond à ceci:
+Delete unnecessary files, because we don't need deployment, hpa, ingress, service or even service account or even tests. On the other hand we need configmaps and a dashboard folder at the root of the chart. After the cleaning step, our chart looks like this:
 
 ```bash
 📦prometheus
@@ -103,13 +104,13 @@ Supprimer les fichiers inutiles, car nous n'avons pas besoin de déployment, hpa
  ┗ 📜values.yaml
 ```
 
-## Spécialisation du chart
+## Specialization of the chart
 
-### Modification du fichier Chart.yaml
+### Editing the Chart.yaml file
 
-Notre chart va s'appuyer sur celui fournit par la communauté : [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) qui de façon sous-jacente installe plusieurs opérateurs Kubernetes.
+Our chart will be based on the one provided by the community: [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) which Underlyingly installs several Kubernetes operators.
 
-Afin de configurer cette dépendance, il convient donc de modifier le fichier `chart.yaml` comme suit:
+In order to configure this dependency, it is therefore necessary to modify the `chart.yaml` file as follows:
 
 ```yaml
 apiVersion: v2
@@ -146,9 +147,9 @@ dependencies:
         parent: grafana
 ```
 
-### Modication du fichier values.yaml
+### Editing the values.yaml file
 
-Le fichier de values doit être modifié comme suit:
+The values ​​file should be modified as follows:
 
 ```yaml
 kube-prometheus-stack:
@@ -329,12 +330,11 @@ kube-prometheus-stack:
       image:
         repository: quay.io/prometheus/node-exporter
 ```
+Note the `grafana.cluster-dev.local` value that we have set in order to create ingresses to access grafana.
 
-Notez la valeur `grafana.cluster-dev.local` que nous avons positionnée de façon a créer des ingress pour accéder à grafana.
+### Modification of the map configuration file in order to add custom grafana dashboards
 
-### Modification du fichier de configuration map afin d'ajouter les dashboard grafana custom
-
-Dans le dossier `/template/configmap/` de votre chart, veuillez ajouter un fichier yaml pour créer une configmap de configuration des dashboard custom. Le contenu de ce dernier doit être comme suit:
+In the `/template/configmap/` folder of your chart, please add a yaml file to create a custom dashboard configuration configmap. The content of the latter should be as follows:
 
 ```yaml
 {% raw %}
@@ -362,39 +362,38 @@ items:
 {{- end }}
 {% endraw %}
 ```
+As you can see, this configuration map is created by going through the list of json files contained in the chart itself. This is why we have set up a dashboards folder in our chart which will contain the json files for defining custom dashboards. You can find an example list at: [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards)
 
-Comme vous pouvez le constater, cette configuration map est créée en parcourant la liste des fichiers json contenus dans le chart lui-même. C'est pour cela que nous avons mis en place un dossier dashboards dans notre chart qui contiendra les fichiers json de définition des tableaux de bord custom. Vous pouvez trouver une liste d'exemple à l'adresse suivante: [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards)
+## Deployment of our chart
 
-## Déploiement de notre chart
+### installation of our chart
 
-### installation de notre chart
-
-Pour installer votre chart lancer la commande suivante:
+To install your chart run the following command:
 
 ```bash
 helm install -n prometheus prometheus ./prometheus/ --create-namespace
 ```
 
-Lancez votre outil de gestion de Kubernetes préféré pour constater la liste des pods qui ont été créés (ici nous utilisons k9s):
+Launch your favorite Kubernetes management tool to see the list of pods that have been created (here we are using k9s):
 
-![liste de pods prometheus et grafana](/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-2.png)
+![prometheus and grafana pod list](/blog/images/post/2021/03/2021-03-31-deployment-prometheus-grafana-kubernetes-2.png)
 
-## configuration de votre DNS
+## configure your DNS
 
-Afin d'accédé à votre portail grafana il faut que vous modifier votre fichier `/etc/hosts` afin d'y ajouter une entrée pour le host suivant `grafana.cluster-dev.local`. En effet, le service grafana est diffusé par défaut au travers d'un [ingress controller](https://kubernetes.github.io/ingress-nginx/) et d'un ingress. Il faut donc que votre domaine soit connu sur votre machine hôte.
+In order to access your grafana portal you must modify your `/etc/hosts` file in order to add an entry for the following host `grafana.cluster-dev.local`. Indeed, the grafana service is distributed by default through an [ingress controller](https://kubernetes.github.io/ingress-nginx/) and an ingress. Your domain must therefore be known on your host machine.
 
-Ajoutez donc l'entrée suivante dans votre fichier /etc/hosts
+So add the following entry in your /etc/hosts file
 
 ```bash
 127.0.0.1 grafana.cluster-dev.local
 ```
 
-Il vous suffit ensuite de vous connecter sur l'URL suivante [http://grafana.cluster-dev.local/grafana](http://grafana.cluster-dev.local/grafana) pour avoir accès à la mire de connexion grafana.
+Then simply connect to the following URL [http://grafana.cluster-dev.local/grafana](http://grafana.cluster-dev.local/grafana) to access the connection chart grafana.
 
-![portail grafana](/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-3.png)
+![grafana portal](/blog/images/post/2021/03/2021-03-31-deployment-prometheus-grafana-kubernetes-3.png)
 
-Entrez le login suivant `admin` et le mot de passe `password` pour vous connecter à grafana. Vous aurez ensuite dans la partie manage accès à la liste de vos tableaux de bord.
+Enter the following login `admin` and password `password` to connect to grafana. You will then have access to the list of your dashboards in the manage part.
 
-![dashboard grafana](/blog/images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes-4.png)
+![grafana dashboard](/blog/images/post/2021/03/2021-03-31-deployment-prometheus-grafana-kubernetes-4.png)
 
-Pour avoir accès au code source de cet exemple, c'est par ici [https://github.com/matthieupetite/helm-samples](https://github.com/matthieupetite/helm-samples)
+To access the source code of this example, it's here [https://github.com/matthieupetite/helm-samples](https://github.com/matthieupetite/helm-samples)

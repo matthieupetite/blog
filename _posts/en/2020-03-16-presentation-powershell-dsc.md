@@ -1,78 +1,78 @@
 ---
 layout: post
 comments: true
-title: Présentation de Powershell DSC
+title: Powershell DSC Presentation
 type: post
 tags: [powershell, devOps]
+lang: en
 image: /images/post/2019/01/presentation-powershell-dsc.png
 ---
+There you go, I **fell in love**, as our French-speaking friends across the Atlantic say... And when you "fall in love" well, you just want to talk about it.
 
-Et voilà, je suis **tombé en amour**, comme le disent nos amis francophones d'outre-Atlantique... Et quand on "tombe en amour" et bien on a tout simplement envie d'en parler.
+My love of the day is called **DSC**, for **Desired State Configuration**.
 
-Mon amour du jour s'appelle **DSC**, comme **Desired State Configuration**.
+I will present in this article, how DSC will save your life and I hope to make you want to take the plunge by showing a practical example of implementation.
 
-Je vais vous présenter dans cet article, comment DSC va vous sauver la vie et je l'espère vous donner envie de vous jeter à l'eau en montrant un exemple pratique de mise en oeuvre.
+This article is the first in a series that I hope will introduce you to:
 
-Cet article est le premier d'une série qui je l'espère qui vous présentera :
+- How to make your first DSC configuration
+- The operation of DSC modules and resources
+- The creation of your first custom modules, because yes, everything has not yet been done on GitHub
+- Testing your configurations
+- How to distribute your configurations on your infrastructure
+- Supervise the correct application of your configurations
 
-- Comment réaliser votre première configuration DSC
-- Le fonctionnement des modules et des ressources DSC
-- La création de vos premiers modules custom, parce que oui, tout n'a pas encore été fait sur GitHub
-- Le test de vos configurations
-- Comment distribuer vos configurations sur votre infrastructure
-- Superviser la bonne application de vos configurations
+# Desired State Configuration, quick overview
 
-# Desired State Configuration, rapide présentation
+Over the past few years, we have seen an acceleration in our small IT world.
+We must deliver faster, quickly put applications online and therefore platforms in the hands of users to quickly get their feedback.
 
-On observe depuis quelques années une accélération dans notre petit monde de l'IT.
-Il faut délivrer plus vite, mettre rapidement des applications en ligne et donc des plateformes dans les mains des utilisateurs pour rapidement avoir leurs retours.
+This acceleration is a real challenge for developers who no longer have the time to test, validate, and even specify.
+**Agility**, the practice of **testing**, and automation were the response to these new constraints.
 
-Cette accélération est un vrai défi pour les développeurs qui n'ont plus le temps de tester, de valider, et même de spécifier.
-**L'agilité**, la pratique du **test**, et l'automatisation ont été la réponse face à ces nouvelles contraintes.
+If in the field of application development, the question is old, the technical answers relatively mature, and the tools present with tools of the [Application Lifecycle Management](https://azure.microsoft.com/fr-fr /services/devops/), in the area of ​​infrastructure, answers were a little slower in coming.
 
-Si dans le domaine du développement d'application, la question est ancienne, les réponses techniques relativement matures, et l'outillage présent avec des outils de type [Application Lifecycle Management](https://azure.microsoft.com/fr-fr/services/devops/), dans le domaine de l'infrastructure, les réponses ont un peu plus tardé à venir.
+It is with the emergence of cloud platforms such as [Azure](https://azure.microsoft.com) or [Amazon](https://aws.amazon.com) that things have become possible.
+And with **Desired State Configuration**, Microsoft gives us the tool that allows us to meet these challenges at the OS level.
 
-C'est avec l'émergence de plateformes cloud telles que [Azure](https://azure.microsoft.com) ou [Amazon](https://aws.amazon.com) que les choses sont devenues possibles.
-Et avec **Desired State Configuration**, Microsoft nous donne l'outil qui permet de répondre à ces enjeux au niveau de l'OS.
+Deploying infrastructure in a testable, automated, predictable way while finally offering a solution to the OPS nightmare: "configuration drift", this is DSC's promise in the face of **Dev/OPS** challenges .
 
-Déployer de l'infrastructure de façon testable, automatisée, prédictible le tout en proposant enfin une solution face au cauchemar des OPS : la "dérive de configuration", c'est la promesse de DSC face aux enjeux du **Dev/OPS**.
+The objective of **DSC** is therefore to allow you to describe your infrastructures using a **scripting syntax** that you can apply to your servers periodically to ensure that what is actually deployed is what you have registered with the repository.
 
-L'objectif de **DSC**, c'est donc de vous permettre de décrire vos infrastructures à l'aide d'une **syntaxe de script** que vous pourrez appliquer sur vos serveurs de façon périodique afin de vous assurer que ce qui est effectivement déployé correspond à ce que vous avez inscrit au référentiel.
+And since the description of a configuration is code, you have the possibility of:
 
-Et comme la description d'une configuration c'est du code vous avez la possibilité de:
+- **Manage** your infrastructure in a source code repository and thus make the link with the applications,
+- **Test** your infrastructure,
+- **Automate** deployments of configuration changes
+- **Audit** the correct application of the configurations
 
-- **Gérer** votre infrastructure dans un référentiel de code source et ainsi faire le lien avec les applications,
-- **Tester** votre infrastructure,
-- **Automatiser** les déploiements des changements de configuration
-- **Auditer** la bonne application des configurations
+# Linux, Windows: DSC is available
 
-# Linux, Windows: DSC est disponible
+Incidentally, the use of DSC is not limited to the Windows platform alone.
+Indeed, it is possible to use this technology on a wide range of [Linux distribution](https://docs.microsoft.com/fr-fr/powershell/dsc/getting-started/lnxgettingstarted).
 
-Au passage, l'utilisation de DSC n'est pas réduite à la seule plateforme Windows.
-En effet, il est possible d'utiliser cette technologie sur un large panel de [distribution Linux](https://docs.microsoft.com/fr-fr/powershell/dsc/getting-started/lnxgettingstarted).
+# General operation
 
-# Fonctionnement général
+As mentioned above, a DSC configuration is above all a powershell script (extension .ps1) in which we find the keyword "Configuration".
+This file relies on resources that we can import in order to manipulate the state of the target server.
 
-Comme évoqué plus haut, une configuration DSC c'est avant tout un script powershell (extension .ps1) dans lequel on retrouve le mot clé "Configuration".
-Ce fichier s'appuie sur des ressources que nous pouvons importer afin de manipuler l'état du serveur cible.
+A configuration can describe the desired state of a set of servers. This approach makes it possible to pool configurations, which is very useful when deploying clusters or for "**mastering**" a large volume of servers.
 
-Une configuration peut décrire l'état désiré d'un ensemble de serveurs. Cette approche permet de mutualiser les configurations ce qui est très utile dans le cas de déploiement de clusters ou pour "**masteriser**" un large volume de serveurs.
+The ```ps1``` configuration file is not directly used by the DSC agent deployed on the server that applies the DSC configurations. These should be "**compiled**" in order to produce one Mof file per server.
 
-Le fichier ```ps1``` de configuration n'est pas directement utilisé pas l'agent DSC déployé sur le serveur qui applique les configurations DSC. Il convient de "**compiler**" ces dernières afin de produire un fichier Mof par serveur.
-
-Le schéma de production d'une configuration DSC est donc le suivant:
+The production scheme of a DSC configuration is therefore as follows:
 
 ![presentation-powershell-dsc-03](/blog/images/post/2019/01/presentation-powershell-dsc-03.png)
 
-Une fois la configuration compilée, c'est le **local configuration manager** du serveur qui va pouvoir appliquer le fichier ```MOF``` résultat de la compilation de notre configuration.
+Once the configuration has been compiled, the server's **local configuration manager** will be able to apply the ```MOF``` file resulting from the compilation of our configuration.
 
-Tout serveur Windows depuis la version 2012 exécute l'agent LCM, et c'est là toute la force de la technologie DSC puisqu'aucun ajout n'est nécessaire pour interpréter nos configurations.
-Cette fonctionnalité est native ce qui nous affranchit de toute configuration supplémentaire.
+Any Windows server since version 2012 runs the LCM agent, and this is the strength of DSC technology since no addition is necessary to interpret our configurations.
+This functionality is native, which frees us from any additional configuration.
 
-# Présentation de la structure d'une configuration
+# Presentation of the structure of a configuration
 
-Rentrons maintenant un peu plus dans le détail de ce qu'est notre configuration DSC.
-Comme évoqué plus haut, une configuration est un simple fichier powershell.
+Now let's go into a little more detail about what our DSC configuration is.
+As mentioned above, a configuration is a simple powershell file.
 
 ```powershell
 Configuration MaPremiereConfiguration {
@@ -89,55 +89,55 @@ Configuration MaPremiereConfiguration {
 }
 ```
 
-Voyons en détail, sur cet exemple anodin, les objets qui sont manipulés.
+Let's see in detail, on this small example, the objects that are manipulated.
 
-| Éléments de configuration                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| items                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Configuration                                               | Comme vous le constatez, une configuration DSC commence toujours par le mot clé du langage Powershell **Configuration**. Ce mot clé est de façon sous-jacente au langage une fonction powershell que l'on pourra appeler pour produire les fichiers Mof.                                                                                                                                                                                                                                                                                            |
-| MaPremiereConfiguration                                     | Cet élément est simplement le nom de la configuration DSC                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Import-Module -ModuleName xTimeZone                         | Cette directive powershell permet de charger les ressources DSC dont dépend notre configuration. Une ressource DSC est un module powershell qui doit être installé sur le serveur sur lequel on souhaite appliquer notre configuration. C'est dans ces modules que l'on retrouvera toute la logique d'installation et de configuration du serveur que l'on souhaite appliquer. La communauté met à disposition un [large panel de modules open source](https://github.com/PowerShell/DscResources) qui vous permettrons de configurer vos serveurs. |
-| Node MonPremierServeur                                      | Nous déclarons ici le serveur pour lequel la configuration doit être appliquée. Il faut lire cette directive comme suit: si le serveur possède un hostname égal à "MaPremiereConfiguration" alors la configuration sera appliquée. Dans le cas inverse, elle sera simplement ignorée. Cette approche vous permet donc de créer une seule configuration pour un ensemble de serveurs et d'appliquer ou non des ressources DSC en fonction de vos besoins.                                                                                            |
-| xTimeZone "FrenchTimeZone"                                  | Cette ligne de configuration précise que dans notre configuration nous faisons appel à la ressource **xTimeZone** qui comme son nom l'indique nous permet de configurer la localisation temporelle de notre serveur afin de gérer l'heure convenablement. Si vous souhaitez voir le code de cette ressource, il vous suffit de vous reporter au contenu du module que nous avons déclaré plus haut.                                                                                                                                                 |
-| IsSingleInstance = "Yes" TimeZone = "Romance Standard Time" | Enfin, ces deux derniers éléments constituent les paramètres nécessaires au module DSC xTimeZone                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Configuration                                               | As you can see, a DSC configuration always starts with the Powershell language keyword **Configuration**. This keyword is, underlying the language, a powershell function that can be called to produce the Mof files .                                                                                                                                                                                                                                                                                            |
+| MaPremiereConfiguration                                     | Give the name of the DSC configuration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Import-Module -ModuleName xTimeZone | This powershell directive is used to load the DSC resources on which our configuration depends. A DSC resource is a powershell module that must be installed on the server on which we want to apply our configuration. It is in these modules that we will find all the logic for installing and configuring the server that we wish to apply. The community provides a [large panel of open source modules](https://github.com/PowerShell/DscResources) that will allow you to configure your servers. |
+| Node MyFirstServer | Here we declare the server for which the configuration must be applied. This directive should be read as follows: if the server has a hostname equal to "MyFirstConfiguration" then the configuration will be applied. Otherwise, it will simply be ignored. This approach therefore allows you to create a single configuration for a set of servers and apply or not apply DSC resources according to your needs. |
+| xTimeZone "FrenchTimeZone" | This configuration line specifies that in our configuration we are using the **xTimeZone** resource which, as its name suggests, allows us to configure the time location of our server in order to manage the time properly. If you want to see the code for this resource, just refer to the module content we declared above. |
+| IsSingleInstance = "Yes" TimeZone = "Romance Standard Time" | Finally, these last two elements constitute the parameters necessary for the DSC xTimeZone module                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
-# Mode d'application d'une configuration DSC
+#How to apply a DSC configuration
 
-La cinématique d'appel d'une configuration DSC est la suivante. Pour chaque ressource présente dans la configuration, le local configuration manager va appeler en séquence trois méthodes powershell:
+The call kinematics of a DSC configuration is as follows. For each resource present in the configuration, the local configuration manager will call three powershell methods in sequence:
 
 1. Get-TargetResource
 2. Test-TargetResource
 3. Set-TargetResource
 
-Comme vous l'aurez compris, toutes les ressources DSC doivent implémenter ces fonctions afin qu'elles puissent être appliquées par le local configuration manager.
+As you will understand, all DSC resources must implement these functions so that they can be applied by the local configuration manager.
 
 ## Get-TargetResource
 
-Cette première méthode permet de récupérer le composant que nous volons paramétrer.
-Ainsi le module xTimeZone récupère la configuration courante de la TimeZone du serveur sur lequel nous voulons appliquer notre configuration.
+This first method is used to retrieve the component that we want to configure.
+Thus the xTimeZone module retrieves the current configuration of the TimeZone of the server on which we want to apply our configuration.
 
 ## Test-TargetResource
 
-Cette méthode teste l'état du serveur courant vis-à-vis de la configuration attendue.
-Deux cas peuvent se présenter alors:
+This method tests the state of the current server against the expected configuration.
+Two cases can then arise:
 
-1. Si l'état courant du serveur est conforme à celui demandé dans la configuration, la fonction Test-TargetResource retourne alors la valeur ```$true```
-2. Si l'état courant n'est pas dans l'état désiré, alors elle retourne la valeur ```$false```.
+1. If the current state of the server conforms to that requested in the configuration, the Test-TargetResource function then returns the value ```$true```
+2. If the current state is not in the desired state, then it returns ```$false```.
 
-En fonction du retour de cette méthode, le Local Configuration Manager exécute ou non la fonction ```Set-TargetResource```.
+Depending on the return of this method, the Local Configuration Manager executes or not the ```Set-TargetResource``` function.
 
 ## Set-TargetResource
 
-Cette dernière méthode réalise effectivement la configuration du serveur. Dans notre cas, elle configure la TimeZone du serveur en "**Romance Standard Time**".
+This last method actually performs the configuration of the server. In our case, it configures the server's TimeZone to "**Romance Standard Time**".
 
-En fin de cycle, le serveur est donc configuré tel que décrit dans le référentiel.
+At the end of the cycle, the server is therefore configured as described in the repository.
 
-# Et maintenant, parlons déploiement des configurations
+# And now let's talk about deploying configurations
 
-Maintenant que vous maîtrisez la logique globale d'une configuration DSC, passons à la pratique.
+Now that you've mastered the overall logic of a DSC setup, let's get down to business.
 
 ## La compilation
 
-En premier lieu, il convient de créer et **compiler** la configuration DSC. Pour ce faire, nous allons partir de l'exemple suivant:
+First, you need to create and **compile** the DSC configuration. To do this, we will start from the following example:
 
 ```powershell
 
@@ -152,39 +152,38 @@ En premier lieu, il convient de créer et **compiler** la configuration DSC. Pou
   }
 
 ```
-
-Copier le contenu de ce fichier dans votre éditeur Powershell préféré et sauvegardez-le dans le dossier ```c:\temp``` sous le nom ```ConfigurationTest.ps1```
+Copy the contents of this file into your favorite Powershell editor and save it in the ```c:\temp``` folder as ```ConfigurationTest.ps1```
 
 ![presentation-powershell-dsc-04](/blog/images/post/2019/01/presentation-powershell-dsc-04.png)
 
-Ensuite, il faut que vous "**dotsourciez**" le fichier afin de charger la configuration DSC que vous venez de créer dans votre session powershell.
+Then, you have to "**dotsourciez**" the file in order to load the DSC configuration you just created in your powershell session.
 
 ![presentation-powershell-dsc-05](/blog/images/post/2019/01/presentation-powershell-dsc-05.png)
 
-Vous avez maintenant dans votre Shell la possibilité d'appeler la fonction ```ConfigurationTest``` pour compiler votre configuration.
+You now have in your Shell the possibility to call the ```ConfigurationTest``` function to compile your configuration.
 
 ![presentation-powershell-dsc-06](/blog/images/post/2019/01/presentation-powershell-dsc-06.png)
 
-Et voilà, la configuration est maintenant prête à être appliquée par le local configuration manager.
-Comme vous pouvez le constater, l'action de configuration a créé un sous-dossier dans le répertoire ```c:\temp``` nommé ConfigurationTest et contenant le fichier Mof, résultat de la configuration.
+And that's it, the configuration is now ready to be applied by the local configuration manager.
+As you can see, the configuration action created a subfolder in the ```c:\temp``` directory named ConfigurationTest and containing the Mof file, the result of the configuration.
 
 ![presentation-powershell-dsc-07](/blog/images/post/2019/01/presentation-powershell-dsc-07.png)
 
-## Le déploiement
+## The deployment
 
-Maintenant, passons au déploiement effectif de notre configuration sur un serveur.
-Il existe deux modes d'application des configurations:
+Now, let's move on to the actual deployment of our configuration on a server.
+There are two ways of applying configurations:
 
-1. Le mode Push
-2. Le mode pull
+1. Push Mode
+2. Sweater Mode
 
-### Le mode Push
+### Push mode
 
-Dans le cadre du déploiement en mode **Push**, c'est l'administrateur du système qui localement applique la configuration sur le serveur.
-C'est l'approche la plus simple.
-À chaque modification de la configuration, l'administrateur du système doit réappliquer manuellement la configuration.
+As part of deployment in **Push** mode, it is the system administrator who locally applies the configuration on the server.
+This is the simplest approach.
+Each time the configuration changes, the system administrator must manually reapply the configuration.
 
-La commande utilisée pour réaliser cette opération est la suivante:
+The command used to perform this operation is:
 
 ```powershell
 $spats = @{
@@ -197,31 +196,31 @@ $spats = @{
 Start-DscConfiguration @spats
 ```
 
-L'application de la "**ConfigurationTest**" que nous avons créé plus haut est donc déclenchée comme suit:
+The application of the "**ConfigurationTest**" that we created above is therefore triggered as follows:
 
 ![presentation-powershell-dsc-08](//dev-portfolio-blogassets/img/post/2019/01/presentation-powershell-dsc-08.png)
 
-Comme le montre l'image ci-dessus, qui présente les traces des actions du local configuration manager, nous pouvons observer que ce dernier à d'abord appelé la méthode **Test** de la ressource **File**.
+As shown in the image above, which presents the traces of the actions of the local configuration manager, we can observe that the latter first called the **Test** method of the **File** resource.
 
-Cette dernière a vérifié la présence sur le disque d'un dossier nommé ```c:\temp\test```.
-Ce dernier n'existait pas, en conséquence la directive Set a été appelée afin de créer le dossier.
+The latter checked the presence on the disk of a folder named ```c:\temp\test```.
+The latter did not exist, therefore the Set directive was called to create the folder.
 
-Lors du deuxième appel de la configuration DSC, nous pouvons constater que la méthode Set a été "**Skip**"
+On the second call to the DSC configuration, we can see that the Set method was "**Skip**"
 
 ![presentation-powershell-dsc-09](/blog/images/post/2019/01/presentation-powershell-dsc-09.png)
 
-### Le mode pull
+### Sweater mode
 
-Si le mode Push offre un premier niveau de réponse, lors de l'usage de DSC sur une infrastructure comprenant un grand nombre de serveurs vous serez vite confronté à certaines **limites**:
+If the Push mode offers a first level of response, when using DSC on an infrastructure comprising a large number of servers you will quickly be confronted with certain **limits**:
 
-- L'application des configurations en mode Push impose une **action de l'administrateur** pour appliquer les nouvelles versions de configuration
-- Vous devez **déployer à la main** les modules de ressource DSC dont a besoin votre configuration sur l'ensemble des serveurs ciblés
-- Vous n'avez pas accès à du reporting sur le statut de l'application de vos configurations de façon centralisée.
+- Applying configurations in push mode requires an **administrator action** to apply new configuration versions
+- You must **deploy by hand** the DSC resource modules that your configuration needs on all the targeted servers
+- You do not have access to reporting on the status of the application of your configurations in a centralized way.
 
-Le mode Pull est donc pour vous.
-En effet dans ce mode de configuration, le local configuration manager de vos serveurs pointe vers un serveur de configuration central nommée **pull serveur**.
-Sur une base de temps configurable, il interroge ce dernier pour récupérer la dernière version de configuration DSC qui lui est assignée et éventuellement télécharger les modules nécessaires avant l'application de la configuration.
+Pull mode is for you.
+Indeed in this configuration mode, the local configuration manager of your servers points to a central configuration server named **pull server**.
+On a configurable time base, it interrogates the latter to retrieve the latest DSC configuration version assigned to it and possibly download the necessary modules before the configuration is applied.
 
 ![presentation-powershell-dsc-10](/blog/images/post/2019/01/presentation-powershell-dsc-10.png)
 
-Nous verrons dans un prochain article comment mettre en oeuvre un pull serveur au sein de votre infrastructure.
+We will see in a future article how to implement a server pull within your infrastructure.

@@ -5,56 +5,58 @@ title: Et si on parlait outil finops
 type: post
 tags: [devops, cicd, finops, terraform, infracost]
 image: /images/post/2022/03/2022-03-16-et-si-on-parlait-outil-finops.png
+lang: en
 summary: "L'approche finops dans le cloud est indispensable pour être efficiente, mais elle doit être outillée. Infracost est là pour vous."
 ---
 
-On parle souvent de mise en place d'une pratique finops lorsque l'on évoque des projets de migration dans le cloud qui ont réussi. En effet
-rien de plus dramatique, mais hélas souvent trop fréquent, qu'une migration dans le cloud d'une infrastructure qui fait exploser les coûts de possession 
-de cette dernière.
+We often talk about setting up a finops practice when we talk about successful cloud migration projects. In effect
+nothing more dramatic, but unfortunately often all too frequent, than a migration to the cloud of an infrastructure that causes the cost of ownership to skyrocket
+of the latter.
 
-Si beaucoup d'équipes de développement et des DSI se disent finops, la pratique n'est hélas pas souvent largement répandue de façon exhaustive au sein des organisations,
-car elle met en jeu un large périmètre d'activité. Je ne vais pas détaillé ici les différentes activités et bonnes pratiques du finops que vous pourrez consultez sur le site [finops.world/pratiques](https://finops.world/pratiques), mon intention est de mettre en lumières l'outil ***Infracost*** qui me semble une très bonne option quant on parle cloud, Automation, Terraform et azure.
+Although many development teams and CIOs call themselves finops, the practice is unfortunately not often widespread in an exhaustive way within organizations,
+because it involves a wide scope of activity. I will not detail here the different finops activities and good practices that you can consult on the site [finops.world/pratiques](https://finops.world/pratiques), my intention is to highlight the tool ***Infracost*** which seems to me a very good option when it comes to cloud, Automation, Terraform and azure.
 
-## Le Finops "at early stage"
+## Finops "at early stage"
 
-Ma conviction c'est que pour ne pas dépenser dans le cloud et maîtriser ses coûts d'infrastructure, il faut se donner très tôt, dans le cycle de déploiement, une vision des montants de consommation engagés. Avec l'automatisation, l'infrastructure as a code, les dérives sont rapides pour les raisons suivantes:
+My conviction is that in order not to spend in the cloud and to control your infrastructure costs, you have to give yourself a vision very early in the deployment cycle of the amounts of consumption involved. With automation, infrastructure as a code, drifts are rapid for the following reasons:
 
-1. Les acteurs du développement d'infrascture sont souvent peu sensibilisés au coût de ce qu'ils déploient
-2. Le processus de cotation des éléments déployés n'est pas inclus dans le cycle de vie du projet
-3. Le mode de facturation des éléments d'infrastructure est souvent complexe 
+1. Infrastructure development actors are often unaware of the cost of what they deploy
+2. The process of rating deployed items is not included in the project life cycle
+3. The billing method for infrastructure elements is often complex
 
-Sans connaissance des coûts, sans actualisation fréquente, les écarts entre le budget estimé et la facture réelle peuvent être importants.
+Without knowledge of the costs, without frequent updating, the differences between the estimated budget and the actual invoice can be significant.
 
-Afin d'éviter ces écueils, je me suis rendu compte qu'il était primordial de s'outiller afin:
+In order to avoid these pitfalls, I realized that it was essential to equip myself in order to:
 
-1. D'effectuer des cotations d'infrastructure à haute vélocité
-2. De doter les équipes d'infrastructure de métriques financière le permettant très tôt de constater des dérives de coûts
-3. De mettre l'ensemble de l'outillage dans l'écosystème du développeur d'infrastructure
+1. Perform high-velocity infrastructure quotes
+2. Provide infrastructure teams with financial metrics allowing them to see cost drifts very early on
+3. To put all the tools in the ecosystem of the infrastructure developer
 
-En effet rien de mieux que de mettre dans les mains de celui qui génère les coûts (le codeur terraform) les outils qui l'alertent sur la facturation qu'il va générer.
+Indeed, nothing better than putting in the hands of the person who generates the costs (the terraform coder) the tools that alert him to the invoicing he will generate.
 
-Aussi, je voulais vous mettre en lumière l'outil [infracost](https://infracost.io) qui peut être une réponse à vos attentes. À défaut de répondre à toutes vos attentes en termes de finops, il vous permettra d'éviter les hémorragies de $$.
+Also, I wanted to highlight the [infracost](https://infracost.io) tool which may be an answer to your expectations. Failing to meet all of your finops expectations, it will save you from loosing $$.
 
-## Qu'y a-t-il dans la boite Infracost
+## What's in the Infracost box
 
-Le projet [infracost](https://github.com/infracost/infracost) est un projet open source qui couvrent les trois grands hyperscaler que sont [Azure](https://azure.microsoft.com/en-us/), [AWS](https://aws.amazon.com/fr/) et [GCP](https://cloud.google.com/?hl=fr).
+The [infracost](https://github.com/infracost/infracost) project is an open source project that covers the big three hyperscalers that are [Azure](https://azure.microsoft.com/en-us/) , [AWS](https://aws.amazon.com/fr/) and [GCP](https://cloud.google.com/?hl=fr).
 
-Infracost permet:
+Infracost allows:
 
-1. D'évaluer sur le poste du développeur terraform le coût de l'infrastructure dès la phase de plan (autrement dit avant le déploiement)
-2. D'effectuer une analyse en delta des coûts entre deux déploiements
-3. D'effectuer une analyse au sein de votre chaine Dev/Ops
-4. De publier des rapports de coûts au format HTML
+1. Assess the cost of the infrastructure on the terraform developer's position from the planning phase (in other words before deployment)
+2. Perform a cost delta analysis between two deployments
+3. Perform an analysis within your Dev/Ops chain
+4. Publish cost reports in HTML format
 
-Le tout en mode SaaS (utilisation des apis et de la base de prix fournis par Infracost) ou en mode OnPrem (moyennant le déploiement d'un serveur Node, et d'une base de données Postgres)
+All in SaaS mode (use of APIs and the price base provided by Infracost) or in OnPrem mode (by deploying a Node server and a Postgres database)
 
-## Liens utiles
+# Useful links
 
-Quelques liens pour aller plus loin:
+Some links to go further:
 
 - [Web Site Infracost](https://www.infracost.io/)
 - [Repository GitHub Infracost](https://github.com/infracost/infracost)
 - [Lien vers la documentation du produit](https://infracost.io/docs/)
-- [Ressources supportées sur Azure](https://www.infracost.io/docs/supported_resources/azure/)
-- [Ressources supportées sur AWS](https://www.infracost.io/docs/supported_resources/aws/)
-- [Ressources supportées sur GCP](https://www.infracost.io/docs/supported_resources/gcp/)
+- [Supported resources Azure](https://www.infracost.io/docs/supported_resources/azure/)
+- [Supported resources AWS](https://www.infracost.io/docs/supported_resources/aws/)
+- [Supported resources GCP](https://www.infracost.io/docs/supported_resources/gcp/)
+

@@ -17,7 +17,7 @@ lang: fr
 <div class="container">
 	<div class="row">
 		{% if site.posts.size > 0 %}
-		{% for post in paginator.posts %}
+		{% for post in paginator.posts | where_exp:"item", "item.lang contains site.active_lang" %}
 		{% include article-content.html %}
 		{% endfor %}
 		{% endif %}

@@ -1,71 +1,72 @@
 ---
 layout: post
 comments: true
-title: créer un site avec Jekyll et GitHub
+title: create a website with Jekyll and GitHub
 type: post
 tags: [devops, cicd, website, github, github action]
 image: /images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github.png
-summary: "Gérer votre documentation de repository sur Github est souvent un enjeu pour vous et pour la communauté. Jekyll et les Github Pages sont là pour ça."
+lang: en
+summary: "Managing your repository documentation on Github is often a challenge for you and for the community. Jekyll and the Github Pages are here for that."
 ---
 
-La documentation n'est pas notre point fort il faut bien l'admettre dans notre petit monde l'IT. Mais qui n'a jamais rencontré de vraies difficultés quand on revient sur un code un an après l'avoir produit. Documentation incomplète, mal organisée, et pas franchement séduisante lors de la lecture sont trop souvent notre lot, surtout quand on développe des sides projects. La solution Github + Jekyll est la pour ça. Je viens récemment de remettre en place un blog et j'ai été enthousiasmé de ce combo. Mes attentes étaient:
+Documentation is not our strong point, it must be admitted in our small IT world. But who has never encountered real difficulties when you come back to a code a year after having produced it. Incomplete documentation, poorly organized, and not really attractive when reading are too often our lot, especially when developing side projects. The Github + Jekyll solution is there for that. I just recently re-launched a blog and was excited about the combo. My expectations were:
 
-1. Avoir une solution ***gratuite***,
-2. Ne surtout pas écrire de javascript ou de HTML pour produire mes articles
-3. Avoir une solution centrée sur Git et la gestion de code source
-4. Ne pas gérer une infrastructure lourde type CMS avec des bases de données et un hébergement complexe
-5. Disposer d'une approche CI/CD pour la publication
+1. Have a ***free*** solution,
+2. Above all, do not write javascript or HTML to produce my articles
+3. Have a solution centered on Git and source code management
+4. Do not manage a heavy CMS-type infrastructure with databases and complex hosting
+5. Have a CI/CD approach to publishing
 
-## Qu'est-ce que Github page
+# What is Github page
 
-[Github](https://github.com/) offre depuis quelque temps déjà la possibilité d'héberger des sites Web sur l'ensemble de ses dépôts de code, et ce de façon gratuite. Évidemment le site en question doit suivre quelques guidelines et vous devez être averti de certaines contraintes:
+[Github](https://github.com/) has for some time now offered the ability to host websites on all of its code repositories for free. Obviously the site in question must follow some guidelines and you must be aware of certain constraints:
 
-1. Le site produit sera un site public, et ce même si votre dépôt de code est un dépôt privé
-2. La branche par défaut qui contient le code source de votre site est gh-pages (ce paramètre peut être modifié)
-3. Le site que vous allez pouvoir créer doit être constitué de pages statiques
-4. L'ensemble des pages sont servies en HTTPS depuis le domaine github.io. 
-5. L'utilisation des pages GitHub est sous mise au respect des règles suivantes : [GitHub Terms of Service](https://docs.github.com/en/articles/github-terms-of-service)
+1. The product site will be a public site, even if your code repository is a private repository
+2. The default branch that contains your site's source code is gh-pages (this setting can be changed)
+3. The site you are going to be able to create must consist of static pages
+4. All pages are served in HTTPS from the github.io domain.
+5. Use of GitHub pages is subject to the following rules: [GitHub Terms of Service](https://docs.github.com/en/articles/github-terms-of-service)
 
-Je ne vais pas vous faire l'affront de vous présenter comment on crée un dépôt de code sur cette célèbre plateforme. Une fois votre dépôt de code créé, rendez-vous sur la page de settings.
+I'm not going to insult you by showing you how to create a code repository on this famous platform. Once your code repository has been created, go to the settings page.
 
-![settings github](/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-1.png)
+![github settings](/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-1.png)
 
-Ensuite vous pourrez accéder aux paramètres de gestion des pages comme le montre l'écran si dessous:
+Then you can access the page management settings as shown in the screen below:
 
 ![settings github page](/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-2.png)
 
-## Produire le site statique : Jekyll est là
+## Produce the static site: Jekyll is here
 
-En novembre 2008, Tom Preston-Werner, l'un des quatre fondateurs de la plateforme GitHub publiait le générateur de sites Web Jekyll sous licence de logiciel libre MIT. Écrit en Ruby, ce générateur fonctionne sur la base d’un référentiel de templates qui contient une série de fichiers texte structurés et statiques (markdowns) de différents formats. Ils déterminent non seulement la mise en page, mais aussi le contenu de chaque projet Web. Ils peuvent donc être adaptés aux besoins individuels. Le générateur ne fournit pas l’éditeur WYSIWYG, mais nécessite l'écriture de code classique. À cette fin, il est recommandé d’utiliser l’éditeur vscode et ses plugins, qui simplifie l'édition de Markdown, et qui est aussi optimisé pour Jekyll.
+In November 2008, Tom Preston-Werner, one of the four founders of the GitHub platform published the Jekyll website generator under the MIT free software license. Written in Ruby, this generator works on the basis of a template repository which contains a series of structured and static text files (markdowns) of different formats. They not only determine the layout, but also the content of each web project. They can therefore be adapted to individual needs. The generator does not provide the WYSIWYG editor, but requires writing classic code. For this purpose, it is recommended to use the vscode editor and its plugins, which simplifies Markdown editing, and which is also optimized for Jekyll.
 
-Avant que les modifications apportées au code ne soient incorporées dans la version live de l'application Web, elles peuvent être inspectées grâce au serveur de développement de Jekyll. Le moteur de rendu implémenté s’assure que les fichiers se transforment en un site Web statique (qui peut ensuite être livré avec n'importe quel serveur Web commun). Ceci génère automatiquement le code HTML lorsque les modifications sont apportées aux fichiers texte.
+Before code changes are incorporated into the live version of the web application, they can be inspected through Jekyll's development server. The implemented rendering engine ensures that the files turn into a static website (which can then be delivered with any common web server). This automatically generates HTML code when changes are made to text files.
 
-Pour utiliser Jekyll, vous pouvez le télécharger et l’héberger localement sur votre propre ordinateur, mais aussi l'intégré à votre pipeline Github Action.
+To use Jekyll, you can download and host it locally on your own computer, or integrate it into your Github Action pipeline.
 
-Voici quelques liens utiles qui m'ont permis de construire mon site:
+Here are some useful links that allowed me to build my site:
 
 
-1. [Documentation Jekyll](https://jekyllrb.com/)
+1. [Jekyll Documentation](https://jekyllrb.com/)
 2. [Theme Jekyll](https://jekyllrb.com/docs/themes/):
-   1. [GitHub.com #jekyll-theme repos](https://jekyllrb.com/docs/themes/)
+   1. [github.com #jekyll-theme repos](https://jekyllrb.com/docs/themes/)
    2. [jamstackthemes.dev](jamstackthemes.dev)
    3. [jekyllthemes.org](jekyllthemes.org)
    4. [jekyllthemes.io](jekyllthemes.io)
    5. [jekyll-themes.com](jekyll-themes.com)
-3. [Moteur Liquid](https://shopify.github.io/liquid/filters/divided_by/)
+3. [Liquid Engine](https://shopify.github.io/liquid/filters/divided_by/)
 
-## Et la CI/CD ?
+## And the CI/CD?
 
-Jekyll nous offre donc la possibilité de transformer vos articles écris en markdown et page HTML classique, Github nous permet d'héberger le site Web au sein d'une branche de notre dépôt de code, que nous manque-t-il ? De la fluidité.
+Jekyll therefore offers us the possibility of transforming your written articles into markdown and classic HTML page, Github allows us to host the website within a branch of our code repository, what are we missing? Fluidity.
 
-Grâce au GitHub action, vous allez pouvoir automatiser le processus de production de votre site Web. À chaque commit sur votre branche main (ou master, ou de documentation), nous allons déclencher un pipeline qui:
+Thanks to the GitHub action, you will be able to automate the production process of your website. On every commit to your main (or master, or docs) branch, we'll trigger a pipeline that:
 
-1. checkout le code de votre branche
+1. checkout your branch code
 2. Install Jekyll
-3. Lance la commande ```Jekyll build``` permettant la production de votre site statique dans un dossier _site de l'agent de build
-4. Commit le contenu du dossier _site dans votre dépôt mettant ainsi à jour votre site
+3. Launches the command ```Jekyll build``` allowing the production of your static site in a _site folder of the build agent
+4. Commit the contents of the _site folder to your repository thus updating your site
 
-Pour cela, dans la branche master de votre site créez le dossier .github et positionner le contenu comme suit:
+To do this, in the master branch of your site create the .github folder and position the content as follows:
 
 ```yaml
 📦.github
@@ -143,11 +144,11 @@ jobs:
         publish_branch: gh-pages
  ```
 
-Comme vous pouvez le constatez ce fichier décrit le pipeline github action qui est déclenchée lors de chaque push sur la branche master. Pour plus d'information sur les modes de déclenchement et l'écriture d'action plus complexe je vous recommande le site suivant : [https://github.com/features/actions](https://github.com/features/actions). Attention, la branche gh-pages doit être créée, sans contenu, avant le premier lancement de la pipeline
-## Et voilà ...
+As you can see this file describes the github action pipeline that is triggered on each push to the master branch. For more information on trigger modes and more complex action writing I recommend the following site: [https://github.com/features/actions](https://github.com/features/ shares). Attention, the gh-pages branch must be created, without content, before the first launch of the pipeline
+## And There you go ...
 
-Une fois mis en place votre site, écrit votre premier article, et pousser tout ça dans votre branche master, vous pourrez constater que le site Web et automatiquement builder. Voici ce à quoi je suis arrivé pour faire mon blog et présenter mon expérience avec cette suite d'outil:
+Once you've set up your site, written your first article, and pushed it all into your master branch, you'll find that the website builds automatically. Here is what I came up with to make my blog and present my experience with this tool suite:
 
-![résultat](/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-3.png)
+![result](/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-3.png)
 
-Vous pouvez accéder au code source de mon blog ici : [https://github.com/matthieupetite/blog/](https://github.com/matthieupetite/blog/)
+You can access the source code of my blog here: [https://github.com/matthieupetite/blog/](https://github.com/matthieupetite/blog/)
