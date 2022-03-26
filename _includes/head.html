@@ -2,27 +2,39 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.data.settings.title }}{% endif %}</title>
+  {% assign currenturl = page.url | replace:'index.html','' | absolute_url %}
   <meta name='description' content='{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.data.settings.description }}{% endif %}'>
-  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='{{ page.title }}'/>
+  {% if site.active_lang == "en" and page.layout == "competence" %}
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='{{ page.title.en }}'/>
+  <title>{{ page.title.en }}</title>
+  {% elsif site.active_lang == "fr" and page.layout == "competence" %}
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='{{ page.title.fr }}' />
+  <title>{{ page.title.fr }}8</title>
+  {% else %}
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='{{ page.title }}' />
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.data.settings.title }}{% endif %}</title>
+  {% endif %}
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
   <meta prefix="go: http://ogp.me/ns#" property='og:description' content='{{ page.summary }}'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
-  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
+  {% if site.active_lang == "en" %}
+  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="{{ currenturl | replace:'blog','blog/en'}}">
+  {% else %}
+  <meta prefix="go: http://ogp.me/ns#" property="og:url" content="{{ currenturl }}">
+  {% endif %}
   <meta prefix="go: http://ogp.me/ns#" property="og:pagetype" content="{{ page.type }}">
   {% if page.url == "https://matthieupetite.github.io/blog/" %}
     <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/01.jpg">
   {% elsif page.url == "https://matthieupetite.github.io/resume/" %}
     <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/images/matthieu-petite-2.jpg">
   {% else if page.image != "" %}
-    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog/{{ page.image }}">
+    <meta name="image" property="og:image" content="https://matthieupetite.github.io/blog{{ page.image }}">
   {% endif %}
 
   <meta name="author" content="Matthieu PETITE">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+  <link rel="canonical" href="{{ currenturl }}">
   <link rel="icon" href="https://matthieupetite.github.io/blog/favicon.ico" />
-  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
