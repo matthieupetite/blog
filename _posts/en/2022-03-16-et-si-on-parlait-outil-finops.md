@@ -1,12 +1,12 @@
 ---
 layout: post
 comments: true
-title: Et si on parlait outil finops
+title: And If we talk about finops
 type: post
 tags: [devops, cicd, finops, terraform, infracost]
 image: /images/post/2022/03/2022-03-16-et-si-on-parlait-outil-finops.png
 lang: en
-summary: "L'approche finops dans le cloud est indispensable pour être efficiente, mais elle doit être outillée. Infracost est là pour vous."
+summary: "The finops approach in the cloud is essential to be efficient, but it must be equipped. Infracost is there for you"
 ---
 
 We often talk about setting up a finops practice when we talk about successful cloud migration projects. In effect
