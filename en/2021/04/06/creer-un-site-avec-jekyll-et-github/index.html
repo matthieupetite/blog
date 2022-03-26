@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>créer un site avec Jekyll et GitHub</title>
+  <title>create a website with Jekyll and GitHub</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
-  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='créer un site avec Jekyll et GitHub'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='create a website with Jekyll and GitHub'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
-  <meta prefix="go: http://ogp.me/ns#" property='og:description' content='Gérer votre documentation de repository sur Github est souvent un enjeu pour vous et pour la communauté. Jekyll et les Github Pages sont là pour ça.'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:description' content='Managing your repository documentation on Github is often a challenge for you and for the community. Jekyll and the Github Pages are here for that.'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
   <meta prefix="go: http://ogp.me/ns#" property="og:url" content="https://matthieupetite.github.io//blog/2021/04/06/creer-un-site-avec-jekyll-et-github/">
   <meta prefix="go: http://ogp.me/ns#" property="og:pagetype" content="post">
@@ -228,7 +228,7 @@
           <time datetime="2021-04-06T00:00:00+00:00">Apr 06, 2021</time>
         </span>
 
-        <h1 class="post-title">créer un site avec Jekyll et GitHub</h1>
+        <h1 class="post-title">create a website with Jekyll and GitHub</h1>
 
         <div class="post__info">
           <div class="post__author">
@@ -272,74 +272,74 @@
     <article class="post  col col-8 col-t-10 col-m-12">
 
       <div class="post__content">
-        <p>La documentation n’est pas notre point fort il faut bien l’admettre dans notre petit monde l’IT. Mais qui n’a jamais rencontré de vraies difficultés quand on revient sur un code un an après l’avoir produit. Documentation incomplète, mal organisée, et pas franchement séduisante lors de la lecture sont trop souvent notre lot, surtout quand on développe des sides projects. La solution Github + Jekyll est la pour ça. Je viens récemment de remettre en place un blog et j’ai été enthousiasmé de ce combo. Mes attentes étaient:</p>
+        <p>Documentation is not our strong point, it must be admitted in our small IT world. But who has never encountered real difficulties when you come back to a code a year after having produced it. Incomplete documentation, poorly organized, and not really attractive when reading are too often our lot, especially when developing side projects. The Github + Jekyll solution is there for that. I just recently re-launched a blog and was excited about the combo. My expectations were:</p>
 
 <ol>
-  <li>Avoir une solution <strong><em>gratuite</em></strong>,</li>
-  <li>Ne surtout pas écrire de javascript ou de HTML pour produire mes articles</li>
-  <li>Avoir une solution centrée sur Git et la gestion de code source</li>
-  <li>Ne pas gérer une infrastructure lourde type CMS avec des bases de données et un hébergement complexe</li>
-  <li>Disposer d’une approche CI/CD pour la publication</li>
+  <li>Have a <strong><em>free</em></strong> solution,</li>
+  <li>Above all, do not write javascript or HTML to produce my articles</li>
+  <li>Have a solution centered on Git and source code management</li>
+  <li>Do not manage a heavy CMS-type infrastructure with databases and complex hosting</li>
+  <li>Have a CI/CD approach to publishing</li>
 </ol>
 
-<h2 id="quest-ce-que-github-page">Qu’est-ce que Github page</h2>
+<h1 id="what-is-github-page">What is Github page</h1>
 
-<p><a href="https://github.com/">Github</a> offre depuis quelque temps déjà la possibilité d’héberger des sites Web sur l’ensemble de ses dépôts de code, et ce de façon gratuite. Évidemment le site en question doit suivre quelques guidelines et vous devez être averti de certaines contraintes:</p>
+<p><a href="https://github.com/">Github</a> has for some time now offered the ability to host websites on all of its code repositories for free. Obviously the site in question must follow some guidelines and you must be aware of certain constraints:</p>
 
 <ol>
-  <li>Le site produit sera un site public, et ce même si votre dépôt de code est un dépôt privé</li>
-  <li>La branche par défaut qui contient le code source de votre site est gh-pages (ce paramètre peut être modifié)</li>
-  <li>Le site que vous allez pouvoir créer doit être constitué de pages statiques</li>
-  <li>L’ensemble des pages sont servies en HTTPS depuis le domaine github.io.</li>
-  <li>L’utilisation des pages GitHub est sous mise au respect des règles suivantes : <a href="https://docs.github.com/en/articles/github-terms-of-service">GitHub Terms of Service</a></li>
+  <li>The product site will be a public site, even if your code repository is a private repository</li>
+  <li>The default branch that contains your site’s source code is gh-pages (this setting can be changed)</li>
+  <li>The site you are going to be able to create must consist of static pages</li>
+  <li>All pages are served in HTTPS from the github.io domain.</li>
+  <li>Use of GitHub pages is subject to the following rules: <a href="https://docs.github.com/en/articles/github-terms-of-service">GitHub Terms of Service</a></li>
 </ol>
 
-<p>Je ne vais pas vous faire l’affront de vous présenter comment on crée un dépôt de code sur cette célèbre plateforme. Une fois votre dépôt de code créé, rendez-vous sur la page de settings.</p>
+<p>I’m not going to insult you by showing you how to create a code repository on this famous platform. Once your code repository has been created, go to the settings page.</p>
 
-<p><img src="/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-1.png" alt="settings github" /></p>
+<p><img src="/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-1.png" alt="github settings" /></p>
 
-<p>Ensuite vous pourrez accéder aux paramètres de gestion des pages comme le montre l’écran si dessous:</p>
+<p>Then you can access the page management settings as shown in the screen below:</p>
 
 <p><img src="/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-2.png" alt="settings github page" /></p>
 
-<h2 id="produire-le-site-statique--jekyll-est-là">Produire le site statique : Jekyll est là</h2>
+<h2 id="produce-the-static-site-jekyll-is-here">Produce the static site: Jekyll is here</h2>
 
-<p>En novembre 2008, Tom Preston-Werner, l’un des quatre fondateurs de la plateforme GitHub publiait le générateur de sites Web Jekyll sous licence de logiciel libre MIT. Écrit en Ruby, ce générateur fonctionne sur la base d’un référentiel de templates qui contient une série de fichiers texte structurés et statiques (markdowns) de différents formats. Ils déterminent non seulement la mise en page, mais aussi le contenu de chaque projet Web. Ils peuvent donc être adaptés aux besoins individuels. Le générateur ne fournit pas l’éditeur WYSIWYG, mais nécessite l’écriture de code classique. À cette fin, il est recommandé d’utiliser l’éditeur vscode et ses plugins, qui simplifie l’édition de Markdown, et qui est aussi optimisé pour Jekyll.</p>
+<p>In November 2008, Tom Preston-Werner, one of the four founders of the GitHub platform published the Jekyll website generator under the MIT free software license. Written in Ruby, this generator works on the basis of a template repository which contains a series of structured and static text files (markdowns) of different formats. They not only determine the layout, but also the content of each web project. They can therefore be adapted to individual needs. The generator does not provide the WYSIWYG editor, but requires writing classic code. For this purpose, it is recommended to use the vscode editor and its plugins, which simplifies Markdown editing, and which is also optimized for Jekyll.</p>
 
-<p>Avant que les modifications apportées au code ne soient incorporées dans la version live de l’application Web, elles peuvent être inspectées grâce au serveur de développement de Jekyll. Le moteur de rendu implémenté s’assure que les fichiers se transforment en un site Web statique (qui peut ensuite être livré avec n’importe quel serveur Web commun). Ceci génère automatiquement le code HTML lorsque les modifications sont apportées aux fichiers texte.</p>
+<p>Before code changes are incorporated into the live version of the web application, they can be inspected through Jekyll’s development server. The implemented rendering engine ensures that the files turn into a static website (which can then be delivered with any common web server). This automatically generates HTML code when changes are made to text files.</p>
 
-<p>Pour utiliser Jekyll, vous pouvez le télécharger et l’héberger localement sur votre propre ordinateur, mais aussi l’intégré à votre pipeline Github Action.</p>
+<p>To use Jekyll, you can download and host it locally on your own computer, or integrate it into your Github Action pipeline.</p>
 
-<p>Voici quelques liens utiles qui m’ont permis de construire mon site:</p>
+<p>Here are some useful links that allowed me to build my site:</p>
 
 <ol>
-  <li><a href="https://jekyllrb.com/">Documentation Jekyll</a></li>
+  <li><a href="https://jekyllrb.com/">Jekyll Documentation</a></li>
   <li><a href="https://jekyllrb.com/docs/themes/">Theme Jekyll</a>:
     <ol>
-      <li><a href="https://jekyllrb.com/docs/themes/">GitHub.com #jekyll-theme repos</a></li>
+      <li><a href="https://jekyllrb.com/docs/themes/">github.com #jekyll-theme repos</a></li>
       <li><a href="jamstackthemes.dev">jamstackthemes.dev</a></li>
       <li><a href="jekyllthemes.org">jekyllthemes.org</a></li>
       <li><a href="jekyllthemes.io">jekyllthemes.io</a></li>
       <li><a href="jekyll-themes.com">jekyll-themes.com</a></li>
     </ol>
   </li>
-  <li><a href="https://shopify.github.io/liquid/filters/divided_by/">Moteur Liquid</a></li>
+  <li><a href="https://shopify.github.io/liquid/filters/divided_by/">Liquid Engine</a></li>
 </ol>
 
-<h2 id="et-la-cicd-">Et la CI/CD ?</h2>
+<h2 id="and-the-cicd">And the CI/CD?</h2>
 
-<p>Jekyll nous offre donc la possibilité de transformer vos articles écris en markdown et page HTML classique, Github nous permet d’héberger le site Web au sein d’une branche de notre dépôt de code, que nous manque-t-il ? De la fluidité.</p>
+<p>Jekyll therefore offers us the possibility of transforming your written articles into markdown and classic HTML page, Github allows us to host the website within a branch of our code repository, what are we missing? Fluidity.</p>
 
-<p>Grâce au GitHub action, vous allez pouvoir automatiser le processus de production de votre site Web. À chaque commit sur votre branche main (ou master, ou de documentation), nous allons déclencher un pipeline qui:</p>
+<p>Thanks to the GitHub action, you will be able to automate the production process of your website. On every commit to your main (or master, or docs) branch, we’ll trigger a pipeline that:</p>
 
 <ol>
-  <li>checkout le code de votre branche</li>
+  <li>checkout your branch code</li>
   <li>Install Jekyll</li>
-  <li>Lance la commande <code class="highlighter-rouge">Jekyll build</code> permettant la production de votre site statique dans un dossier _site de l’agent de build</li>
-  <li>Commit le contenu du dossier _site dans votre dépôt mettant ainsi à jour votre site</li>
+  <li>Launches the command <code class="highlighter-rouge">Jekyll build</code> allowing the production of your static site in a _site folder of the build agent</li>
+  <li>Commit the contents of the _site folder to your repository thus updating your site</li>
 </ol>
 
-<p>Pour cela, dans la branche master de votre site créez le dossier .github et positionner le contenu comme suit:</p>
+<p>To do this, in the master branch of your site create the .github folder and position the content as follows:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">📦.github</span>
  <span class="s">┗ 📂workflows</span>
@@ -415,14 +415,14 @@
         <span class="na">publish_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
 </code></pre></div></div>
 
-<p>Comme vous pouvez le constatez ce fichier décrit le pipeline github action qui est déclenchée lors de chaque push sur la branche master. Pour plus d’information sur les modes de déclenchement et l’écriture d’action plus complexe je vous recommande le site suivant : <a href="https://github.com/features/actions">https://github.com/features/actions</a>. Attention, la branche gh-pages doit être créée, sans contenu, avant le premier lancement de la pipeline</p>
-<h2 id="et-voilà-">Et voilà …</h2>
+<p>As you can see this file describes the github action pipeline that is triggered on each push to the master branch. For more information on trigger modes and more complex action writing I recommend the following site: <a href="https://github.com/features/ shares">https://github.com/features/actions</a>. Attention, the gh-pages branch must be created, without content, before the first launch of the pipeline</p>
+<h2 id="and-there-you-go-">And There you go …</h2>
 
-<p>Une fois mis en place votre site, écrit votre premier article, et pousser tout ça dans votre branche master, vous pourrez constater que le site Web et automatiquement builder. Voici ce à quoi je suis arrivé pour faire mon blog et présenter mon expérience avec cette suite d’outil:</p>
+<p>Once you’ve set up your site, written your first article, and pushed it all into your master branch, you’ll find that the website builds automatically. Here is what I came up with to make my blog and present my experience with this tool suite:</p>
 
-<p><img src="/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-3.png" alt="résultat" /></p>
+<p><img src="/blog/images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github-3.png" alt="result" /></p>
 
-<p>Vous pouvez accéder au code source de mon blog ici : <a href="https://github.com/matthieupetite/blog/">https://github.com/matthieupetite/blog/</a></p>
+<p>You can access the source code of my blog here: <a href="https://github.com/matthieupetite/blog/">https://github.com/matthieupetite/blog/</a></p>
 
       </div>
 
@@ -438,14 +438,14 @@
 
           <li class="share__item">
             <a class="share__twitter"
-              href="https://twitter.com/intent/tweet?text=cr%C3%A9er%20un%20site%20avec%20Jekyll%20et%20GitHub&url=https://matthieupetite.github.io//blog/2021/04/06/creer-un-site-avec-jekyll-et-github/"
+              href="https://twitter.com/intent/tweet?text=create%20a%20website%20with%20Jekyll%20and%20GitHub&url=https://matthieupetite.github.io//blog/2021/04/06/creer-un-site-avec-jekyll-et-github/"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
           </li>
 
           <li class="share__item">
             <a class="share__linkedin"
-              href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2021/04/06/creer-un-site-avec-jekyll-et-github/&title=cr%C3%A9er%20un%20site%20avec%20Jekyll%20et%20GitHub&summary=&source="
+              href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2021/04/06/creer-un-site-avec-jekyll-et-github/&title=create%20a%20website%20with%20Jekyll%20and%20GitHub&summary=&source="
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
           </li>
@@ -464,11 +464,11 @@
         style="background-image: url(/blog//images/post/2021/03/2021-03-31-deploiement-prometheus-grafana-kubernetes.png)"></a>
       <h2 class="post__nav__title">
         <i class="ion ion-md-arrow-back"></i>
-        <a href="/blog/en/2021/03/31/deploiement-prometheus-grafana-kubernetes/">Deploiement de la suite prometheus grafana sous Kubernetes</a>
+        <a href="/blog/en/2021/03/31/deploiement-prometheus-grafana-kubernetes/">Deployment of the prometheus grafana suite under Kubernetes</a>
       </h2>
       <p class="prev__excerpt">
         
-        Superviser le cloud est un enjeu majeur lorsque l’on décide d’y déployer une application métier. En effet, ...
+        Supervising the cloud is a major issue when deciding to deploy a business application there. Indeed, what i...
         
       </p>
     </div>
@@ -485,7 +485,7 @@
       </h2>
       <p class="next__excerpt">
         
-        On parle souvent de mise en place d'une pratique finops lorsque l'on évoque des projets de migration dans l...
+        We often talk about setting up a finops practice when we talk about successful cloud migration projects. In...
         
       </p>
     </div>

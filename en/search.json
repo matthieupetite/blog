@@ -1,7 +1,7 @@
 [
   
     {
-      "title"    : "Infracost, Support des Azure Sql Managed Instance",
+      "title"    : "Infracost, Azure Sql Managed Instance Support",
       "category" : "",
       "tags"     : "devops, cicd, finops, terraform, infracost, and azure",
       "url"      : "/blog/2022/03/23/infracost-support-sql-managed-instance/",
@@ -17,7 +17,7 @@
     } ,
   
     {
-      "title"    : "créer un site avec Jekyll et GitHub",
+      "title"    : "create a website with Jekyll and GitHub",
       "category" : "",
       "tags"     : "devops, cicd, website, github, and github action",
       "url"      : "/blog/2021/04/06/creer-un-site-avec-jekyll-et-github/",
@@ -25,7 +25,7 @@
     } ,
   
     {
-      "title"    : "Deploiement de la suite prometheus grafana sous Kubernetes",
+      "title"    : "Deployment of the prometheus grafana suite under Kubernetes",
       "category" : "",
       "tags"     : "kubernetes, prometheus, grafana, k3d, and helm",
       "url"      : "/blog/2021/03/31/deploiement-prometheus-grafana-kubernetes/",
@@ -33,7 +33,7 @@
     } ,
   
     {
-      "title"    : "Installation de Kafka avec l opérateur Strimzi sur Kubernetes",
+      "title"    : "Installing Kafka with the Strimzi operator on Kubernetes",
       "category" : "",
       "tags"     : "kubernetes, kafka, strimzi, and helm",
       "url"      : "/blog/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/",
@@ -41,7 +41,7 @@
     } ,
   
     {
-      "title"    : "Helm, Kubernetes, et les systèmes de fichier multiniveau",
+      "title"    : "Helm, Kubernetes, and multi-level file systems",
       "category" : "",
       "tags"     : "kubernetes and docker",
       "url"      : "/blog/2020/03/18/helm-et-les-filesystem-multi-niveau/",
@@ -49,7 +49,7 @@
     } ,
   
     {
-      "title"    : "Présentation de Powershell DSC",
+      "title"    : "Powershell DSC Presentation",
       "category" : "",
       "tags"     : "powershell and devOps",
       "url"      : "/blog/2020/03/16/presentation-powershell-dsc/",

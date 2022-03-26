@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Helm, Kubernetes, et les systèmes de fichier multiniveau</title>
+  <title>Helm, Kubernetes, and multi-level file systems</title>
   <meta name='description' content='Bienvenu sur mon blog Tech, Cloud, et DevOps'>
-  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='Helm, Kubernetes, et les systèmes de fichier multiniveau'/>
+  <meta prefix="go: http://ogp.me/ns#" property='og:title' content='Helm, Kubernetes, and multi-level file systems'/>
   <meta prefix="go: http://ogp.me/ns#" property="og:site_name" content="Matthieu Petite Blog">
   <meta prefix="go: http://ogp.me/ns#" property='og:description' content=''/>
   <meta prefix="go: http://ogp.me/ns#" property="og:type" content="article">
@@ -228,7 +228,7 @@
           <time datetime="2020-03-18T00:00:00+00:00">Mar 18, 2020</time>
         </span>
 
-        <h1 class="post-title">Helm, Kubernetes, et les systèmes de fichier multiniveau</h1>
+        <h1 class="post-title">Helm, Kubernetes, and multi-level file systems</h1>
 
         <div class="post__info">
           <div class="post__author">
@@ -266,33 +266,33 @@
     <article class="post  col col-8 col-t-10 col-m-12">
 
       <div class="post__content">
-        <p>Dans cet article nous allons traiter de la mise en place d’un système de fichier multiniveau au sein d’une image docker dans un contexte Kubernetes, avec un déploiement kind.</p>
+        <p>In this article we will discuss setting up a multi-tier file system within a docker image in a Kubernetes context, with a kind deployment.</p>
 
-<h1 id="problématique">Problématique</h1>
+<h1 id="problem">Problem</h1>
 
-<p>Bien souvent, il convient lors du déploiement d’une application sous Kubernetes de s’assurer que les fichiers de configuration applicatifs soient présents sur l’image. Certes, il n’est pas préconisé d’injecter de la configuration par système de fichier (on préfère souvent les variables d’environnement), mais quand on porte une application sous k8s c’est hélas souvent une problématique à laquelle on est confronté. D’autant que les dit fichiers doivent évolués en fonction des environnements de déploiement.</p>
+<p>Very often, when deploying an application under Kubernetes, it is advisable to ensure that the application configuration files are present on the image. Admittedly, it is not recommended to inject configuration by file system (we often prefer environment variables), but when we port an application under k8s it is unfortunately often a problem we are confronted with. Especially since the said files must evolve according to the deployment environments.</p>
 
-<p>Une approche simple consisterait à mettre en place une config map par fichier, mais, le travail peut être long et fastidieux quand on est dans le cas de plusieurs dizaines de fichiers.</p>
+<p>A simple approach would be to set up one config map per file, but the work can be long and tedious when you are in the case of several dozen files.</p>
 
-<p>Je vous présente donc ici la solution que j’ai mise en oeuvre dans de multiples projets pour me simplifier la tâche.</p>
+<p>I therefore present here the solution that I have implemented in multiple projects to simplify my task.</p>
 
-<h1 id="prérequis">Prérequis</h1>
+<h1 id="prerequisites">Prerequisites</h1>
 
-<p>Voici la liste de prérequis pour le ce tutoriel:</p>
+<p>Here is the list of prerequisites for this tutorial:</p>
 
 <ol>
-  <li>disposer d’un environnement Kubernetes, nous utiliserons <a href="https://k3d.io/">k3d</a> ici</li>
-  <li>avoir des connaissances sur la solution de déploiement HELM</li>
-  <li>maitriser les concepts Kubernetes de configuration map / déploiement / …</li>
+  <li>have a Kubernetes environment, we will use <a href="https://k3d.io/">k3d</a> here</li>
+  <li>have knowledge of the HELM deployment solution</li>
+  <li>master the Kubernetes concepts of configuration map / deployment / …</li>
 </ol>
 
-<h1 id="solution">Solution</h1>
+<h1 id="workaround">Workaround</h1>
 
-<p>Nous allons mettre en place un mécanisme de construction dynamique de configuration map que nous allons ensuite monter dans une image. Les fichiers présentés dans la configuration map seront des fichiers texte dans lequel il conviendra de changer le contenu en fonction de valeur définie dans le fichier de values.yaml du chart.</p>
+<p>We’re going to set up a mechanism for dynamically building a configuration map which we’ll then mount into an image. The files presented in the map configuration will be text files in which it will be necessary to change the content according to the value defined in the values.yaml file of the chart.</p>
 
-<h1 id="définition-de-lattendu">Définition de l’attendu</h1>
+<h1 id="definition-of-the-expected">Definition of the expected</h1>
 
-<p>Pour illustrer notre configuration map multiniveau nous allons construire dans un container le filesystem suivant:</p>
+<p>To illustrate our multilevel map configuration we will build the following filesystem in a container:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>App
  ┣ subfolder
@@ -301,46 +301,46 @@
  ┗ file2.cfg
 </code></pre></div></div>
 
-<p>Dans le file1.cfg nous allons faire en sorte d’injecter des données de configuration en provenance du fichier de configuration du chart : le fichier values.yaml</p>
+<p>In the file1.cfg we will make sure to inject configuration data from the chart configuration file: the values.yaml file</p>
 
-<h1 id="étape-du-tutoriel">Étape du tutoriel</h1>
+<h1 id="tutorial-step">Tutorial step</h1>
 
-<h2 id="installation-de-k3d">Installation de k3d</h2>
+<h2 id="installing-k3d">Installing k3d</h2>
 
-<p>Après avoir installé l’outil k3d en suivant la <a href="https://k3d.io">procédure d’installation</a>, vérifiez la bonne installation de l’outil en lançant la commande suivante:</p>
+<p>After installing the k3d tool by following the <a href="https://k3d.io">installation procedure</a>, check the correct installation of the tool by running the following command:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d <span class="nt">--version</span>
 </code></pre></div></div>
 
-<p>Vous devez obtenir le résultat suivant:</p>
+<p>You should get the following result:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d version v3.2.0
 k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 </code></pre></div></div>
 
-<p>Créer votre premier cluster en lançant la commande</p>
+<p>Create your first cluster by running the command</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d cluster create mycluter
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k3d cluster create mycluster
 </code></pre></div></div>
 
-<p>qui vous donne le résultat suivant:</p>
+<p>which gives you the following result:</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-1.png" alt="Création cluster k3d" /></p>
+<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-1.png" alt="Creating k3d cluster" /></p>
 
-<p>vous devez pouvoir voir la liste des pods de votre tout nouveau cluster en lançant la commande suivante:</p>
+<p>you should be able to see the list of pods in your brand new cluster by running the following command:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">--all-namespaces</span>
 </code></pre></div></div>
 
-<p>qui vous donne ce résultat:</p>
+<p>which gives you this result:</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-2.png" alt="Liste des pods du cluster" /></p>
+<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-2.png" alt="List of cluster pods" /></p>
 
-<h2 id="installation-de-helm3">Installation de HELM3</h2>
+<h2 id="helm3-installation">HELM3 installation</h2>
 
-<p>La procédure d’installation de l’outil est présente ici <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>.</p>
+<p>The tool installation procedure is present here <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>.</p>
 
-<p>Dans mon cas je suis sur une machine Ubuntu je lance donc simplement le script suivant comme indiqué dans la documentation:</p>
+<p>In my case I am on an Ubuntu machine so I simply run the following script as indicated in the documentation:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://baltocdn.com/helm/signing.asc | <span class="nb">sudo </span>apt-key add -
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>apt-transport-https <span class="nt">--yes</span>
@@ -349,19 +349,19 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>helm
 </code></pre></div></div>
 
-<p>vous pouvez vérifier que helm3 est correctement installé en lançant la commande suivante:</p>
+<p>you can verify that helm3 is correctly installed by running the following command:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm version
 </code></pre></div></div>
 
-<p>Qui doit vous retourner l’information suivante:</p>
+<p>Which should return the following information to you:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version.BuildInfo<span class="o">{</span>Version:<span class="s2">"v3.5.1"</span>, GitCommit:<span class="s2">"32c22239423b3b4ba6706d450bd044baffdcf9e6"</span>, GitTreeState:<span class="s2">"clean"</span>, GoVersion:<span class="s2">"go1.15.7"</span><span class="o">}</span>
 </code></pre></div></div>
 
-<h2 id="création-du-chart-à-partir-du-modèle">Création du chart à partir du modèle</h2>
+<h2 id="creating-the-chart-from-the-template">Creating the chart from the template</h2>
 
-<p>Passons maintenant à la mise en place du chart helm à proprement dit. Créez un dossier de projet, dans lequel nous allons travailler.</p>
+<p>Now let’s move on to setting up the helm chart itself. Create a project folder, in which we will work.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> ~/home/multilevel <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/home/multilevel
 </code></pre></div></div>
@@ -371,9 +371,9 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm create multilevelcm
 </code></pre></div></div>
 
-<p>Cette commande crée le squelette du chart dans le dossier <code class="highlighter-rouge">~/home/multilevel/</code>.</p>
+<p>This command creates the chart skeleton in the <code class="highlighter-rouge">~/home/multilevel/</code> folder.</p>
 
-<p>vous obtenez la structure de fichier suivante:</p>
+<p>you get the following file structure:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦multilevelcm
  ┣ 📂charts
@@ -392,15 +392,15 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
  ┗ 📜values.yaml
 </code></pre></div></div>
 
-<p>il s’agit d’un chart de base qui crée déploie un serveur nginx.</p>
+<p>This is a basic chart that creates and deploys an nginx server.</p>
 
-<p>Pour plus d’information sur l’anatomie des chart la documentation est ici <a href="https://helm.sh/docs/helm/helm_create/">https://helm.sh/docs/helm/helm_create/</a>.</p>
+<p>For more information on chart anatomy the documentation is here <a href="https://helm.sh/docs/helm/helm_create/">https://helm.sh/docs/helm/helm_create/</a>.</p>
 
-<h2 id="création-de-la-configuration-map-dynamique">Création de la configuration map dynamique</h2>
+<h2 id="creation-of-the-dynamic-map-configuration">Creation of the dynamic map configuration</h2>
 
-<h3 id="création-de-la-structure-de-fichier-dans-le-chart">création de la structure de fichier dans le chart</h3>
+<h3 id="creating-the-file-structure-in-the-chart">creating the file structure in the chart</h3>
 
-<p>Dans le dossier de chart, créer un dossier files qui contient la structure de notre dossier. Vous devez obtenir la structure de fichier suivant:</p>
+<p>In the chart folder, create a files folder that contains our folder structure. You should get the following file structure:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦multilevelcm
  ┣ 📂charts
@@ -424,25 +424,25 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
  ┗ 📜values.yaml
 </code></pre></div></div>
 
-<p>Dans les fichiers <code class="highlighter-rouge">file2.cfg</code> et <code class="highlighter-rouge">file3.cfg</code> mettez le contenu que vous souhaitez. Dans le <code class="highlighter-rouge">file1.cfg</code>, positionnez le contenu suivant:</p>
+<p>In the files <code class="highlighter-rouge">file2.cfg</code> and <code class="highlighter-rouge">file3.cfg</code> put the content you want. In the <code class="highlighter-rouge">file1.cfg</code>, position the following content:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="o">{{</span> .Values.configuration.file1 <span class="o">}}</span>
 
 </code></pre></div></div>
 
-<p>Ceci permettra au moteur de template d’aller chercher la valeur dans le fichier de chart. Pour cela à la fin du fichier values.yaml, ajoutez le contenu suivant:</p>
+<p>This will allow the template engine to fetch the value from the chart file. For this at the end of the values.yaml file, add the following content:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">configuration</span><span class="pi">:</span>
   <span class="na">file1</span><span class="pi">:</span> <span class="pi">|-</span>
     <span class="s">contenu du fichier 1</span>
 </code></pre></div></div>
 
-<h3 id="création-de-la-configmap">création de la configmap</h3>
+<h3 id="creating-the-configmap">creating the configmap</h3>
 
-<p>Dans le dossier du Chart, créer un dossier configmap pour loger le fichier de définition de notre objet.</p>
+<p>In the Chart folder, create a configmap folder to house the definition file of our object.</p>
 
-<p>dans ce fichier, positionner le contenu suivant:</p>
+<p>in this file, position the following content:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="nn">---</span>
@@ -462,13 +462,13 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 </code></pre></div></div>
 
-<p>l’usage de la fonction sha256sum permet de s’affranchir des caractères spéciaux éventuels dans le nom du fichier. La fonction tpl permet de considérer les fichiers comme des templates helm et donc d’y injecter des données en provenance du helm chart.</p>
+<p>the use of the sha256sum function makes it possible to avoid any special characters in the file name. The tpl function allows files to be considered as helm templates and therefore to inject data from the helm chart.</p>
 
-<h2 id="montage-de-la-configuration-map-dans-le-pod">montage de la configuration map dans le pod</h2>
+<h2 id="mounting-the-map-configuration-in-the-pod">mounting the map configuration in the pod</h2>
 
-<p>Il reste a monter la configuration map en tant que volume dans le container. Pour ce faire, éditer le fichier de déploiement pour y ajouter les éléments suivants:</p>
+<p>It remains to mount the configuration map as a volume in the container. To do this, edit the deployment file to add the following:</p>
 
-<p>Dans la partie du container, ajouter la déclaration du module:</p>
+<p>In the container part, add the module declaration:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">containers</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> 
@@ -493,7 +493,7 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
         <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/app"</span>
 </code></pre></div></div>
 
-<p>puis à la fin du fichier ajouter la déclaration du volume:</p>
+<p>then at the end of the file add the volume declaration:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="na">volumes</span><span class="pi">:</span>
@@ -509,18 +509,18 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
 </code></pre></div></div>
 
-<h2 id="résultat">Résultat</h2>
+<h2 id="results">Results</h2>
 
-<p>Notre chart est pret, pour le déployer sur le cluster k3d. positionnez vous dans votre dossier ~/multilevel et lancer la commande suivante:</p>
+<p>Our chart is ready, to deploy it on the k3d cluster. position yourself in your ~/multilevel folder and run the following command:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">-name</span> myrelease <span class="nt">-n</span> myrelease <span class="nt">--create-namespace</span> ./multilevelcm/
 </code></pre></div></div>
 
-<p>Avec l’outil <a href="https://k8slens.dev/">lens</a> connectez vous sur votre cluster, puis entrez dans votre pod. En navigant dans le dossier /app, vous constatez que tout vos fichiers sont la et que le contenu de votre fichier file1.cfg corresponds à ce que vous avez mis dans le fichier de values.</p>
+<p>With the tool <a href="https://k8slens.dev/">lens</a> connect to your cluster, then enter your pod. By browsing in the /app folder, you find that all your files are there and that the content of your file1.cfg corresponds to what you put in the values ​​file.</p>
 
-<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-niveau-3.png" alt="resultat" /></p>
+<p><img src="/blog/images/post/2020/03/2020-03-18-helm-filesystem-multin-level-3.png" alt="result" /></p>
 
-<p>le code du chart est disponible sur mon <a href="https://github.com/matthieupetite/kubernetes-multilevel-configurationmap">github</a></p>
+<p>the chart code is available on my <a href="https://github.com/matthieupetite/kubernetes-multilevel-configurationmap">github</a></p>
 
       </div>
 
@@ -536,14 +536,14 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
 
           <li class="share__item">
             <a class="share__twitter"
-              href="https://twitter.com/intent/tweet?text=Helm,%20Kubernetes,%20et%20les%20syst%C3%A8mes%20de%20fichier%20multiniveau&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/"
+              href="https://twitter.com/intent/tweet?text=Helm,%20Kubernetes,%20and%20multi-level%20file%20systems&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/"
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
           </li>
 
           <li class="share__item">
             <a class="share__linkedin"
-              href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/&title=Helm,%20Kubernetes,%20et%20les%20syst%C3%A8mes%20de%20fichier%20multiniveau&summary=&source="
+              href="https://www.linkedin.com/shareArticle?mini=true&url=https://matthieupetite.github.io//blog/2020/03/18/helm-et-les-filesystem-multi-niveau/&title=Helm,%20Kubernetes,%20and%20multi-level%20file%20systems&summary=&source="
               onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
               title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
           </li>
@@ -562,11 +562,11 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
         style="background-image: url(/blog//images/post/2019/01/presentation-powershell-dsc.png)"></a>
       <h2 class="post__nav__title">
         <i class="ion ion-md-arrow-back"></i>
-        <a href="/blog/en/2020/03/16/presentation-powershell-dsc/">Présentation de Powershell DSC</a>
+        <a href="/blog/en/2020/03/16/presentation-powershell-dsc/">Powershell DSC Presentation</a>
       </h2>
       <p class="prev__excerpt">
         
-        Et voilà, je suis tombé en amour, comme le disent nos amis francophones d’outre-Atlantique… Et quand on “to...
+        There you go, I fell in love, as our French-speaking friends across the Atlantic say… And when you “fall in...
         
       </p>
     </div>
@@ -578,12 +578,12 @@ k3s version v1.18.9-k3s1 <span class="o">(</span>default<span class="o">)</span>
         style="background-image: url(/blog//images//post/2020/03/2020-03-30-installation-kafka-strimzi-kubernetes.png)">
       </a>
       <h2 class="post__nav__title">
-        <a href="/blog/en/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">Installation de Kafka avec l opérateur Strimzi sur Kubernetes</a>
+        <a href="/blog/en/2020/03/30/installation-kafka-avec-l-operateur-strimzi-kubernetes/">Installing Kafka with the Strimzi operator on Kubernetes</a>
         <i class="ion ion-md-arrow-forward"></i>
       </h2>
       <p class="next__excerpt">
         
-        Dans cet article nous allons détailler l'installation de l'application Kafka a l'aide de l'[opérateur Strim...
+        In this article we will detail the installation of the Kafka application using the [Strimzi operator](https...
         
       </p>
     </div>

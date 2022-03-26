@@ -272,64 +272,65 @@
     <article class="post  col col-8 col-t-10 col-m-12">
 
       <div class="post__content">
-        <p>On parle souvent de mise en place d’une pratique finops lorsque l’on évoque des projets de migration dans le cloud qui ont réussi. En effet
-rien de plus dramatique, mais hélas souvent trop fréquent, qu’une migration dans le cloud d’une infrastructure qui fait exploser les coûts de possession 
-de cette dernière.</p>
+        <p>We often talk about setting up a finops practice when we talk about successful cloud migration projects. In effect
+nothing more dramatic, but unfortunately often all too frequent, than a migration to the cloud of an infrastructure that causes the cost of ownership to skyrocket
+of the latter.</p>
 
-<p>Si beaucoup d’équipes de développement et des DSI se disent finops, la pratique n’est hélas pas souvent largement répandue de façon exhaustive au sein des organisations,
-car elle met en jeu un large périmètre d’activité. Je ne vais pas détaillé ici les différentes activités et bonnes pratiques du finops que vous pourrez consultez sur le site <a href="https://finops.world/pratiques">finops.world/pratiques</a>, mon intention est de mettre en lumières l’outil <strong><em>Infracost</em></strong> qui me semble une très bonne option quant on parle cloud, Automation, Terraform et azure.</p>
+<p>Although many development teams and CIOs call themselves finops, the practice is unfortunately not often widespread in an exhaustive way within organizations,
+because it involves a wide scope of activity. I will not detail here the different finops activities and good practices that you can consult on the site <a href="https://finops.world/pratiques">finops.world/pratiques</a>, my intention is to highlight the tool <strong><em>Infracost</em></strong> which seems to me a very good option when it comes to cloud, Automation, Terraform and azure.</p>
 
-<h2 id="le-finops-at-early-stage">Le Finops “at early stage”</h2>
+<h2 id="finops-at-early-stage">Finops “at early stage”</h2>
 
-<p>Ma conviction c’est que pour ne pas dépenser dans le cloud et maîtriser ses coûts d’infrastructure, il faut se donner très tôt, dans le cycle de déploiement, une vision des montants de consommation engagés. Avec l’automatisation, l’infrastructure as a code, les dérives sont rapides pour les raisons suivantes:</p>
-
-<ol>
-  <li>Les acteurs du développement d’infrascture sont souvent peu sensibilisés au coût de ce qu’ils déploient</li>
-  <li>Le processus de cotation des éléments déployés n’est pas inclus dans le cycle de vie du projet</li>
-  <li>Le mode de facturation des éléments d’infrastructure est souvent complexe</li>
-</ol>
-
-<p>Sans connaissance des coûts, sans actualisation fréquente, les écarts entre le budget estimé et la facture réelle peuvent être importants.</p>
-
-<p>Afin d’éviter ces écueils, je me suis rendu compte qu’il était primordial de s’outiller afin:</p>
+<p>My conviction is that in order not to spend in the cloud and to control your infrastructure costs, you have to give yourself a vision very early in the deployment cycle of the amounts of consumption involved. With automation, infrastructure as a code, drifts are rapid for the following reasons:</p>
 
 <ol>
-  <li>D’effectuer des cotations d’infrastructure à haute vélocité</li>
-  <li>De doter les équipes d’infrastructure de métriques financière le permettant très tôt de constater des dérives de coûts</li>
-  <li>De mettre l’ensemble de l’outillage dans l’écosystème du développeur d’infrastructure</li>
+  <li>Infrastructure development actors are often unaware of the cost of what they deploy</li>
+  <li>The process of rating deployed items is not included in the project life cycle</li>
+  <li>The billing method for infrastructure elements is often complex</li>
 </ol>
 
-<p>En effet rien de mieux que de mettre dans les mains de celui qui génère les coûts (le codeur terraform) les outils qui l’alertent sur la facturation qu’il va générer.</p>
+<p>Without knowledge of the costs, without frequent updating, the differences between the estimated budget and the actual invoice can be significant.</p>
 
-<p>Aussi, je voulais vous mettre en lumière l’outil <a href="https://infracost.io">infracost</a> qui peut être une réponse à vos attentes. À défaut de répondre à toutes vos attentes en termes de finops, il vous permettra d’éviter les hémorragies de $$.</p>
-
-<h2 id="quy-a-t-il-dans-la-boite-infracost">Qu’y a-t-il dans la boite Infracost</h2>
-
-<p>Le projet <a href="https://github.com/infracost/infracost">infracost</a> est un projet open source qui couvrent les trois grands hyperscaler que sont <a href="https://azure.microsoft.com/en-us/">Azure</a>, <a href="https://aws.amazon.com/fr/">AWS</a> et <a href="https://cloud.google.com/?hl=fr">GCP</a>.</p>
-
-<p>Infracost permet:</p>
+<p>In order to avoid these pitfalls, I realized that it was essential to equip myself in order to:</p>
 
 <ol>
-  <li>D’évaluer sur le poste du développeur terraform le coût de l’infrastructure dès la phase de plan (autrement dit avant le déploiement)</li>
-  <li>D’effectuer une analyse en delta des coûts entre deux déploiements</li>
-  <li>D’effectuer une analyse au sein de votre chaine Dev/Ops</li>
-  <li>De publier des rapports de coûts au format HTML</li>
+  <li>Perform high-velocity infrastructure quotes</li>
+  <li>Provide infrastructure teams with financial metrics allowing them to see cost drifts very early on</li>
+  <li>To put all the tools in the ecosystem of the infrastructure developer</li>
 </ol>
 
-<p>Le tout en mode SaaS (utilisation des apis et de la base de prix fournis par Infracost) ou en mode OnPrem (moyennant le déploiement d’un serveur Node, et d’une base de données Postgres)</p>
+<p>Indeed, nothing better than putting in the hands of the person who generates the costs (the terraform coder) the tools that alert him to the invoicing he will generate.</p>
 
-<h2 id="liens-utiles">Liens utiles</h2>
+<p>Also, I wanted to highlight the <a href="https://infracost.io">infracost</a> tool which may be an answer to your expectations. Failing to meet all of your finops expectations, it will save you from loosing $$.</p>
 
-<p>Quelques liens pour aller plus loin:</p>
+<h2 id="whats-in-the-infracost-box">What’s in the Infracost box</h2>
+
+<p>The <a href="https://github.com/infracost/infracost">infracost</a> project is an open source project that covers the big three hyperscalers that are <a href="https://azure.microsoft.com/en-us/">Azure</a> , <a href="https://aws.amazon.com/fr/">AWS</a> and <a href="https://cloud.google.com/?hl=fr">GCP</a>.</p>
+
+<p>Infracost allows:</p>
+
+<ol>
+  <li>Assess the cost of the infrastructure on the terraform developer’s position from the planning phase (in other words before deployment)</li>
+  <li>Perform a cost delta analysis between two deployments</li>
+  <li>Perform an analysis within your Dev/Ops chain</li>
+  <li>Publish cost reports in HTML format</li>
+</ol>
+
+<p>All in SaaS mode (use of APIs and the price base provided by Infracost) or in OnPrem mode (by deploying a Node server and a Postgres database)</p>
+
+<h1 id="useful-links">Useful links</h1>
+
+<p>Some links to go further:</p>
 
 <ul>
   <li><a href="https://www.infracost.io/">Web Site Infracost</a></li>
   <li><a href="https://github.com/infracost/infracost">Repository GitHub Infracost</a></li>
   <li><a href="https://infracost.io/docs/">Lien vers la documentation du produit</a></li>
-  <li><a href="https://www.infracost.io/docs/supported_resources/azure/">Ressources supportées sur Azure</a></li>
-  <li><a href="https://www.infracost.io/docs/supported_resources/aws/">Ressources supportées sur AWS</a></li>
-  <li><a href="https://www.infracost.io/docs/supported_resources/gcp/">Ressources supportées sur GCP</a></li>
+  <li><a href="https://www.infracost.io/docs/supported_resources/azure/">Supported resources Azure</a></li>
+  <li><a href="https://www.infracost.io/docs/supported_resources/aws/">Supported resources AWS</a></li>
+  <li><a href="https://www.infracost.io/docs/supported_resources/gcp/">Supported resources GCP</a></li>
 </ul>
+
 
       </div>
 
@@ -371,11 +372,11 @@ car elle met en jeu un large périmètre d’activité. Je ne vais pas détaill�
         style="background-image: url(/blog//images/post/2021/04/2021-04-06-creer-un-site-avec-jekyll-et-github.png)"></a>
       <h2 class="post__nav__title">
         <i class="ion ion-md-arrow-back"></i>
-        <a href="/blog/en/2021/04/06/creer-un-site-avec-jekyll-et-github/">créer un site avec Jekyll et GitHub</a>
+        <a href="/blog/en/2021/04/06/creer-un-site-avec-jekyll-et-github/">create a website with Jekyll and GitHub</a>
       </h2>
       <p class="prev__excerpt">
         
-        La documentation n’est pas notre point fort il faut bien l’admettre dans notre petit monde l’IT. Mais qui n...
+        Documentation is not our strong point, it must be admitted in our small IT world. But who has never encount...
         
       </p>
     </div>
@@ -387,14 +388,14 @@ car elle met en jeu un large périmètre d’activité. Je ne vais pas détaill�
         style="background-image: url(/blog//images/post/2022/03/2022-03-23-infracost-azure-sql-managed.png)">
       </a>
       <h2 class="post__nav__title">
-        <a href="/blog/en/2022/03/23/infracost-support-sql-managed-instance/">Infracost, Support des Azure Sql Managed Instance</a>
+        <a href="/blog/en/2022/03/23/infracost-support-sql-managed-instance/">Infracost, Azure Sql Managed Instance Support</a>
         <i class="ion ion-md-arrow-forward"></i>
       </h2>
       <p class="next__excerpt">
         
-        # Bonne nouvelle
+        # Good news
 
-Infracost supporte désormais le composant Azure SQL Managed instance, vous pourrez donc b...
+Infracost now supports the Azure SQL Managed instance component, so you can benefit in your fi...
         
       </p>
     </div>
