@@ -46,7 +46,7 @@ Concernant le déploiement des zones applicatives, nous avons fait le choix des 
 
 Vous trouverez ci-dessous une version très très high level de l'architecture, mais elle permet de comprendre l'idée générale de la Landing zone:
 
-![hld](/images/post/2023/07/2023-07-16-retour-sur-le-projet-petroineos-hld.png)
+![hld](/blog/images/post/2023/07/2023-07-16-retour-sur-le-projet-petroineos-hld.png)
 
 Afin d'adresser le processus finops nous avons mis en place une petite azure fonction qui alimente le datalake avec tous les coûts azure chaque jour. Simple et efficace le tableau de bord PowerBi évite le débordement des coûts en offrant au pilote de projet un retour rapide sur les dépenses engagées.
 

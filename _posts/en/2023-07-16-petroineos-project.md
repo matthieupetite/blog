@@ -46,7 +46,7 @@ Regarding the deployment of application areas, we have chosen to host in an appl
 
 Below is a very very high level version of the architecture, but it helps to understand the general idea of ​​the Landing zone:
 
-![hld](/images/post/2023/07/2023-07-16-retour-sur-le-projet-petroineos-hld.png)
+![hld](/blog/images/post/2023/07/2023-07-16-retour-sur-le-projet-petroineos-hld.png)
 
 In order to address the finops process we implemented a small azure function which feeds the datalake with all the azure costs every day. Simple and effective, the PowerBi dashboard avoids cost overflow by offering the project manager a quick return on the expenses incurred.
 
