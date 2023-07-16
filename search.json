@@ -1,6 +1,22 @@
 [
   
     {
+      "title"    : "Retour sur le projet Petroineos",
+      "category" : "",
+      "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
+      "url"      : "/blog/2023/07/16/projet-petroineos/",
+      "date"     : "16 Jul, 2023"
+    } ,
+  
+    {
+      "title"    : "Retour sur le projet Petroineos",
+      "category" : "",
+      "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
+      "url"      : "/blog/2023/07/16/petroineos-project/",
+      "date"     : "16 Jul, 2023"
+    } ,
+  
+    {
       "title"    : "Infracost, Support des Azure Sql Managed Instance",
       "category" : "",
       "tags"     : "devops, cicd, finops, terraform, infracost, and azure",
