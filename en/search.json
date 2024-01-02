@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "System modernization at Thiriet, a case study",
+      "category" : "",
+      "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
+      "url"      : "/blog/2024/01/01/projet-thiriet/",
+      "date"     : "1 Jan, 2024"
+    } ,
+  
+    {
       "title"    : "Retour sur le projet Petroineos",
       "category" : "",
       "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
