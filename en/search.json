@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Success of the Migration to Azure Cloud for Circet",
+      "category" : "",
+      "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
+      "url"      : "/blog/2024/11/29/projet-circet/",
+      "date"     : "29 Nov, 2024"
+    } ,
+  
+    {
       "title"    : "System modernization at Thiriet, a case study",
       "category" : "",
       "tags"     : "GitOps, finops, terraform, entreprise scale, and azure",
