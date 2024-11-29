@@ -3,7 +3,7 @@ layout: post
 comments: true
 title: Success of the Migration to Azure Cloud for Circet
 type: post
-lang: fr
+lang: en
 tags: [GitOps, finops, terraform, entreprise scale, azure]
 image: /images/post/2024/11/circet-migration-cloud.png
 summary: "Retour d'experience sur le déploiement d'entreprise scale landing zone"
